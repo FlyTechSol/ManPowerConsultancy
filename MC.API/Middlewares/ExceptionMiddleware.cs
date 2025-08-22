@@ -56,7 +56,7 @@ namespace MC.API.Middlewares
 
                 //_logger.LogError("Unhandled Exception: {ExceptionDetail}", JsonSerializer.Serialize(log));
                 _logger.LogError(ex, "Unhandled Exception: {ExceptionDetail}", JsonSerializer.Serialize(log));
-                await LogToDatabaseAsync(log);
+                //await LogToDatabaseAsync(log);
 
                 await HandleExceptionAsync(context, ex);    
             }
@@ -74,35 +74,35 @@ namespace MC.API.Middlewares
             return details;
         }
 
-        private async Task LogToDatabaseAsync(dynamic log)
-        {
-            //try
-            //{
-            //    using var scope = _scopeFactory.CreateScope();
-            //    var db = scope.ServiceProvider.GetRequiredService<AppDBContext>();
+        //private async Task LogToDatabaseAsync(dynamic log)
+        //{
+        //try
+        //{
+        //    using var scope = _scopeFactory.CreateScope();
+        //    var db = scope.ServiceProvider.GetRequiredService<AppDBContext>();
 
-            //    var exceptionLog = new ExceptionLog
-            //    {
-            //        Method = log.Method,
-            //        Page = log.Path,
-            //        Component = "API",
-            //        ExceptionMessage = log.Exception,
-            //        StackTrace = log.Stack,
-            //        InnerException = log.Inner,
-            //        IpAddress = log.Ip,
-            //        QueryString = log.Query,
-            //        Timestamp = log.Timestamp,
-            //        UserAgent = log.Agent
-            //    };
+        //    var exceptionLog = new ExceptionLog
+        //    {
+        //        Method = log.Method,
+        //        Page = log.Path,
+        //        Component = "API",
+        //        ExceptionMessage = log.Exception,
+        //        StackTrace = log.Stack,
+        //        InnerException = log.Inner,
+        //        IpAddress = log.Ip,
+        //        QueryString = log.Query,
+        //        Timestamp = log.Timestamp,
+        //        UserAgent = log.Agent
+        //    };
 
-            //    db.ExceptionLogs.Add(exceptionLog);
-            //    await db.SaveChangesAsync();
-            //}
-            //catch (Exception logEx)
-            //{
-            //    _logger.LogError("Failed to write exception to DB: {LogEx}", logEx);
-            //}
-        }
+        //    db.ExceptionLogs.Add(exceptionLog);
+        //    await db.SaveChangesAsync();
+        //}
+        //catch (Exception logEx)
+        //{
+        //    _logger.LogError("Failed to write exception to DB: {LogEx}", logEx);
+        //}
+        //}
 
         private async Task HandleExceptionAsync(HttpContext context, Exception ex)
         {

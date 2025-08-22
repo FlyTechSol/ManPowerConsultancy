@@ -1,14 +1,14 @@
-﻿using MC.Domain.Entity.Master;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MC.Application.ModelDto.Master.Master;
+using MC.Domain.Entity.Master;
 
 namespace MC.Application.Contracts.Persistence.Master
 {
     public interface IGenderRepository : IGenericRepository<Gender>
     {
-        Task<Gender?> GetByCodeAsync(string code);
+        Task<GenderDetailDto?> GetByCodeAsync(string code, CancellationToken cancellationToken);
+        Task<GenderDetailDto?> GetDetailsAsync(Guid id, CancellationToken cancellationToken);
+        Task<List<GenderDto>> GetAllDetailsAsync(CancellationToken cancellationToken);
+        Task<bool> IsUnique(string code, CancellationToken cancellationToken);
+        Task<bool> IsUniqueForUpdate(Guid id, string value, CancellationToken cancellationToken);
     }
 }

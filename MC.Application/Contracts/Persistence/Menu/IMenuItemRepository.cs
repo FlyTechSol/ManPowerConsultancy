@@ -10,10 +10,10 @@ namespace MC.Application.Contracts.Persistence.Menu
 {
     public interface IMenuItemRepository : IGenericRepository<MenuItem> 
     {
-        Task<List<MenuItemDto>> GetAllDetailsAsync();
-        Task<MenuItemDetailDto?> GetDetailsAsync(Guid id);
-        Task<List<MenuItemDto>> GetMenuItemByMenuIdAsync(Guid menuId);
-        Task<bool> IsUnique(string title, Guid menuId);
-        Task<bool> IsUniqueForUpdate(Guid id, string value);
+        Task<List<MenuItemDto>> GetAllDetailsAsync(CancellationToken cancellationToken);
+        Task<MenuItemDetailDto?> GetDetailsAsync(Guid id, CancellationToken cancellationToken);
+        Task<List<MenuItemDto>> GetMenuItemByMenuIdAsync(Guid menuId, CancellationToken cancellationToken);
+        Task<bool> IsUnique(string title, Guid menuId, CancellationToken cancellationToken);
+        Task<bool> IsUniqueForUpdate(Guid id, string value, CancellationToken cancellationToken);
     }
 }

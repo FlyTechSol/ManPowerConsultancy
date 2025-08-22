@@ -1,9 +1,4 @@
 ﻿using MC.Application.ModelDto.Menu;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MC.Application.Model.Identity.Authorization
 {
@@ -15,13 +10,12 @@ namespace MC.Application.Model.Identity.Authorization
         public string? MiddleName { get; set; }
         public string UserName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string? EmployeeNumber { get; set; }
+        public string? RegistrationId { get; set; }
         public bool IsActive { get; set; } = true;
         public string Token { get; set; } = string.Empty;
-        public string ProfilePicture { get; set; } = string.Empty;
-        public List<RoleDetails> Roles { get; set; }  // Roles with RoleName and RoleId
-        public List<MenuDto> Menus { get; set; } // Use MenuDto
-
+        public string ProfilePictureUrl { get; set; } = string.Empty;
+        public List<RoleDetails> Roles { get; set; } = new List<RoleDetails>();
+        public List<MenuDto> Menus { get; set; } = new List<MenuDto>();
     }
     public class RoleDetails
     {

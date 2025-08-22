@@ -33,7 +33,9 @@ namespace MC.Persistence.Repositories.Common
         {
             var response = await _context.EmailTemplates
                 .Include(q => q.CreatedByUser)
+                    .ThenInclude(user => user.UserProfile)
                 .Include(q => q.ModifiedByUser)
+                    .ThenInclude(user => user.UserProfile)
                  .Where(q => !q.IsDeleted)
                 .FirstOrDefaultAsync(q => q.Id == id);
 

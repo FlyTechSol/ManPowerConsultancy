@@ -12,6 +12,6 @@ namespace MC.Application.ModelDto.Menu
         public string IconUrl { get; set; } = string.Empty;
         public Guid RoleId { get; set; }
         public string RoleName { get; set; } = string.Empty;
-        public List<MenuItemDto> MenuItems { get; set; }
+        public List<MenuItemDto> MenuItems { get; set; } = new List<MenuItemDto>();
     }
 }

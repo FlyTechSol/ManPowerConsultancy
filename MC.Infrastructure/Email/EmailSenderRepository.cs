@@ -56,6 +56,9 @@ namespace MC.Infrastructure.Email
         {
             var template = await _emailTemplateRepository.GetEmailTemplateByEmailTemplateAsync(EmailTemplateType.ForgotPassword);
 
+            if (template == null)
+                return false;
+
             var body = template.Body.Replace("{ResetLink}", resetLink); // Match the placeholder in your template
             var subject = template.Subject;
 
@@ -89,7 +92,7 @@ namespace MC.Infrastructure.Email
                     await smtpClient.SendMailAsync(mailMessage);
                     return true;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Log exception here (e.g., using a logging framework)
                     return false;
