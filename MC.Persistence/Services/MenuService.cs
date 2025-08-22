@@ -17,7 +17,7 @@ namespace MC.Persistence.Services
         {
             var menus = await _context.Menus
                 .Include(m => m.MenuItems)
-                .Where(m => roles.Contains(m.Role.Name) && !m.IsDeleted)  // Filtering at DB level for roles and deleted menus
+                .Where(m => m.Role != null && m.Role.Name != null && roles.Contains(m.Role.Name) && !m.IsDeleted) // Null checks added
                 .Select(m => new MenuDto
                 {
                     Id = m.Id,
@@ -27,9 +27,9 @@ namespace MC.Persistence.Services
                     NavigationURL = m.NavigationURL,
                     IconUrl = m.IconUrl,
                     RoleId = m.RoleId,
-                    RoleName = m.Role.Name ?? string.Empty,
+                    RoleName = m.Role != null && m.Role.Name != null ? m.Role.Name : string.Empty,
                     MenuItems = m.MenuItems
-                        .Where(mi => !mi.IsDeleted)  // Filter non-deleted MenuItems
+                        .Where(mi => !mi.IsDeleted)
                         .Select(mi => new MenuItemDto
                         {
                             Id = mi.Id,
@@ -39,7 +39,7 @@ namespace MC.Persistence.Services
                             IconUrl = mi.IconUrl,
                             MenuId = mi.MenuId,
                         })
-                        .ToList()  // Return empty list if no non-deleted MenuItems
+                        .ToList()
                 })
                 .ToListAsync();
             return menus;

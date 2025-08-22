@@ -4,7 +4,6 @@ using MC.Domain.Entity.Menu;
 using MC.Persistence.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace MC.Persistence.Repositories.Menu
 {
     public class MenuItemRepository : GenericRepository<MenuItem>, IMenuItemRepository
@@ -12,9 +11,9 @@ namespace MC.Persistence.Repositories.Menu
         public MenuItemRepository(ApplicationDatabaseContext context) : base(context)
         {
         }
-        public async Task<List<MenuItemDto>> GetAllDetailsAsync()
+        public async Task<List<MenuItemDto>> GetAllDetailsAsync(CancellationToken cancellationToken)
         {
-            return await _context.MenuItems
+            return await _context.MenuItems.AsNoTracking()
                 .Include(lt => lt.Menu)
                 .Where(lt => !lt.IsDeleted)
                 .Select(lt => new MenuItemDto
@@ -27,23 +26,19 @@ namespace MC.Persistence.Repositories.Menu
                     MenuId = lt.MenuId,
                     MenuValue = lt.Menu != null ? lt.Menu.Title : string.Empty,
                 })
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
-
-        public async Task<MenuItemDetailDto?> GetDetailsAsync(Guid id)
+        public async Task<MenuItemDetailDto?> GetDetailsAsync(Guid id, CancellationToken cancellationToken)
         {
-            var response = await _context.MenuItems
+            var response = await _context.MenuItems.AsNoTracking()
                 .Include(lt => lt.Menu)
                 .Include(lt => lt.CreatedByUser)
                 .Include(lt => lt.ModifiedByUser)
-                 .Where(lt => !lt.IsDeleted)
-                .FirstOrDefaultAsync(lt => lt.Id == id);
+                .FirstOrDefaultAsync(lt => lt.Id == id && !lt.IsDeleted, cancellationToken);
 
             if (response == null)
-            {
-                return null;
-            }
-
+                 return null;
+            
             var dto = new MenuItemDetailDto
             {
                 Id = response.Id,
@@ -52,26 +47,17 @@ namespace MC.Persistence.Repositories.Menu
                 Url = response.Url,
                 IconUrl = response.IconUrl,
                 MenuId = response.MenuId,
-                DateCreated = response.DateCreated.HasValue
-                    ? response.DateCreated.Value.ToString("dd-MM-yyyy HH:mm:ss")
-                    : string.Empty,
-                DateModified = response.DateModified.HasValue
-                    ? response.DateModified.Value.ToString("dd-MM-yyyy HH:mm:ss")
-                    : string.Empty,
-                CreatedByName = response.CreatedByUser != null
-                    ? $"{response.CreatedByUser.FirstName} {response.CreatedByUser.LastName}"
-                    : string.Empty,
-                ModifiedByName = response.ModifiedByUser != null
-                    ? $"{response.ModifiedByUser.FirstName} {response.ModifiedByUser.LastName}"
-                    : string.Empty
+                DateCreated = Helper.DateHelper.FormatDate(response.DateCreated),
+                DateModified = Helper.DateHelper.FormatDate(response.DateModified),
+                CreatedByName = Helper.UserHelper.GetFormattedName(response.CreatedByUser),
+                ModifiedByName = Helper.UserHelper.GetFormattedName(response.ModifiedByUser),
             };
-
             return dto;
         }
 
-        public async Task<List<MenuItemDto>> GetMenuItemByMenuIdAsync(Guid menuId)
+        public async Task<List<MenuItemDto>> GetMenuItemByMenuIdAsync(Guid menuId, CancellationToken cancellationToken)
         {
-            return await _context.MenuItems
+            return await _context.MenuItems.AsNoTracking()
                 .Include(lt => lt.Menu)
                 .Where(lt => lt.MenuId == menuId && !lt.IsDeleted && (lt.Menu == null || !lt.Menu.IsDeleted))
                 .Select(lt => new MenuItemDto
@@ -84,22 +70,19 @@ namespace MC.Persistence.Repositories.Menu
                     MenuId = lt.MenuId,
                     MenuValue = lt.Menu != null ? lt.Menu.Title : string.Empty,
                 })
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
-        public async Task<bool> IsUnique(string title, Guid menuId)
+        public async Task<bool> IsUnique(string title, Guid menuId, CancellationToken cancellationToken)
         {
-            return !await _context.MenuItems
-              .Where(q => q.Title == title && !q.IsDeleted && q.MenuId == menuId)  // Exclude deleted records
-              .AnyAsync();
+            return !await _context.MenuItems.AsNoTracking()
+              .AnyAsync(q => q.Title == title && !q.IsDeleted && q.MenuId == menuId, cancellationToken);
         }
-        public async Task<bool> IsUniqueForUpdate(Guid id, string value)
+        public async Task<bool> IsUniqueForUpdate(Guid id, string value, CancellationToken cancellationToken)
         {
-            // but exclude the current record by Id and records that are marked as deleted.
-            return !await _context.MenuItems
-                .Where(q => q.Title == value
+            return !await _context.MenuItems.AsNoTracking()
+                .AnyAsync(q => q.Title == value
                             && q.Id != id
-                            && !q.IsDeleted)  // Exclude deleted records
-                .AnyAsync();
+                            && !q.IsDeleted, cancellationToken);
         }
     }
 }

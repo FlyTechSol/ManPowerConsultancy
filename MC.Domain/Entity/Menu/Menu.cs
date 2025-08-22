@@ -20,6 +20,6 @@ namespace MC.Domain.Entity.Menu
 
         // Navigation properties
         public ApplicationRole? Role { get; set; }
-        public ICollection<MenuItem> MenuItems { get; set; }
+        public ICollection<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
     }
 }

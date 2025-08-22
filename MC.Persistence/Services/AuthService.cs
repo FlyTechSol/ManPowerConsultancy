@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MC.Application.Contracts.Email;
 using MC.Application.Contracts.Identity;
+using MC.Application.Contracts.Persistence.Registration;
 using MC.Application.Exceptions;
 using MC.Application.Model.Identity.Authorization;
 using MC.Application.Model.Identity.Registration;
@@ -27,11 +28,13 @@ namespace MC.Persistence.Services
         private readonly JwtSettings _jwtSettings;
         private readonly IEmailSenderRepository _emailSenderRepository;
         private readonly IConfiguration _configuration;
+        private readonly IUserProfileRepository _userProfileRepository;
 
         public AuthService(UserManager<ApplicationUser> userManager,
                            RoleManager<ApplicationRole> roleManager,
                            IOptions<JwtSettings> jwtSettings,
                            IEmailSenderRepository emailSenderRepository,
+                           IUserProfileRepository userProfileRepository,
                            IConfiguration configuration)
         {
             _userManager = userManager;
@@ -39,6 +42,7 @@ namespace MC.Persistence.Services
             _jwtSettings = jwtSettings.Value;
             _emailSenderRepository = emailSenderRepository;
             _configuration = configuration;
+            _userProfileRepository = userProfileRepository;
         }
 
         public async Task<AuthResponse> LoginAsync(AuthRequest request)
@@ -81,19 +85,20 @@ namespace MC.Persistence.Services
                 }
             }
 
+            var userProfile = await _userProfileRepository.GetByIdAsync(user.Id);    
             return new AuthResponse
             {
                 Id = user.Id,
-                FirstName = user.FirstName ?? string.Empty,
-                LastName = user.LastName ?? string.Empty,
-                MiddleName = user.MiddleName ?? string.Empty,
+                FirstName = userProfile != null ? userProfile.FirstName : string.Empty,
+                LastName = userProfile != null ? userProfile.LastName : string.Empty,
+                MiddleName = userProfile != null ? userProfile.MiddleName : string.Empty,
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 Email = user.Email ?? string.Empty,
                 UserName = user.UserName ?? string.Empty,
-                EmployeeNumber = user.EmployeeNumber,
+                RegistrationId = userProfile != null ? userProfile.RegistrationId : string.Empty,
                 Roles = roleDetails,
                 //Menus = menus,
-                ProfilePicture = user.ProfilePictureUrl ?? string.Empty,
+                ProfilePictureUrl = userProfile != null ? userProfile.ProfilePictureUrl : string.Empty,
                 IsActive = user.IsActive,
             };
         }
@@ -131,7 +136,10 @@ namespace MC.Persistence.Services
                     {
                         var role = await _roleManager.FindByIdAsync(request.RoleId.ToString());
                         if (role != null)
-                            await _userManager.AddToRoleAsync(user, role.Name);
+                            if (role != null && !string.IsNullOrEmpty(role.Name))
+                                await _userManager.AddToRoleAsync(user, role.Name);
+                            else
+                                throw new BadRequestException($"The role with ID '{request.RoleId}' does not exist or has no name.");
                         else
                             throw new BadRequestException($"The role with ID '{request.RoleId}' does not exist.");
                     }
