@@ -6,7 +6,7 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.BankAccount.Command.Update
 {
-   public class UpdateBankAccountCmdHandler : IRequestHandler<UpdateBankAccountCmd, Unit>
+    public class UpdateBankAccountCmdHandler : IRequestHandler<UpdateBankAccountCmd, Unit>
     {
         private readonly IMapper _mapper;
         private readonly IBankAccountRepository _bankAccountRepository;

@@ -35,6 +35,7 @@ namespace MC.Persistence.DatabaseContext
         public DbSet<Bank> Banks { get; set; }
         public DbSet<CasteCategory> CasteCategories { get; set; }
         public DbSet<Country> Countries { get; set; }
+        public DbSet<Document> Documents { get; set; }
         public DbSet<Gender> Genders { get; set; }
         public DbSet<HighestEducation> HighestEducations { get; set; }
         public DbSet<RecruitmentType> RecruitmentTypes { get; set; }
@@ -46,15 +47,21 @@ namespace MC.Persistence.DatabaseContext
         public DbSet<Address> Addresses { get; set; }
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<BodyMeasurement> BodyMeasurements { get; set; }
+        public DbSet<Communication> Communications { get; set; }
         public DbSet<EmployeeReference> EmployeeReferences { get; set; }
         public DbSet<ExArmy> ExArmies { get; set; }
         public DbSet<Family> Famlies { get; set; }
         public DbSet<GunMan> GunMen { get; set; }
         public DbSet<Insurance> Insurances { get; set; }
         public DbSet<InsuranceNominee> InsuranceNominees { get; set; }
+        public DbSet<PoliceVerification> PoliceVerifications { get; set; }
         public DbSet<PreviousExperience> PreviousExperiences { get; set; }
+        public DbSet<RegistrationSequence> RegistrationSequences { get; set; }
+        public DbSet<Resignation> Resignations { get; set; }
+        public DbSet<SecurityDeposit> SecurityDeposits { get; set; }
         public DbSet<Training> Trainings { get; set; }
         public DbSet<UserAsset> UserAssets { get; set; }
+        public DbSet<UserGeneralDetail> UserGeneralDetails { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

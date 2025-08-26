@@ -1,4 +1,5 @@
 ﻿using MC.Domain.Base;
+using MC.Domain.Entity.Enum.Registration;
 
 namespace MC.Domain.Entity.Registration
 {
@@ -7,6 +8,7 @@ namespace MC.Domain.Entity.Registration
         public Guid UserProfileId { get; set; }
         public required UserProfile UserProfile { get; set; } // Navigation property to AspNetUsers
         public string Name { get; set; } = string.Empty;
+        public Relationship Relationship { get; set; }
         public bool IsPFNominee { get; set; } = false;
         public double? PFPercentage { get; set; }
         public DateTime? DateOfBirth { get; set; }

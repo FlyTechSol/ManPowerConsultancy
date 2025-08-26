@@ -7,6 +7,8 @@ namespace MC.Persistence.Configurations.Registration
     {
         public void Configure(EntityTypeBuilder<Domain.Entity.Registration.InsuranceNominee> builder)
         {
+            builder.ConfigureAuditFields();
+
             builder.Property(z => z.NominatedBy).IsRequired().HasMaxLength(100);
             builder.Property(z => z.NominatedByFather).IsRequired().HasMaxLength(100);
             builder.Property(z => z.SoldierNumber).HasMaxLength(20);

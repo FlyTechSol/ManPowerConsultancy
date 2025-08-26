@@ -7,6 +7,8 @@ namespace MC.Persistence.Configurations.Registration
     {
         public void Configure(EntityTypeBuilder<Domain.Entity.Registration.ExArmy> builder)
         {
+            builder.ConfigureAuditFields();
+
             builder.Property(z => z.ServiceNumber).HasMaxLength(20);
             builder.Property(z => z.Rank).HasMaxLength(50);
             builder.Property(z => z.Unit).HasMaxLength(50);

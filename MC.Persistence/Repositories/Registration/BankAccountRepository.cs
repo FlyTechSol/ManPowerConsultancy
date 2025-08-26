@@ -14,7 +14,7 @@ namespace MC.Persistence.Repositories.Registration
             _userProfileRepository = userProfileRepository;
         }
 
-        public async Task<BankAccountDetailDto?> GetActiveRecordByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
+        public async Task<BankAccountDetailDto?> GetActiveRecordByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken)
         {
             var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
 
@@ -47,7 +47,7 @@ namespace MC.Persistence.Repositories.Registration
             return address;
         }
 
-        public async Task<List<BankAccountDetailDto>?> GetInactiveRecordByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
+        public async Task<List<BankAccountDetailDto>?> GetInactiveRecordByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken)
         {
             var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
 

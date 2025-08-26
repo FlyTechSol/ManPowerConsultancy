@@ -8,6 +8,7 @@ namespace MC.Persistence.Configurations.Registration
     {
         public void Configure(EntityTypeBuilder<Domain.Entity.Registration.Insurance> builder)
         {
+            builder.ConfigureAuditFields();
 
             builder.Property(z => z.InsuranceCompanyName).HasMaxLength(100);
             builder.Property(z => z.PolicyNumber).HasMaxLength(50);

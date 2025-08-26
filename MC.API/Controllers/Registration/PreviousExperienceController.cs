@@ -28,7 +28,7 @@ namespace MC.API.Controllers.Registration
         }
 
         [HttpGet("get-all-previous-exp/{registrationId}")]
-        public async Task<ActionResult<PreviousExperienceDetailDto>> GetAll(string registrationId)
+        public async Task<ActionResult<PreviousExperienceDetailDto>> GetAll(int registrationId)
         {
             var response = await _mediator.Send(new GetAllByRegistrationIdQuery(registrationId));
             return Ok(response);

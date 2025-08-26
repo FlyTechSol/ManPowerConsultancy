@@ -7,6 +7,8 @@ namespace MC.Persistence.Configurations.Registration
     {
         public void Configure(EntityTypeBuilder<Domain.Entity.Registration.Training> builder)
         {
+            builder.ConfigureAuditFields();
+
             builder.Property(z => z.TrainingName).HasMaxLength(100);
             builder.Property(z => z.TrainingInstitute).HasMaxLength(100);
             builder.Property(z => z.TrainingStartDate).HasColumnType("date"); // Assuming date only, no time

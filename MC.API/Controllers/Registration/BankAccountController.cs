@@ -22,14 +22,14 @@ namespace MC.API.Controllers.Registration
             _mediator = mediator;
         }
         [HttpGet("get-active/{registrationId}")]
-        public async Task<BankAccountDetailDto> Get(string registrationId)
+        public async Task<BankAccountDetailDto> Get(int registrationId)
         {
             var response = await _mediator.Send(new GetActiveRecordByregistrationIdQuery(registrationId));
             return response;
         }
 
         [HttpGet("get-all-inactive/{registrationId}")]
-        public async Task<List<BankAccountDetailDto>> GetAllInactive(string registrationId)
+        public async Task<List<BankAccountDetailDto>> GetAllInactive(int registrationId)
         {
             var response = await _mediator.Send(new GetInactiveRecordByregistrationIdQuery(registrationId));
             return response;

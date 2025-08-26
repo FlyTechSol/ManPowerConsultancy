@@ -55,7 +55,7 @@ namespace MC.Application.Features.Registration.GunMan.Command.Update
 
         private async Task<bool> RecordMustExist(Guid id, CancellationToken cancellationToken)
         {
-            var response = await _exArmyRepository.GetByIdAsync(id, cancellationToken);
+            var response = await _gunManRepository.GetByIdAsync(id, cancellationToken);
             return response != null;
         }
     }

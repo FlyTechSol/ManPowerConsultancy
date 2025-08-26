@@ -8,6 +8,8 @@ namespace MC.Persistence.Configurations.Master
     {
         public void Configure(EntityTypeBuilder<Bank> builder)
         {
+            builder.ConfigureAuditFields();
+
             builder.Property(z => z.Code).HasMaxLength(10);
             builder.Property(z => z.Name).HasMaxLength(70);
             builder.Property(z => z.DisplayOrder).IsRequired();

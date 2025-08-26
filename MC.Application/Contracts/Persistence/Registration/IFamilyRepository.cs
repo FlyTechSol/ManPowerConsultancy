@@ -5,7 +5,7 @@ namespace MC.Application.Contracts.Persistence.Registration
 {
     public interface IFamilyRepository : IGenericRepository<Family>
     {
-        Task<FamilyDetailDto?> GetAllFamilyByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken);
+        Task<FamilyDetailDto?> GetAllFamilyByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken);
         Task<FamilyDetailDto?> GetFamilyByIdAsync(Guid id, CancellationToken cancellationToken);
     }
 }

@@ -3,7 +3,7 @@ using MC.Application.Contracts.Persistence.Registration;
 
 namespace MC.Application.Features.Registration.BankAccount.Command.Create
 {
-   public class CreateBankAccountCmdValidator : AbstractValidator<CreateBankAccountCmd>
+    public class CreateBankAccountCmdValidator : AbstractValidator<CreateBankAccountCmd>
     {
         private readonly IBankAccountRepository _bankAccountRepository;
 

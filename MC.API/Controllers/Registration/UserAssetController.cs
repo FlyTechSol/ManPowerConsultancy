@@ -28,7 +28,7 @@ namespace MC.API.Controllers.Registration
         }
 
         [HttpGet("get-all-user-asset/{registrationId}")]
-        public async Task<ActionResult<UserAssetDetailDto>> GetAll(string registrationId)
+        public async Task<ActionResult<UserAssetDetailDto>> GetAll(int registrationId)
         {
             var response = await _mediator.Send(new GetAllUserAssetByRegIdQuery(registrationId));
             return Ok(response);

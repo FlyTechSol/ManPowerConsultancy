@@ -23,6 +23,8 @@ namespace MC.Persistence.Configurations.Registration
             builder.Property(z => z.P_State).HasMaxLength(100);
             builder.Property(z => z.P_Country).HasMaxLength(100);
 
+            builder.ConfigureAuditFields();
+
             builder.HasOne(a => a.CreatedByUser)
                 .WithMany()
                 .HasForeignKey(a => a.CreatedByUserId)

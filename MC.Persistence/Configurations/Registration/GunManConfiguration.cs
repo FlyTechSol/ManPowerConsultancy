@@ -7,6 +7,7 @@ namespace MC.Persistence.Configurations.Registration
     {
         public void Configure(EntityTypeBuilder<Domain.Entity.Registration.GunMan> builder)
         {
+            builder.ConfigureAuditFields();
 
             builder.Property(z => z.GunLicenceName).HasMaxLength(100);
             builder.Property(z => z.GunLicenseNumber).HasMaxLength(50);

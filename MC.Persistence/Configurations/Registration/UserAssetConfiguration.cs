@@ -7,6 +7,8 @@ namespace MC.Persistence.Configurations.Registration
     {
         public void Configure(EntityTypeBuilder<Domain.Entity.Registration.UserAsset> builder)
         {
+            builder.ConfigureAuditFields();
+
             builder.Property(z => z.SerialNo).HasMaxLength(30);
             builder.Property(z => z.Remarks).HasMaxLength(200);
             builder.Property(z => z.AssetValue).HasPrecision(18, 2);

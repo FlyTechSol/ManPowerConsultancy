@@ -1,4 +1,7 @@
-﻿using MC.Domain.Entity.Identity;
+﻿using MC.Application.Helper;
+using MC.Domain.Entity.Identity;
+using MC.Domain.Entity.Registration;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -21,10 +24,10 @@ namespace MC.Persistence.Configurations.Identity
                      UserName = "admin@localhost.com",
                      NormalizedUserName = "ADMIN@LOCALHOST.COM",
                      //PasswordHash = hasher.HashPassword(null, "Password@123"),
-                     PasswordHash = "AQAAAAIAAYagAAAAEKe0E7y2rQdK+GhaNp/XHQKu1BjS0CUfXokbwqCQ0beQTTf1UnrdMYTE6ImHUHNOBg==",
+                     PasswordHash = "AQAAAAIAAYagAAAAEIZEnobWLWVm+KqYua3eConzPpMHEraORI5xGWGyIXsrYHZGO8Z/Fgvj2Frc+Wex8A==",
                      EmailConfirmed = true,
                      ConcurrencyStamp = "905afbf7-cb82-4046-aab6-2e634a9fc0cc", // fixed
-                     //TitleId = Guid.Parse("{AD77F3F7-CF8A-4F72-A38D-F9AAADE1D79F}")
+                     //UserProfile = profile,
                  },
                  new ApplicationUser
                  {
@@ -36,10 +39,10 @@ namespace MC.Persistence.Configurations.Identity
                      UserName = "user@localhost.com",
                      NormalizedUserName = "USER@LOCALHOST.COM",
                      //PasswordHash = hasher.HashPassword(null, "Password@123"),
-                     PasswordHash = "AQAAAAIAAYagAAAAEJ8vosGG0/vkaAsWru7OsRAJ37UHlJOoE0D0Z2sccMwgG+pq0cLjXcGad2NFj46AEA==",
+                     PasswordHash = "AQAAAAIAAYagAAAAEOq0WMnbfCDHwU/jNJl2v/3I4IpjEpTT39fO3H64akUI1TXP1XuJfNm6+l9OGk0mjQ==",
                      EmailConfirmed = true,
                      ConcurrencyStamp = "A494A604-0DEA-42B2-B262-BDEAFC80F7E1", // fixed
-                     //TitleId = Guid.Parse("{AD77F3F7-CF8A-4F72-A38D-F9AAADE1D79F}")
+                     //UserProfile = profile1,
                  }
             );
         }

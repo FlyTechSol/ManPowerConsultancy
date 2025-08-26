@@ -8,6 +8,8 @@ namespace MC.Persistence.Configurations.Master
     {
         public void Configure(EntityTypeBuilder<Gender> builder)
         {
+            builder.ConfigureAuditFields();
+
             builder.Property(z => z.Code).IsRequired().HasMaxLength(10);
             builder.Property(z => z.Name).IsRequired().HasMaxLength(50);
             builder.Property(z => z.DisplayOrder).IsRequired();

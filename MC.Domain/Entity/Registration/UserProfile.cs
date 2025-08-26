@@ -1,5 +1,4 @@
 ﻿using MC.Domain.Base;
-using MC.Domain.Entity.Enum.Registration;
 using MC.Domain.Entity.Identity;
 using MC.Domain.Entity.Master;
 
@@ -7,77 +6,40 @@ namespace MC.Domain.Entity.Registration
 {
     public class UserProfile : BaseEntity
     {
-        public Guid UserId { get; set; }
-        public required ApplicationUser User { get; set; } // Navigation property to AspNetUsers
-
-        public string RegistrationId { get; set; } = string.Empty; // Unique registration ID  
-
-        // Recruitment type reference
-        public Guid RecruitmentTypeId { get; set; }
-        public RecruitmentType? RecruitmentType { get; set; }
-
-        // Identification
-        public string? AadharNo { get; set; }
-        public string? PanNo { get; set; }
-
-        // Name
+        public Guid? UserId { get; set; } // Nullable
+        public virtual ApplicationUser? User { get; set; } // Optional navigation
+        public int RegistrationId { get; set; } 
         public Guid? TitleId { get; set; }
         public Title? Salutation { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string? MiddleName { get; set; }
         public string? LastName { get; set; }
-
-        // Contact
+        public Guid? RecruitmentTypeId { get; set; }
+        public RecruitmentType? RecruitmentType { get; set; }
+        public string? AadhaarNumber { get; set; }
+        public string? PanNumber { get; set; }
+        public string? UanNumber { get; set; }
+        public string? EsicNumber { get; set; }
         public string? Email { get; set; }
         public string? MobileNumber { get; set; }
         public string? AlternatePhoneNumber { get; set; }
-
-        // Religion
-        public Guid? ReligionId { get; set; }
-        public Religion? Religion { get; set; }
-
-        // Nationality
-        public Guid? CountryId { get; set; }
-        public Country? Nationality { get; set; }
-
-        // Caste Category
-        public Guid? CasteCategoryId { get; set; }
-        public CasteCategory? CasteCategory { get; set; }
-
-        public bool DifferentlyAbled { get; set; } = false;
-
-        // Education
-        public Guid? HighestEducationId { get; set; }
-        public HighestEducation? HighestEducation { get; set; }
-
-        // Dates
         public DateTime? DateOfRegistration { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public string? PlaceOfBirth { get; set; }
-        public DateTime? DateOfJoining { get; set; }
-
-        // Gender
+        public DateTime DateOfJoining { get; set; }
         public Guid? GenderId { get; set; }
         public Gender? Gender { get; set; }
-
-
-        // Marital status
-        public MaritalStatus? MaritalStatus { get; set; }  // ✅ Spelling corrected from "MaritialStatus"
-
-        // Family info
-        public string? FatherName { get; set; }
-        public string? MotherName { get; set; }
-
-        // Employment info
-        public string? UanNumber { get; set; }
-        public string? EsicNumber { get; set; }
-
-        // Physical identifier
         public string? IdentityMarks { get; set; }
-        public bool IsActive { get; set; }
-        public string ProfilePictureUrl { get; set; } = string.Empty;
+        public bool IsActive { get; set; } = true;
+
+        //public string ProfilePictureUrl { get; set; } = string.Empty;
         public BodyMeasurement? BodyMeasurement { get; set; } // optional if not always present
         public Insurance? Insurance { get; set; }
+        public Communication? Communication { get; set; }
+        public PoliceVerification? PoliceVerifications { get; set; }
+        public Resignation? Resignations { get; set; }
+        public SecurityDeposit? SecurityDeposit { get; set; }
+        public UserGeneralDetail? UserGeneralDetail { get; set; }
         public ICollection<BankAccount> BankAccounts { get; set; } = new List<BankAccount>();
         public ICollection<Address> Addresses { get; set; } = new List<Address>();
         public ICollection<ExArmy> ExArmies { get; set; } = new List<ExArmy>();

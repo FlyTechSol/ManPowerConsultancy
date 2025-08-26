@@ -6,7 +6,7 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.BankAccount.Query.GetActiveRecordByregistrationId
 {
-   public class GetActiveRecordByregistrationIdQueryHandler : IRequestHandler<GetActiveRecordByregistrationIdQuery, BankAccountDetailDto>
+    public class GetActiveRecordByregistrationIdQueryHandler : IRequestHandler<GetActiveRecordByregistrationIdQuery, BankAccountDetailDto>
     {
         private readonly IMapper _mapper;
         private readonly IBankAccountRepository _bankAccountRepository;

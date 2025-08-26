@@ -30,14 +30,14 @@ namespace MC.API.Controllers.Registration
         }
 
         [HttpGet("get-active-address/{registrationId}")]
-        public async Task<ActionResult<AddressDetailDto>> GetActiveAddress(string registrationId)
+        public async Task<ActionResult<AddressDetailDto>> GetActiveAddress(int registrationId)
         {
             var response = await _mediator.Send(new GetActiveRecordByregistrationIdQuery(registrationId));
             return Ok(response);
         }
 
         [HttpGet("get-inactive-address/{registrationId}")]
-        public async Task<ActionResult<AddressDetailDto>> GetInactiveAddress(string registrationId)
+        public async Task<ActionResult<AddressDetailDto>> GetInactiveAddress(int registrationId)
         {
             var response = await _mediator.Send(new GetInactiveRecordByregistrationIdQuery(registrationId));
             return Ok(response);

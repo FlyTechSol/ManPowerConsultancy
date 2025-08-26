@@ -67,22 +67,34 @@ namespace MC.Persistence
             //Registration services
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<IBankAccountRepository, BankAccountRepository>();
-            //services.AddScoped<IBodyMeasurementRepository, BodyMeasurementRepository>();
+            services.AddScoped<IBodyMeasurementRepository, BodyMeasurementRepository>();
+            services.AddScoped<ICommunicationRepository, CommunicationRepository>();
             services.AddScoped<IEmployeeReferenceRepository, EmployeeReferenceRepository>();
             services.AddScoped<IExArmyRepository, ExArmyRepository>();
+            services.AddScoped<IFamilyRepository, FamilyRepository>();
+            services.AddScoped<IGunManRepository, GunManRepository>();
             services.AddScoped<IInsuranceNomineeRepository, InsuranceNomineeRepository>();
+            services.AddScoped<IInsuranceRepository, InsuranceRepository>();
+            services.AddScoped<IPoliceVerificationRepository, PoliceVerificationRepository>();
             services.AddScoped<IPreviousExperienceRepository, PreviousExperienceRepository>();
+            services.AddScoped<IRegistrationIdGeneratorRepository, RegistrationIdGeneratorRepository>();
+            services.AddScoped<IResignationRepository, ResignationRepository>();
+            services.AddScoped<ISecurityDepositRepository, SecurityDepositRepository>();
             services.AddScoped<ITrainingRepository, TrainingRepository>();
             services.AddScoped<IUserAssetRepository, UserAssetRepository>();
+            services.AddScoped<IUserGeneralDetailRepository, UserGeneralDetailRepository>();
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
 
             //Master data services
+            services.AddScoped<IAssetRepository, AssetRepository>();
             services.AddScoped<IBankRepository, BankRepository>();
             services.AddScoped<ICasteCategoryRepository, CasteCategoryRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
+            services.AddScoped<IDocumentRepository, DocumentRepository>();
             services.AddScoped<IGenderRepository, GenderRepository>();
             services.AddScoped<IHighestEducationRepository, HighestEducationRepository>();
             services.AddScoped<IRecruitmentTypeRepository, RecruitmentTypeRepository>();
+            services.AddScoped<IReligionRepository, ReligionRepository>();
             services.AddScoped<ITitleRepository, TitleRepository>();
             services.AddScoped<IZipCodeRepository, ZipCodeRepository>();
             

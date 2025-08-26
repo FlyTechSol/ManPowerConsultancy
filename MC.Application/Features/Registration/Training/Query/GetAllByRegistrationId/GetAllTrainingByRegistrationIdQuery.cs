@@ -3,5 +3,5 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.Training.Query.GetAllByRegistrationId
 {
-    public record GetAllTrainingByRegistrationIdQuery(string RegistrationId) : IRequest<TrainingDetailDto>;
+    public record GetAllTrainingByRegistrationIdQuery(int RegistrationId) : IRequest<TrainingDetailDto>;
 }

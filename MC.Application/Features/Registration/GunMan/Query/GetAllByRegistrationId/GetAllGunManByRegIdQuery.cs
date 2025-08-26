@@ -3,5 +3,5 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.GunMan.Query.GetAllByRegistrationId
 {
-    public record GetAllGunManByRegIdQuery(string RegistrationId) : IRequest<GunManDetailDto>;
+    public record GetAllGunManByRegIdQuery(int RegistrationId) : IRequest<GunManDetailDto>;
 }
