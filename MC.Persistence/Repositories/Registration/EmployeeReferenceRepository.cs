@@ -15,7 +15,7 @@ namespace MC.Persistence.Repositories.Registration
             _userProfileRepository = userProfileRepository;
         }
 
-        public async Task<EmployeeReferenceDetailDto?> GetAllEmpRefByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
+        public async Task<EmployeeReferenceDetailDto?> GetAllEmpRefByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken)
         {
             var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
 

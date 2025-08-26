@@ -8,6 +8,8 @@ namespace MC.Persistence.Configurations.Registration
     {
         public void Configure(EntityTypeBuilder<Domain.Entity.Registration.BankAccount> builder)
         {
+            builder.ConfigureAuditFields();
+
             builder.Property(z => z.BankName).HasMaxLength(100);
             builder.Property(z => z.IFSCCode).HasMaxLength(15);
             builder.Property(z => z.AccountNo).HasMaxLength(20);

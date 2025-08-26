@@ -14,7 +14,7 @@ namespace MC.Persistence.Repositories.Registration
             _userProfileRepository = userProfileRepository;
         }
 
-        public async Task<FamilyDetailDto?> GetAllFamilyByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
+        public async Task<FamilyDetailDto?> GetAllFamilyByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken)
         {
             var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
 
@@ -31,6 +31,7 @@ namespace MC.Persistence.Repositories.Registration
                     UserProfileId = ex.UserProfileId,
                     UserProfileName = ex.UserProfile != null ? ex.UserProfile.FirstName + " " + ex.UserProfile.LastName : string.Empty,
                     Name = ex.Name,
+                    Relationship = ex.Relationship,
                     IsPFNominee = ex.IsPFNominee,
                     PFPercentage = ex.PFPercentage,
                     DateOfBirth = ex.DateOfBirth,
@@ -65,6 +66,7 @@ namespace MC.Persistence.Repositories.Registration
                 UserProfileId = response.UserProfileId,
                 UserProfileName = response.UserProfile != null ? response.UserProfile.FirstName + " " + response.UserProfile.LastName : string.Empty,
                 Name = response.Name,
+                Relationship = response.Relationship,
                 IsPFNominee = response.IsPFNominee,
                 PFPercentage = response.PFPercentage,
                 DateOfBirth = response.DateOfBirth,

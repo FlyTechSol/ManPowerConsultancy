@@ -13,6 +13,7 @@ namespace MC.Domain.Entity.Registration
         public double? ShoulderCm { get; set; }
         public HairColour? HairColour { get; set; }
         public EyeColour? EyeColour { get; set; }
+        public string? Remark { get; set; }
         public bool IsActive { get; set; } = true;
     }
 }

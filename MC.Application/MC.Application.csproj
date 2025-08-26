@@ -22,12 +22,4 @@
     <ProjectReference Include="..\MC.Shared\MC.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Registration\BodyMeasurement\Command\Create\" />
-    <Folder Include="Features\Registration\BodyMeasurement\Command\Delete\" />
-    <Folder Include="Features\Registration\BodyMeasurement\Command\Update\" />
-    <Folder Include="Features\Registration\BodyMeasurement\Query\GetAllByRegistrationId\" />
-    <Folder Include="Features\Registration\BodyMeasurement\Query\GetById\" />
-  </ItemGroup>
-
 </Project>

@@ -3,11 +3,13 @@ using MC.Application.Contracts.Email;
 using MC.Application.Contracts.Identity;
 using MC.Application.Contracts.Persistence.Registration;
 using MC.Application.Exceptions;
+using MC.Application.Helper;
 using MC.Application.Model.Identity.Authorization;
 using MC.Application.Model.Identity.Registration;
 using MC.Application.Settings;
 using MC.Domain.Entity.Enum;
 using MC.Domain.Entity.Identity;
+using MC.Domain.Entity.Registration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
@@ -95,27 +97,30 @@ namespace MC.Persistence.Services
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 Email = user.Email ?? string.Empty,
                 UserName = user.UserName ?? string.Empty,
-                RegistrationId = userProfile != null ? userProfile.RegistrationId : string.Empty,
+                RegistrationId = userProfile?.RegistrationId ?? 0,
                 Roles = roleDetails,
                 //Menus = menus,
-                ProfilePictureUrl = userProfile != null ? userProfile.ProfilePictureUrl : string.Empty,
+                //ProfilePictureUrl = userProfile != null ? userProfile.ProfilePictureUrl : string.Empty,
                 IsActive = user.IsActive,
             };
         }
         public async Task<RegistrationResponse> RegisterAsync(RegistrationRequest request)
         {
+            var profile = new UserProfile
+            {
+                FirstName = StringHelper.ToTitleCase(request.FirstName),
+                MiddleName = StringHelper.ToTitleCase(request.MiddleName),
+                LastName = StringHelper.ToTitleCase(request.LastName),
+            };
             var user = new ApplicationUser
             {
                 Email = request.Email,
                 PhoneNumber = request.Mobile,
-                FirstName = Application.Helper.StringHelper.ToTitleCase(request.FirstName),
-                MiddleName = Application.Helper.StringHelper.ToTitleCase(request.MiddleName),
-                LastName = Application.Helper.StringHelper.ToTitleCase(request.LastName),
                 UserName = request.UserName,
-                EmployeeNumber = "",
                 IsActive = true,
                 EmailConfirmed = false,
-                PhoneNumberConfirmed = false
+                PhoneNumberConfirmed = false,
+                UserProfile = profile,
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
@@ -149,8 +154,8 @@ namespace MC.Persistence.Services
 
                     var placeholders = new Dictionary<string, string>
                         {
-                            { "FirstName", user.FirstName },
-                            { "LastName", user.LastName },
+                            { "FirstName", user.UserProfile.FirstName },
+                            { "LastName", user.UserProfile.LastName },
                             { "EmailVerificationLink", verificationLink }
                         };
 

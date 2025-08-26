@@ -8,6 +8,8 @@ namespace MC.Persistence.Configurations.Registration
     {
         public void Configure(EntityTypeBuilder<Domain.Entity.Registration.BodyMeasurement> builder)
         {
+            builder.ConfigureAuditFields();
+
             builder.HasOne(e => e.UserProfile)
                .WithOne(u => u.BodyMeasurement)
                .HasForeignKey<BodyMeasurement>(e => e.UserProfileId)
@@ -19,6 +21,7 @@ namespace MC.Persistence.Configurations.Registration
             builder.Property(b => b.WeightKg).HasPrecision(5, 2);
             builder.Property(b => b.ChestCm).HasPrecision(5, 2);
             builder.Property(b => b.ShoulderCm).HasPrecision(5, 2);
+            builder.Property(b => b.Remark).HasMaxLength(200);
 
             // Enum: store as string
             builder.Property(b => b.HairColour)

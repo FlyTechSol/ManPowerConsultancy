@@ -5,7 +5,7 @@ namespace MC.Application.Contracts.Persistence.Registration
 {
     public interface IInsuranceNomineeRepository : IGenericRepository<InsuranceNominee>
     {
-        Task<InsuranceNomineeDetailDto?> GetAllInsuranceNomineeByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken);
+        Task<InsuranceNomineeDetailDto?> GetAllInsuranceNomineeByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken);
         Task<InsuranceNomineeDetailDto?> GetInsuranceNomineeByIdAsync(Guid id, CancellationToken cancellationToken);
     }
 }

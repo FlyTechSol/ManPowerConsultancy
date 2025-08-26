@@ -7,6 +7,8 @@ namespace MC.Persistence.Configurations.Registration
     {
         public void Configure(EntityTypeBuilder<Domain.Entity.Registration.PreviousExperience> builder)
         {
+            builder.ConfigureAuditFields();
+
             builder.Property(z => z.CompanyWorked).HasMaxLength(100);
             builder.Property(z => z.Place).HasMaxLength(100);
             builder.Property(z => z.Duration).HasMaxLength(50);

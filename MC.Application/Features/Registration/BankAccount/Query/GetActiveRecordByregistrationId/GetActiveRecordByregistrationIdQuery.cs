@@ -3,5 +3,5 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.BankAccount.Query.GetActiveRecordByregistrationId
 {
-    public record GetActiveRecordByregistrationIdQuery(string RegistrationId) : IRequest<BankAccountDetailDto>;
+    public record GetActiveRecordByregistrationIdQuery(int RegistrationId) : IRequest<BankAccountDetailDto>;
 }

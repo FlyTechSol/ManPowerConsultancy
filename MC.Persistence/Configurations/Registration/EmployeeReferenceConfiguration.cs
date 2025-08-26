@@ -7,6 +7,8 @@ namespace MC.Persistence.Configurations.Registration
     {
         public void Configure(EntityTypeBuilder<Domain.Entity.Registration.EmployeeReference> builder)
         {
+            builder.ConfigureAuditFields();
+
             builder.Property(z => z.EmployeeName).IsRequired().HasMaxLength(100);
             builder.Property(z => z.EmployeeDesignation).HasMaxLength(80);
             builder.Property(z => z.EmployeeDepartment).HasMaxLength(80);

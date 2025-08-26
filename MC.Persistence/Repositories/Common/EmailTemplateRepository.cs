@@ -50,18 +50,18 @@ namespace MC.Persistence.Repositories.Common
                 TemplateName = response.TemplateName.ToString(),
                 Subject = response.Subject,
                 Body = response.Body,
-                DateCreated = response.DateCreated.HasValue
-                    ? response.DateCreated.Value.ToString("dd-MM-yyyy HH:mm:ss")
-                    : string.Empty,
-                DateModified = response.DateModified.HasValue
-                    ? response.DateModified.Value.ToString("dd-MM-yyyy HH:mm:ss")
-                    : string.Empty,
-                CreatedByName = response.CreatedByUser != null
-                    ? $"{response.CreatedByUser.FirstName} {response.CreatedByUser.LastName}"
-                    : string.Empty,
-                ModifiedByName = response.ModifiedByUser != null
-                    ? $"{response.ModifiedByUser.FirstName} {response.ModifiedByUser.LastName}"
-                    : string.Empty
+                //DateCreated = response.DateCreated.HasValue
+                //    ? response.DateCreated.Value.ToString("dd-MM-yyyy HH:mm:ss")
+                //    : string.Empty,
+                //DateModified = response.DateModified.HasValue
+                //    ? response.DateModified.Value.ToString("dd-MM-yyyy HH:mm:ss")
+                //    : string.Empty,
+                //CreatedByName = response.CreatedByUser != null
+                //    ? $"{response.CreatedByUser.FirstName} {response.CreatedByUser.LastName}"
+                //    : string.Empty,
+                //ModifiedByName = response.ModifiedByUser != null
+                //    ? $"{response.ModifiedByUser.FirstName} {response.ModifiedByUser.LastName}"
+                //    : string.Empty
             };
 
             return dto;

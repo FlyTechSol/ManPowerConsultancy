@@ -1,19 +1,54 @@
 ﻿using MC.Domain.Entity.Identity;
 using MC.Domain.Entity.Registration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MC.Persistence.Helper
 {
     public static class UserHelper
     {
-        public static string GetFormattedName(UserProfile? user) =>
-            user != null
-                ? $"{user.FirstName} {user.LastName}".Trim()
-                : string.Empty;
+        //public static IQueryable<string> GetAuditNameQuery(IQueryable<UserProfile> profiles, Guid? userId)
+        //{
+        //    return profiles
+        //        .Where(up => up.UserId == userId)
+        //        .Select(up => string.Join(" ", new[] { up.FirstName, up.LastName }.Where(n => !string.IsNullOrWhiteSpace(n))));
+        //}
+
+        public static IQueryable<string> GetAuditNameQuery(IQueryable<UserProfile> profiles, Guid? userId)
+        {
+            return profiles
+                .Where(up => up.UserId == userId)
+                .Select(up =>
+                    (up.FirstName ?? "") + " " + (up.LastName ?? "")
+                );
+        }
+
+        //public static string GetFormattedName(ApplicationUser? user)
+        //{
+        //    if (user?.UserProfile == null)
+        //        return string.Empty;
+
+        //    var parts = new[] { user.UserProfile.FirstName, user.UserProfile.LastName }
+        //        .Where(p => !string.IsNullOrWhiteSpace(p));
+
+        //    return string.Join(" ", parts);
+        //}
+
+        public static string GetFormattedName(ApplicationUser? user)
+        {
+            var profile = user?.UserProfile;
+            if (profile == null)
+                return string.Empty;
+
+            return $"{profile.FirstName} {profile.LastName}".Trim();
+        }
+
+        public static string GetFormattedName(UserProfile? profile)
+        {
+            if (profile == null)
+                return string.Empty;
+
+            return $"{profile.FirstName} {profile.LastName}".Trim();
+        }
+
 
         public static string GetFullName(string title, string firstName, string middleName, string lastName)
         {

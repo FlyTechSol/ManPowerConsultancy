@@ -28,7 +28,7 @@ namespace MC.API.Controllers.Registration
         }
 
         [HttpGet("get-all-ex-army/{registrationId}")]
-        public async Task<ActionResult<InsuranceNomineeDetailDto>> GetAll(string registrationId)
+        public async Task<ActionResult<InsuranceNomineeDetailDto>> GetAll(int registrationId)
         {
             var response = await _mediator.Send(new GetAllInsNomineeByRegIdQuery(registrationId));
             return Ok(response);

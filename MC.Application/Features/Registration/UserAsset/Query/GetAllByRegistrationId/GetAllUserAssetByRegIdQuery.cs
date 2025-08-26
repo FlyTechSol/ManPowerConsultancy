@@ -3,5 +3,5 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.UserAsset.Query.GetAllByRegistrationId
 {
-    public record GetAllUserAssetByRegIdQuery(string RegistrationId) : IRequest<UserAssetDetailDto>;
+    public record GetAllUserAssetByRegIdQuery(int RegistrationId) : IRequest<UserAssetDetailDto>;
 }

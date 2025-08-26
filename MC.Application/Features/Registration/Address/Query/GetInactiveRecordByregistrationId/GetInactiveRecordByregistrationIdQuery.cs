@@ -3,5 +3,5 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.Address.Query.GetInactiveRecordByregistrationId
 {
-    public record GetInactiveRecordByregistrationIdQuery(string RegistrationId) : IRequest<AddressDetailDto>;
+    public record GetInactiveRecordByregistrationIdQuery(int RegistrationId) : IRequest<AddressDetailDto>;
 }

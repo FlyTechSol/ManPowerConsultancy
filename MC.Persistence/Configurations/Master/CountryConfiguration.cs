@@ -8,6 +8,8 @@ namespace MC.Persistence.Configurations.Master
     {
         public void Configure(EntityTypeBuilder<Country> builder)
         {
+            builder.ConfigureAuditFields();
+
             builder.Property(z => z.Code).HasMaxLength(10);
             builder.Property(z => z.Name).HasMaxLength(100);
             builder.Property(z => z.DialCode).HasMaxLength(5);

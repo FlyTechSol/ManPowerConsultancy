@@ -5,7 +5,7 @@ namespace MC.Application.Contracts.Persistence.Registration
 {
     public interface ITrainingRepository : IGenericRepository<Training>
     {
-        Task<TrainingDetailDto?> GetAllTrainingByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken);
+        Task<TrainingDetailDto?> GetAllTrainingByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken);
         Task<TrainingDetailDto?> GetTrainingByIdAsync(Guid id, CancellationToken cancellationToken);
     }
 }

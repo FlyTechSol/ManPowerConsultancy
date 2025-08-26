@@ -4,7 +4,7 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.BankAccount.Command.Delete
 {
-   public class DeleteBankAccountCmdHandler : IRequestHandler<DeleteBankAccountCmd, Unit>
+    public class DeleteBankAccountCmdHandler : IRequestHandler<DeleteBankAccountCmd, Unit>
     {
         private readonly IBankAccountRepository _bankAccountRepository;
 
