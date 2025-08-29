@@ -2,6 +2,7 @@
 using MC.Application.ModelDto.Registration;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.DatabaseContext;
+using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace MC.Persistence.Repositories.Registration
@@ -14,43 +15,68 @@ namespace MC.Persistence.Repositories.Registration
             _userProfileRepository = userProfileRepository;
         }
         
-        public async Task<CommunicationDetailDto?> GetByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken)
+        public async Task<CommunicationDetailDto?> GetByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
         {
             var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
 
             if (userProfile == null)
                 return null;
 
-            var address = await _context.Communications
+            var response = await _context.Communications
                 .AsNoTracking()
-                .Include(a => a.UserProfile)
-                .Include(a => a.CreatedByUser!)
-                    .ThenInclude(u => u.UserProfile)
-                .Include(a => a.ModifiedByUser!)
-                    .ThenInclude(u => u.UserProfile)
-                .Where(addr => addr.UserProfileId == userProfile.Id && addr.IsActive)
-                .Select(addr => new CommunicationDetailDto
-                {
-                    Id = addr.Id,
-                    UserProfileId = addr.UserProfileId,
-                    UserProfileName = addr.UserProfile.FirstName + " " + addr.UserProfile.LastName,
-                    PersonalMobileNumber = addr.PersonalMobileNumber,
-                    OfficialMobileNumber = addr.OfficialMobileNumber,
-                    EmergencyContactNumber = addr.EmergencyContactNumber,
-                    LandlineNumber1 = addr.LandlineNumber1,
-                    LandlineNumber2 = addr.LandlineNumber2,
-                    PersonalEmail = addr.PersonalEmail,
-                    OfficialEmail = addr.OfficialEmail,
-                    IsActive = addr.IsActive,
-                    DateCreated = Helper.DateHelper.FormatDate(addr.DateCreated),
-                    DateModified = Helper.DateHelper.FormatDate(addr.DateModified),
-                    CreatedByName = Helper.UserHelper.GetFormattedName(addr.CreatedByUser),
-                    ModifiedByName = Helper.UserHelper.GetFormattedName(addr.ModifiedByUser),
-
-                })
+                .Where(communication => communication.UserProfileId == userProfile.Id && !communication.IsDeleted)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            return address;
+            if (response == null)
+                return null;
+
+            return MapToDto(response);
+        }
+
+        public async Task<CommunicationDetailDto?> GetByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken)
+        {
+            var response = await _context.Communications
+                .AsNoTracking()
+                .Where(communication => communication.UserProfileId == userProfileId && !communication.IsDeleted)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (response == null)
+                return null;
+
+            return MapToDto(response);
+        }
+        public async Task<CommunicationDetailDto?> GetCommunicationByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            var response = await _context.Communications
+                .AsNoTracking()
+                .Where(communication => communication.Id == id && !communication.IsDeleted)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (response == null)
+                return null;
+
+            return MapToDto(response);
+        }
+        private CommunicationDetailDto MapToDto(Domain.Entity.Registration.Communication communication)
+        {
+            return new CommunicationDetailDto
+            {
+                Id = communication.Id,
+                UserProfileId = communication.UserProfileId,
+                UserProfileName = communication.UserProfile.FirstName + " " + communication.UserProfile.LastName,
+                PersonalMobileNumber = communication.PersonalMobileNumber,
+                OfficialMobileNumber = communication.OfficialMobileNumber,
+                EmergencyContactNumber = communication.EmergencyContactNumber,
+                LandlineNumber1 = communication.LandlineNumber1,
+                LandlineNumber2 = communication.LandlineNumber2,
+                PersonalEmail = communication.PersonalEmail,
+                OfficialEmail = communication.OfficialEmail,
+                IsActive = communication.IsActive,
+                DateCreated = Helper.DateHelper.FormatDate(communication.DateCreated),
+                DateModified = Helper.DateHelper.FormatDate(communication.DateModified),
+                CreatedByName = communication.CreatedByUserName ?? Defaults.Users.Unknown,
+                ModifiedByName = communication.ModifiedByUserName ?? Defaults.Users.Unknown
+            };
         }
     }
 }

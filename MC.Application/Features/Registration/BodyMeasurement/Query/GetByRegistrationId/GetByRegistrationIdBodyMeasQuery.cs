@@ -3,5 +3,5 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.BodyMeasurement.Query.GetByRegistrationId
 {
-   public record GetByRegistrationIdBodyMeasQuery(int RegistrationId) : IRequest<BodyMeasurementDetailDto>;
+   public record GetByRegistrationIdBodyMeasQuery(string RegistrationId) : IRequest<BodyMeasurementDetailDto>;
 }

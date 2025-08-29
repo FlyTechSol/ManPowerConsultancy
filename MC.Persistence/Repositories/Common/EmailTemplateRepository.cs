@@ -3,8 +3,8 @@ using MC.Application.ModelDto.Common.Email;
 using MC.Domain.Entity.Common;
 using MC.Domain.Entity.Enum;
 using MC.Persistence.DatabaseContext;
+using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
-
 
 namespace MC.Persistence.Repositories.Common
 {
@@ -32,17 +32,11 @@ namespace MC.Persistence.Repositories.Common
         public async Task<EmailTemplateDetailDto?> GetEmailTemplateAsync(Guid id)
         {
             var response = await _context.EmailTemplates
-                .Include(q => q.CreatedByUser)
-                    .ThenInclude(user => user.UserProfile)
-                .Include(q => q.ModifiedByUser)
-                    .ThenInclude(user => user.UserProfile)
-                 .Where(q => !q.IsDeleted)
-                .FirstOrDefaultAsync(q => q.Id == id);
+                .Where(e => !e.IsDeleted)
+                .FirstOrDefaultAsync(e => e.Id == id);
 
             if (response == null)
-            {
                 return null;
-            }
 
             var dto = new EmailTemplateDetailDto
             {
@@ -50,19 +44,11 @@ namespace MC.Persistence.Repositories.Common
                 TemplateName = response.TemplateName.ToString(),
                 Subject = response.Subject,
                 Body = response.Body,
-                //DateCreated = response.DateCreated.HasValue
-                //    ? response.DateCreated.Value.ToString("dd-MM-yyyy HH:mm:ss")
-                //    : string.Empty,
-                //DateModified = response.DateModified.HasValue
-                //    ? response.DateModified.Value.ToString("dd-MM-yyyy HH:mm:ss")
-                //    : string.Empty,
-                //CreatedByName = response.CreatedByUser != null
-                //    ? $"{response.CreatedByUser.FirstName} {response.CreatedByUser.LastName}"
-                //    : string.Empty,
-                //ModifiedByName = response.ModifiedByUser != null
-                //    ? $"{response.ModifiedByUser.FirstName} {response.ModifiedByUser.LastName}"
-                //    : string.Empty
-            };
+                DateCreated = Helper.DateHelper.FormatDate(response.DateCreated),
+                DateModified = Helper.DateHelper.FormatDate(response.DateModified),
+                CreatedByName = response.CreatedByUserName ?? Defaults.Users.Unknown,  
+                ModifiedByName = response.ModifiedByUserName ?? Defaults.Users.Unknown,
+             };
 
             return dto;
         }
@@ -73,10 +59,8 @@ namespace MC.Persistence.Repositories.Common
                 .FirstOrDefaultAsync(q => q.TemplateName == emailTemplateType);
 
             if (response == null)
-            {
                 return null;
-            }
-
+           
             var dto = new EmailTemplateDetailDto
             {
                 Id = response.Id,
@@ -86,7 +70,6 @@ namespace MC.Persistence.Repositories.Common
             };
 
             return dto;
-
         }
 
         public async Task<bool> IsUnique(EmailTemplateType templateName)

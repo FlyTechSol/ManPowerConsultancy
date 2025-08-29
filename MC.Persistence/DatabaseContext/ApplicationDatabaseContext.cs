@@ -5,7 +5,9 @@ using MC.Domain.Entity.Enum;
 using MC.Domain.Entity.Identity;
 using MC.Domain.Entity.Master;
 using MC.Domain.Entity.Menu;
+using MC.Domain.Entity.Organization;
 using MC.Domain.Entity.Registration;
+using MC.Persistence.Helper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -33,15 +35,23 @@ namespace MC.Persistence.DatabaseContext
         //master
         public DbSet<Asset> Assets { get; set; }
         public DbSet<Bank> Banks { get; set; }
+        public DbSet<Branch> Branches { get; set; }
         public DbSet<CasteCategory> CasteCategories { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<Country> Countries { get; set; }
-        public DbSet<Document> Documents { get; set; }
+        public DbSet<Designation> Designations { get; set; }
+        public DbSet<DocumentType> DocumentTypes { get; set; }
         public DbSet<Gender> Genders { get; set; }
         public DbSet<HighestEducation> HighestEducations { get; set; }
         public DbSet<RecruitmentType> RecruitmentTypes { get; set; }
         public DbSet<Religion> Religions { get; set; }
         public DbSet<Title> Titles { get; set; }
         public DbSet<ZipCode> ZipCodes { get; set; }
+
+        //Organization
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<ClientMaster> ClientMasters { get; set; }
+        public DbSet<ClientUnit> ClientUnits { get; set; }
 
         //registration
         public DbSet<Address> Addresses { get; set; }
@@ -82,12 +92,6 @@ namespace MC.Persistence.DatabaseContext
             builder.Entity<IdentityUserLogin<Guid>>().HasKey(ul => new { ul.LoginProvider, ul.ProviderKey });
             builder.Entity<IdentityUserToken<Guid>>().HasKey(ut => new { ut.UserId, ut.LoginProvider, ut.Name });
 
-            //builder.Entity<ApplicationUser>()
-            //    .HasOne(u => u.Title)
-            //    .WithMany()
-            //    .HasForeignKey(u => u.TitleId)
-            //    .OnDelete(DeleteBehavior.Restrict); // Optional: avoid cascade delete
-
             var emailTemplateTypeConverter = new ValueConverter<EmailTemplateType, string>(
                 v => v.ToString(),
                 v => (EmailTemplateType)Enum.Parse(typeof(EmailTemplateType), v));
@@ -96,45 +100,6 @@ namespace MC.Persistence.DatabaseContext
                 .Property(e => e.TemplateName)
                 .HasConversion(emailTemplateTypeConverter);
 
-            //var AccountTypeConverter = new ValueConverter<AccountType, string>(
-            //    v => v.ToString(),
-            //    v => (AccountType)Enum.Parse(typeof(AccountType), v));
-
-            //builder.Entity<BankAccount>()
-            //    .Property(e => e.AccountType)
-            //    .HasConversion(AccountTypeConverter);
-
-            //var ArmyBranchConverter = new ValueConverter<ArmyBranch, string>(
-            //    v => v.ToString(),
-            //    v => (ArmyBranch)Enum.Parse(typeof(ArmyBranch), v));
-
-            //builder.Entity<ExArmy>()
-            //    .Property(e => e.BranchOfService)
-            //    .HasConversion(ArmyBranchConverter);
-
-            //var HairColourConverter = new ValueConverter<HairColour, string>(
-            //   v => v.ToString(),
-            //   v => (HairColour)Enum.Parse(typeof(HairColour), v));
-
-            //builder.Entity<BodyMeasurement>()
-            //    .Property(e => e.HairColour)
-            //    .HasConversion(HairColourConverter);
-
-            //var EyeColourConverter = new ValueConverter<EyeColour, string>(
-            //   v => v.ToString(),
-            //   v => (EyeColour)Enum.Parse(typeof(EyeColour), v));
-
-            //builder.Entity<BodyMeasurement>()
-            //    .Property(e => e.EyeColour)
-            //    .HasConversion(EyeColourConverter);
-
-            //var MaritalStatusConverter = new ValueConverter<MaritalStatus, string>(
-            //   v => v.ToString(),
-            //   v => (MaritalStatus)Enum.Parse(typeof(MaritalStatus), v));
-
-            //builder.Entity<UserProfile>()
-            //    .Property(e => e.MaritalStatus)
-            //    .HasConversion(MaritalStatusConverter);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -147,12 +112,20 @@ namespace MC.Persistence.DatabaseContext
             {
                 entry.Entity.DateModified = DateTime.UtcNow;
                 if (!string.IsNullOrWhiteSpace(_userContext.UserId))
+                {
                     entry.Entity.ModifiedByUserId = Guid.Parse(_userContext.UserId);
+                    entry.Entity.ModifiedByUserName = _userContext.UserName ?? Defaults.Users.Unknown;
+                }
+                    
                 if (entry.State == EntityState.Added)
                 {
                     entry.Entity.DateCreated = DateTime.UtcNow;
                     if (!string.IsNullOrWhiteSpace(_userContext.UserId))
+                    {
                         entry.Entity.CreatedByUserId = Guid.Parse(_userContext.UserId);
+                        entry.Entity.CreatedByUserName = _userContext.UserName ?? Defaults.Users.Unknown;
+                    }
+                        
                 }
             }
             return base.SaveChangesAsync(cancellationToken);

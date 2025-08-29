@@ -5,6 +5,8 @@ namespace MC.Application.Contracts.Persistence.Registration
 {
     public interface IBodyMeasurementRepository : IGenericRepository<BodyMeasurement>
     {
-        Task<BodyMeasurementDetailDto?> GetByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken);
+        Task<BodyMeasurementDetailDto?> GetByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken);
+        Task<BodyMeasurementDetailDto?> GetByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken);
+        Task<BodyMeasurementDetailDto?> GetBodyMeasurementByIdAsync(Guid id, CancellationToken cancellationToken);
     }
 }

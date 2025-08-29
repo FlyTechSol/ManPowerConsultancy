@@ -20,7 +20,7 @@ namespace MC.Application.Features.Registration.Address.Query.GetActiveRecordByre
         public async Task<AddressDetailDto> Handle(GetActiveRecordByregistrationIdQuery request, CancellationToken cancellationToken)
         {
             // Query the database
-            var response = await _addressRepository.GetActiveAddressByUserIdAsync(request.RegistrationId, cancellationToken);
+            var response = await _addressRepository.GetActiveAddressByRegistrationIdAsync(request.RegistrationId, cancellationToken);
 
             // verify that record exists
             if (response == null)

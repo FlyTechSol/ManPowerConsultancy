@@ -23,15 +23,15 @@ namespace MC.API.Controllers.Auth
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<AuthResponse>> Login([FromBody] AuthRequest request)
+        public async Task<ActionResult<AuthResponse>> Login([FromBody] AuthRequest request, CancellationToken cancellationToken)
         {
-            return Ok(await _authenticationService.LoginAsync(request));
+            return Ok(await _authenticationService.LoginAsync(request, cancellationToken));
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<RegistrationResponse>> Register([FromBody] RegistrationRequest request)
+        public async Task<ActionResult<RegistrationResponse>> Register([FromBody] RegistrationRequest request, CancellationToken cancellationToken)
         {
-            return Ok(await _authenticationService.RegisterAsync(request));
+            return Ok(await _authenticationService.RegisterAsync(request, cancellationToken));
         }
     }
 }

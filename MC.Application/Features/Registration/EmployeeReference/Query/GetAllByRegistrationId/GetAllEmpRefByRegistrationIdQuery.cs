@@ -3,5 +3,5 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.EmployeeReference.Query.GetAllByRegistrationId
 {
-   public record GetAllEmpRefByRegistrationIdQuery(int RegistrationId) : IRequest<EmployeeReferenceDetailDto>;
+   public record GetAllEmpRefByRegistrationIdQuery(string RegistrationId) : IRequest<List<EmployeeReferenceDetailDto>>;
 }

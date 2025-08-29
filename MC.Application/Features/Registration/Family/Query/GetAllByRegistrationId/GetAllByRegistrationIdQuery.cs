@@ -3,5 +3,5 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.Family.Query.GetAllByRegistrationId
 {
-   public record GetAllByRegistrationIdQuery(int RegistrationId) : IRequest<FamilyDetailDto>;
+   public record GetAllByRegistrationIdQuery(string RegistrationId) : IRequest<List<FamilyDetailDto>>;
 }

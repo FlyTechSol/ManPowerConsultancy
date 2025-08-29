@@ -20,7 +20,7 @@ namespace MC.Application.Features.Registration.PoliceVerification.Query.GetByReg
         public async Task<PoliceVerificationDetailDto> Handle(GetPoliceVeriByRegistrationIdQuery request, CancellationToken cancellationToken)
         {
             // Query the database
-            var response = await _policeVerificationRepository.GetPolicleVerificationByRegistrationIdAsync(request.RegistrationId, cancellationToken);
+            var response = await _policeVerificationRepository.GetPoliceVerificationByRegistrationIdAsync(request.RegistrationId, cancellationToken);
 
             // verify that record exists
             if (response == null)

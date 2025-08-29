@@ -5,7 +5,8 @@ namespace MC.Application.Contracts.Persistence.Registration
 {
     public interface IUserAssetRepository : IGenericRepository<UserAsset>
     {
-        Task<UserAssetDetailDto?> GetAllUserAssetByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken);
+        Task<List<UserAssetDetailDto>?> GetAllUserAssetByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken);
+        Task<List<UserAssetDetailDto>?> GetAllUserAssetByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken);
         Task<UserAssetDetailDto?> GetUserAssetByIdAsync(Guid id, CancellationToken cancellationToken);
     }
 }

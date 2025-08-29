@@ -2,6 +2,7 @@
 using MC.Application.ModelDto.Registration;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.DatabaseContext;
+using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace MC.Persistence.Repositories.Registration
@@ -14,7 +15,7 @@ namespace MC.Persistence.Repositories.Registration
             _userProfileRepository = userProfileRepository;
         }
 
-        public async Task<GunManDetailDto?> GetAllGunMenByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken)
+        public async Task<List<GunManDetailDto>?> GetAllGunMenByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
         {
             var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
 
@@ -23,45 +24,43 @@ namespace MC.Persistence.Repositories.Registration
 
             var response = await _context.GunMen
                 .AsNoTracking()
-                .Include(ex => ex.UserProfile)
                 .Where(ex => ex.UserProfileId == userProfile.Id && !ex.IsDeleted)
-                .Select(ex => new GunManDetailDto
-                {
-                    Id = ex.Id,
-                    UserProfileId = ex.UserProfileId,
-                    UserProfileName = ex.UserProfile != null ? ex.UserProfile.FirstName + " " + ex.UserProfile.LastName : string.Empty,
-                    GunLicenceName = ex.GunLicenceName,
-                    GunLicenseNumber = ex.GunLicenseNumber,
-                    WeaponNumber = ex.WeaponNumber,
-                    WeaponType = ex.WeaponType,
-                    MakeOfCompany = ex.MakeOfCompany,
-                    GunLicenseIssuedBy = ex.GunLicenseIssuedBy,
-                    GunLicenseIssuedDate = ex.GunLicenseIssuedDate,
-                    GunLicenseExpiryDate = ex.GunLicenseExpiryDate,
-                    GunLicenseRemarks = ex.GunLicenseRemarks,
-                    Jurisdiction = ex.Jurisdiction,
-                    LicenceAddress = ex.LicenceAddress,
-                    IsActive = ex.IsActive,
-                    DateCreated = Helper.DateHelper.FormatDate(ex.DateCreated),
-                    DateModified = Helper.DateHelper.FormatDate(ex.DateModified),
-                    CreatedByName = Helper.UserHelper.GetFormattedName(ex.CreatedByUser),
-                    ModifiedByName = Helper.UserHelper.GetFormattedName(ex.ModifiedByUser),
-                })
-                .FirstOrDefaultAsync(cancellationToken);
-            return response;
-        }
+                .ToListAsync(cancellationToken);
 
+            if (response == null || response.Count == 0)
+                return new List<GunManDetailDto>();
+
+            var dtos = response.Select(MapToDto).ToList();
+            return dtos;
+        }
+        public async Task<List<GunManDetailDto>?> GetAllGunMenByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken)
+        {
+            var response = await _context.GunMen
+              .AsNoTracking()
+              .Where(ex => ex.UserProfileId == userProfileId && !ex.IsDeleted)
+              .ToListAsync(cancellationToken);
+
+            if (response == null || response.Count == 0)
+                return new List<GunManDetailDto>();
+
+            var dtos = response.Select(MapToDto).ToList();
+            return dtos;
+        }
         public async Task<GunManDetailDto?> GetGunManByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var response = await _context.GunMen
                 .AsNoTracking()
-                .Include(ex => ex.UserProfile)
                 .FirstOrDefaultAsync(lt => lt.Id == id && !lt.IsDeleted, cancellationToken);
 
             if (response == null)
                 return null;
 
-            var dto = new GunManDetailDto
+            return MapToDto(response);
+        }
+
+        private GunManDetailDto MapToDto(Domain.Entity.Registration.GunMan response)
+        {
+            return new GunManDetailDto
             {
                 Id = response.Id,
                 UserProfileId = response.UserProfileId,
@@ -80,10 +79,9 @@ namespace MC.Persistence.Repositories.Registration
                 IsActive = response.IsActive,
                 DateCreated = Helper.DateHelper.FormatDate(response.DateCreated),
                 DateModified = Helper.DateHelper.FormatDate(response.DateModified),
-                CreatedByName = Helper.UserHelper.GetFormattedName(response.CreatedByUser),
-                ModifiedByName = Helper.UserHelper.GetFormattedName(response.ModifiedByUser),
+                CreatedByName = response.CreatedByUserName ?? Defaults.Users.Unknown,
+                ModifiedByName = response.ModifiedByUserName ?? Defaults.Users.Unknown
             };
-            return dto;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MC.Application.Features.Registration.InsuranceNominee.Command.Create;
+﻿using MC.Application.Features.Registration.Family.Query.GetAllByUserProfileId;
+using MC.Application.Features.Registration.InsuranceNominee.Command.Create;
 using MC.Application.Features.Registration.InsuranceNominee.Command.Delete;
 using MC.Application.Features.Registration.InsuranceNominee.Command.Update;
 using MC.Application.Features.Registration.InsuranceNominee.Query.GetAllByRegistrationId;
@@ -21,27 +22,34 @@ namespace MC.API.Controllers.Registration
             _mediator = mediator;
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<InsuranceNomineeDetailDto>> Get(Guid id)
+        public async Task<ActionResult<InsuranceNomineeDetailDto>> Get(Guid id, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetInsNomineeByIdQuery(id));
+            var response = await _mediator.Send(new GetInsNomineeByIdQuery(id), cancellationToken);
             return Ok(response);
         }
 
-        [HttpGet("get-all-ex-army/{registrationId}")]
-        public async Task<ActionResult<InsuranceNomineeDetailDto>> GetAll(int registrationId)
+        [HttpGet("get-all-nominee-by-registration-id/{registrationId}")]
+        public async Task<ActionResult<List<InsuranceNomineeDetailDto>>> GetAll(string registrationId, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllInsNomineeByRegIdQuery(registrationId));
+            var response = await _mediator.Send(new GetAllInsNomineeByRegIdQuery(registrationId), cancellationToken);
             return Ok(response);
         }
+        [HttpGet("get-all-nominee-by-user-profile-id/{userProfileId}")]
+        public async Task<ActionResult<List<InsuranceNomineeDetailDto>>> GetAllByUserProfile(Guid userProfileId, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetAllByUserProfileQuery(userProfileId), cancellationToken);
+            return Ok(response);
+        }
+
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Post(CreateInsNomineeCmd request)
+        public async Task<ActionResult> Post(CreateInsNomineeCmd request, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(request);
-            return CreatedAtAction(nameof(Get), new { id = response });
+            var response = await _mediator.Send(request, cancellationToken);
+            return CreatedAtAction(nameof(Get), new { id = response }, null);
         }
 
         [HttpPut("{id}")]
@@ -50,9 +58,9 @@ namespace MC.API.Controllers.Registration
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Put(UpdateInsNomineeCmd request)
+        public async Task<ActionResult> Put(UpdateInsNomineeCmd request, CancellationToken cancellationToken)
         {
-            await _mediator.Send(request);
+            await _mediator.Send(request, cancellationToken);
             return NoContent();
         }
 
@@ -61,10 +69,10 @@ namespace MC.API.Controllers.Registration
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Delete(Guid id)
+        public async Task<ActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
             var command = new DeleteInsNomineeCmd { Id = id };
-            await _mediator.Send(command);
+            await _mediator.Send(command, cancellationToken);
             return NoContent();
         }
     }

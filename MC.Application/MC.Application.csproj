@@ -14,12 +14,17 @@
     <PackageReference Include="AutoMapper" Version="15.0.1" />
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="MediatR" Version="13.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
 	  <PackageReference Include="QuestPDF" Version="2025.1.6" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MC.Domain\MC.Domain.csproj" />
     <ProjectReference Include="..\MC.Shared\MC.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ModelDto\FileHandling\Upload\" />
   </ItemGroup>
 
 </Project>

@@ -5,6 +5,7 @@ namespace MC.Application.Features.Registration.UserProfile.Command.Create
     public class CreateUserProfileCmd : IRequest<Guid>
     {
         public Guid UserId { get; set; }
+        public Guid CompanyId { get; set; }
         public Guid? TitleId { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string? MiddleName { get; set; }

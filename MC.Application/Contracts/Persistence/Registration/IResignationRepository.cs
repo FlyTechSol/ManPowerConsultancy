@@ -5,6 +5,8 @@ namespace MC.Application.Contracts.Persistence.Registration
 {
     public interface IResignationRepository : IGenericRepository<Resignation>
     {
-        Task<ResignationDetailDto?> GetByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken);
+        Task<ResignationDetailDto?> GetByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken);
+        Task<ResignationDetailDto?> GetByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken);
+        Task<ResignationDetailDto?> GetResignationByIdAsync(Guid id, CancellationToken cancellationToken);
     }
 }

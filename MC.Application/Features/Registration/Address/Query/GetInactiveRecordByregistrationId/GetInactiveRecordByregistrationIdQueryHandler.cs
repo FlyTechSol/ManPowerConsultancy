@@ -6,7 +6,7 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.Address.Query.GetInactiveRecordByregistrationId
 {
-    public class GetInactiveRecordByregistrationIdQueryHandler : IRequestHandler<GetInactiveRecordByregistrationIdQuery, AddressDetailDto>
+    public class GetInactiveRecordByregistrationIdQueryHandler : IRequestHandler<GetInactiveRecordByregistrationIdQuery, List<AddressDetailDto>>
     {
         private readonly IMapper _mapper;
         private readonly IAddressRepository _addressRepository;
@@ -17,17 +17,17 @@ namespace MC.Application.Features.Registration.Address.Query.GetInactiveRecordBy
             _addressRepository = addressRepository;
         }
 
-        public async Task<AddressDetailDto> Handle(GetInactiveRecordByregistrationIdQuery request, CancellationToken cancellationToken)
+        public async Task<List<AddressDetailDto>> Handle(GetInactiveRecordByregistrationIdQuery request, CancellationToken cancellationToken)
         {
             // Query the database
-            var response = await _addressRepository.GetInactiveAddressByUserIdAsync(request.RegistrationId, cancellationToken);
+            var response = await _addressRepository.GetInactiveAddressByRegistrationIdAsync(request.RegistrationId, cancellationToken);
 
             // verify that record exists
             if (response == null)
                 throw new NotFoundException(nameof(Domain.Entity.Registration.Address), request.RegistrationId);
 
             // convert data object to DTO object
-            var data = _mapper.Map<AddressDetailDto>(response);
+            var data = _mapper.Map<List<AddressDetailDto>>(response);
 
             // return DTO object
             return data;

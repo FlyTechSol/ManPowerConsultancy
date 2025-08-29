@@ -3,5 +3,5 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.PoliceVerification.Query.GetByRegistrationId
 {
-    public record GetPoliceVeriByRegistrationIdQuery(int RegistrationId) : IRequest<PoliceVerificationDetailDto>;
+    public record GetPoliceVeriByRegistrationIdQuery(string RegistrationId) : IRequest<PoliceVerificationDetailDto>;
 }

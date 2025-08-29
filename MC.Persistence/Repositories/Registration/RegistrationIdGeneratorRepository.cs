@@ -13,22 +13,22 @@ namespace MC.Persistence.Repositories.Registration
             _dbContext = dbContext;
         }
 
-        public async Task<int> GetNextRegistrationIdAsync()
+        public async Task<string> GetNextRegistrationIdAsync(Guid companyId)
         {
             using var transaction = await _dbContext.Database.BeginTransactionAsync();
 
             var sequence = await _dbContext.RegistrationSequences
-                .FirstOrDefaultAsync(s => s.Id == 1);
+                .FirstOrDefaultAsync(s => s.CompanyId == companyId);
 
             if (sequence == null)
-                throw new InvalidOperationException("Registration sequence not initialized.");
+                throw new InvalidOperationException("Registration sequence not initialized for this company.");
 
             sequence.LastRegistrationId += 1;
-
             await _dbContext.SaveChangesAsync();
             await transaction.CommitAsync();
 
-            return sequence.LastRegistrationId;
+            var formattedId = $"{sequence.Prefix}-{sequence.LastRegistrationId:D4}";
+            return formattedId;
         }
     }
 }

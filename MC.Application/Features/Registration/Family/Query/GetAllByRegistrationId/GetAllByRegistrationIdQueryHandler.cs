@@ -6,7 +6,7 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.Family.Query.GetAllByRegistrationId
 {
-    public class GetAllByRegistrationIdQueryHandler : IRequestHandler<GetAllByRegistrationIdQuery, FamilyDetailDto>
+    public class GetAllByRegistrationIdQueryHandler : IRequestHandler<GetAllByRegistrationIdQuery, List<FamilyDetailDto>>
     {
         private readonly IMapper _mapper;
         private readonly IFamilyRepository _familyRepository;
@@ -17,7 +17,7 @@ namespace MC.Application.Features.Registration.Family.Query.GetAllByRegistration
             _familyRepository = familyRepository;
         }
 
-        public async Task<FamilyDetailDto> Handle(GetAllByRegistrationIdQuery request, CancellationToken cancellationToken)
+        public async Task<List<FamilyDetailDto>> Handle(GetAllByRegistrationIdQuery request, CancellationToken cancellationToken)
         {
             // Query the database
             var response = await _familyRepository.GetAllFamilyByRegistrationIdAsync(request.RegistrationId, cancellationToken);
@@ -27,7 +27,7 @@ namespace MC.Application.Features.Registration.Family.Query.GetAllByRegistration
                 throw new NotFoundException(nameof(Domain.Entity.Registration.Family), request.RegistrationId);
 
             // convert data object to DTO object
-            var data = _mapper.Map<FamilyDetailDto>(response);
+            var data = _mapper.Map<List<FamilyDetailDto>>(response);
 
             // return DTO object
             return data;

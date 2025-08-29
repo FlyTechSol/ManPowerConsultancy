@@ -5,6 +5,8 @@ namespace MC.Application.Contracts.Persistence.Registration
 {
     public interface ICommunicationRepository : IGenericRepository<Communication>
     {
-        Task<CommunicationDetailDto?> GetByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken);
+        Task<CommunicationDetailDto?> GetByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken);
+        Task<CommunicationDetailDto?> GetByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken);
+        Task<CommunicationDetailDto?> GetCommunicationByIdAsync(Guid id, CancellationToken cancellationToken);
     }
 }

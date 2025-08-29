@@ -1,6 +1,7 @@
 ﻿using MC.Domain.Base;
 using MC.Domain.Entity.Identity;
 using MC.Domain.Entity.Master;
+using MC.Domain.Entity.Organization;
 
 namespace MC.Domain.Entity.Registration
 {
@@ -8,7 +9,19 @@ namespace MC.Domain.Entity.Registration
     {
         public Guid? UserId { get; set; } // Nullable
         public virtual ApplicationUser? User { get; set; } // Optional navigation
-        public int RegistrationId { get; set; } 
+        public Guid CompanyId { get; set; }
+        public Company Company { get; set; } = null!;
+        public Guid ClientMasterId { get; set; }
+        public ClientMaster ClientMaster { get; set; } = null!;
+        public Guid ClientUnitId { get; set; }
+        public ClientUnit ClientUnit { get; set; } = null!;
+        public Guid BranchId { get; set; }
+        public Branch Branch { get; set; } = null!;
+        public Guid DesignationId { get; set; }
+        public Designation Designation { get; set; } = null!;
+        public Guid CategoryId { get; set; }
+        public Category Category { get; set; } = null!;
+        public string RegistrationId { get; set; } = null!; // Unique, non-null
         public Guid? TitleId { get; set; }
         public Title? Salutation { get; set; }
         public string FirstName { get; set; } = string.Empty;
@@ -32,7 +45,7 @@ namespace MC.Domain.Entity.Registration
         public string? IdentityMarks { get; set; }
         public bool IsActive { get; set; } = true;
 
-        //public string ProfilePictureUrl { get; set; } = string.Empty;
+        public string ProfilePictureUrl { get; set; } = string.Empty;
         public BodyMeasurement? BodyMeasurement { get; set; } // optional if not always present
         public Insurance? Insurance { get; set; }
         public Communication? Communication { get; set; }

@@ -22,16 +22,16 @@ namespace MC.API.Controllers.Master
         }
 
         [HttpGet]
-        public async Task<List<BankDto>> Get()
+        public async Task<ActionResult<List<BankDto>>> GetAll(CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllBankQuery());
+            var response = await _mediator.Send(new GetAllBankQuery(), cancellationToken);
             return response;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<BankDetailDto>> Get(Guid id)
+        public async Task<ActionResult<BankDetailDto>> GetById(Guid id, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetByIdBankQuery(id));
+            var response = await _mediator.Send(new GetByIdBankQuery(id), cancellationToken);
             return Ok(response);
         }
 
@@ -40,10 +40,10 @@ namespace MC.API.Controllers.Master
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Post(CreateBankCmd request)
+        public async Task<ActionResult> Post(CreateBankCmd request, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(request);
-            return CreatedAtAction(nameof(Get), new { id = response });
+            var response = await _mediator.Send(request, cancellationToken);
+            return CreatedAtAction(nameof(GetById), new { id = response }, null);
         }
 
         [HttpPut("{id}")]
@@ -52,9 +52,9 @@ namespace MC.API.Controllers.Master
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Put(UpdateBankCmd request)
+        public async Task<ActionResult> Put(UpdateBankCmd request, CancellationToken cancellationToken)
         {
-            await _mediator.Send(request);
+            await _mediator.Send(request, cancellationToken);
             return NoContent();
         }
 
@@ -63,10 +63,10 @@ namespace MC.API.Controllers.Master
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Delete(Guid id)
+        public async Task<ActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
             var command = new DeleteBankCmd { Id = id };
-            await _mediator.Send(command);
+            await _mediator.Send(command, cancellationToken);
             return NoContent();
         }
     }

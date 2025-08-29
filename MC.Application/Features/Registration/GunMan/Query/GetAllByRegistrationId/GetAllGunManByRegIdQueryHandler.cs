@@ -6,7 +6,7 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.GunMan.Query.GetAllByRegistrationId
 {
-    public class GetAllGunManByRegIdQueryHandler : IRequestHandler<GetAllGunManByRegIdQuery, GunManDetailDto>
+    public class GetAllGunManByRegIdQueryHandler : IRequestHandler<GetAllGunManByRegIdQuery, List<GunManDetailDto>>
     {
         private readonly IMapper _mapper;
         private readonly IGunManRepository _gunManRepository;
@@ -17,7 +17,7 @@ namespace MC.Application.Features.Registration.GunMan.Query.GetAllByRegistration
             _gunManRepository = gunManRepository;
         }
 
-        public async Task<GunManDetailDto> Handle(GetAllGunManByRegIdQuery request, CancellationToken cancellationToken)
+        public async Task<List<GunManDetailDto>> Handle(GetAllGunManByRegIdQuery request, CancellationToken cancellationToken)
         {
             // Query the database
             var response = await _gunManRepository.GetAllGunMenByRegistrationIdAsync(request.RegistrationId, cancellationToken);
@@ -27,7 +27,7 @@ namespace MC.Application.Features.Registration.GunMan.Query.GetAllByRegistration
                 throw new NotFoundException(nameof(Domain.Entity.Registration.GunMan), request.RegistrationId);
 
             // convert data object to DTO object
-            var data = _mapper.Map<GunManDetailDto>(response);
+            var data = _mapper.Map<List<GunManDetailDto>>(response);
 
             // return DTO object
             return data;

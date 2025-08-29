@@ -2,6 +2,7 @@
 using MC.Application.ModelDto.Registration;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.DatabaseContext;
+using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace MC.Persistence.Repositories.Registration
@@ -14,7 +15,7 @@ namespace MC.Persistence.Repositories.Registration
             _userProfileRepository = userProfileRepository;
         }
 
-        public async Task<ExArmyDetailDto?> GetAllExArmyByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken)
+        public async Task<List<ExArmyDetailDto>?> GetAllExArmyByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
         {
             var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
 
@@ -23,47 +24,47 @@ namespace MC.Persistence.Repositories.Registration
 
             var response = await _context.ExArmies
                 .AsNoTracking()
-                .Include(ex => ex.UserProfile)
                 .Where(ex => ex.UserProfileId == userProfile.Id && !ex.IsDeleted)
-                .Select(ex => new ExArmyDetailDto
-                {
-                    Id = ex.Id,
-                    UserProfileId = ex.UserProfileId,
-                    UserProfileName = ex.UserProfile != null ? ex.UserProfile.FirstName + " " + ex.UserProfile.LastName : string.Empty,
-                    ServiceNumber = ex.ServiceNumber,
-                    Rank = ex.Rank,
-                    Unit = ex.Unit,
-                    BranchOfService = ex.BranchOfService,
-                    TotalService = ex.TotalService,
-                    EnlistmentDate = ex.EnlistmentDate,
-                    DischargeDate = ex.DischargeDate,
-                    ReasonForDischarge = ex.ReasonForDischarge,
-                    DischargeCertificateUrl = ex.DischargeCertificateUrl,
-                    IsActive =ex.IsActive,
-                    DateCreated = Helper.DateHelper.FormatDate(ex.DateCreated),
-                    DateModified = Helper.DateHelper.FormatDate(ex.DateModified),
-                    CreatedByName = Helper.UserHelper.GetFormattedName(ex.CreatedByUser),
-                    ModifiedByName = Helper.UserHelper.GetFormattedName(ex.ModifiedByUser),
-                })
-                .FirstOrDefaultAsync(cancellationToken);
-            return response;
-        }
+                .ToListAsync(cancellationToken);
 
+            if (response == null || response.Count == 0)
+                return new List<ExArmyDetailDto>();
+
+            var dtos = response.Select(MapToDto).ToList();
+            return dtos;
+        }
+        public async Task<List<ExArmyDetailDto>?> GetAllExArmyByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken)
+        {
+            var response = await _context.ExArmies
+                .AsNoTracking()
+                .Where(ex => ex.UserProfileId == userProfileId && !ex.IsDeleted)
+                .ToListAsync(cancellationToken);
+
+            if (response == null || response.Count == 0)
+                return new List<ExArmyDetailDto>();
+
+            var dtos = response.Select(MapToDto).ToList();
+            return dtos;
+        }
         public async Task<ExArmyDetailDto?> GetExArmyByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var response = await _context.ExArmies
                 .AsNoTracking()
-                .Include(ex=>ex.UserProfile) 
                 .FirstOrDefaultAsync(lt => lt.Id == id && !lt.IsDeleted, cancellationToken);
 
             if (response == null)
                 return null;
 
-            var dto = new ExArmyDetailDto
+            return MapToDto(response);
+        }
+
+        private ExArmyDetailDto MapToDto(Domain.Entity.Registration.ExArmy response)
+        {
+            return new ExArmyDetailDto
             {
                 Id = response.Id,
                 UserProfileId = response.UserProfileId,
-                UserProfileName = response.UserProfile != null ? response.UserProfile.FirstName + " " + response.UserProfile.LastName : string.Empty, 
+                UserProfileName = response.UserProfile != null ? response.UserProfile.FirstName + " " + response.UserProfile.LastName : string.Empty,
                 ServiceNumber = response.ServiceNumber,
                 Rank = response.Rank,
                 Unit = response.Unit,
@@ -76,10 +77,9 @@ namespace MC.Persistence.Repositories.Registration
                 IsActive = response.IsActive,
                 DateCreated = Helper.DateHelper.FormatDate(response.DateCreated),
                 DateModified = Helper.DateHelper.FormatDate(response.DateModified),
-                CreatedByName = Helper.UserHelper.GetFormattedName(response.CreatedByUser),
-                ModifiedByName = Helper.UserHelper.GetFormattedName(response.ModifiedByUser),
+                CreatedByName = response.CreatedByUserName ?? Defaults.Users.Unknown,
+                ModifiedByName = response.ModifiedByUserName ?? Defaults.Users.Unknown
             };
-            return dto;
         }
     }
 }

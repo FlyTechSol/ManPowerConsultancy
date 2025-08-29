@@ -6,7 +6,7 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.InsuranceNominee.Query.GetAllByRegistrationId
 {
-   public class GetAllInsNomineeByRegIdQueryHandler : IRequestHandler<GetAllInsNomineeByRegIdQuery, InsuranceNomineeDetailDto>
+    public class GetAllInsNomineeByRegIdQueryHandler : IRequestHandler<GetAllInsNomineeByRegIdQuery, List<InsuranceNomineeDetailDto>>
     {
         private readonly IMapper _mapper;
         private readonly IInsuranceNomineeRepository _insuranceNomineeRepository;
@@ -17,7 +17,7 @@ namespace MC.Application.Features.Registration.InsuranceNominee.Query.GetAllByRe
             _insuranceNomineeRepository = insuranceNomineeRepository;
         }
 
-        public async Task<InsuranceNomineeDetailDto> Handle(GetAllInsNomineeByRegIdQuery request, CancellationToken cancellationToken)
+        public async Task<List<InsuranceNomineeDetailDto>> Handle(GetAllInsNomineeByRegIdQuery request, CancellationToken cancellationToken)
         {
             // Query the database
             var response = await _insuranceNomineeRepository.GetAllInsuranceNomineeByRegistrationIdAsync(request.RegistrationId, cancellationToken);
@@ -27,7 +27,7 @@ namespace MC.Application.Features.Registration.InsuranceNominee.Query.GetAllByRe
                 throw new NotFoundException(nameof(Domain.Entity.Registration.InsuranceNominee), request.RegistrationId);
 
             // convert data object to DTO object
-            var data = _mapper.Map<InsuranceNomineeDetailDto>(response);
+            var data = _mapper.Map<List<InsuranceNomineeDetailDto>>(response);
 
             // return DTO object
             return data;

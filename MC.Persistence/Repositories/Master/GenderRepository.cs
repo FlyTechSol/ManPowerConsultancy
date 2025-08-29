@@ -2,6 +2,7 @@
 using MC.Application.ModelDto.Master.Master;
 using MC.Domain.Entity.Master;
 using MC.Persistence.DatabaseContext;
+using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace MC.Persistence.Repositories.Master
@@ -31,8 +32,6 @@ namespace MC.Persistence.Repositories.Master
         {
             var response = await _context.Genders
                 .AsNoTracking()
-                .Include(lt => lt.CreatedByUser)
-                .Include(lt => lt.ModifiedByUser)
                 .FirstOrDefaultAsync(lt => !lt.IsDeleted && lt.Code == code, cancellationToken);
 
             if (response == null)
@@ -43,10 +42,9 @@ namespace MC.Persistence.Repositories.Master
 
         public async Task<GenderDetailDto?> GetDetailsAsync(Guid id, CancellationToken cancellationToken)
         {
-            var response = await _context.Genders.AsNoTracking()
-             .Include(g => g.CreatedByUser)
-             .Include(g => g.ModifiedByUser)
-             .FirstOrDefaultAsync(g => !g.IsDeleted && g.Id == id, cancellationToken);
+            var response = await _context.Genders
+                .AsNoTracking()
+                .FirstOrDefaultAsync(g => !g.IsDeleted && g.Id == id, cancellationToken);
 
             if (response == null)
                 return null;
@@ -81,8 +79,8 @@ namespace MC.Persistence.Repositories.Master
                 Name = response.Name,
                 DateCreated = Helper.DateHelper.FormatDate(response.DateCreated),
                 DateModified = Helper.DateHelper.FormatDate(response.DateModified),
-                CreatedByName = Helper.UserHelper.GetFormattedName(response.CreatedByUser),
-                ModifiedByName = Helper.UserHelper.GetFormattedName(response.ModifiedByUser),
+                CreatedByName = response.CreatedByUserName ?? Defaults.Users.Unknown,
+                ModifiedByName = response.ModifiedByUserName ?? Defaults.Users.Unknown,
             };
         }
     }

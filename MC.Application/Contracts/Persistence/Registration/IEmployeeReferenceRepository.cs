@@ -5,7 +5,8 @@ namespace MC.Application.Contracts.Persistence.Registration
 {
     public interface IEmployeeReferenceRepository : IGenericRepository<EmployeeReference>
     {
-        Task<EmployeeReferenceDetailDto?> GetAllEmpRefByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken);
+        Task<List<EmployeeReferenceDetailDto>?> GetAllEmpRefByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken);
+        Task<List<EmployeeReferenceDetailDto>?> GetAllEmpRefByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken);
         Task<EmployeeReferenceDetailDto?> GetEmpRefByIdAsync(Guid id, CancellationToken cancellationToken);
     }
 }
