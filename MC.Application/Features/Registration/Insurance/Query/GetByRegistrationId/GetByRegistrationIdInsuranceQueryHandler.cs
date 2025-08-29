@@ -6,7 +6,7 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.Insurance.Query.GetByRegistrationId
 {
-    public class GetByRegistrationIdInsuranceQueryHandler : IRequestHandler<GetByRegistrationIdInsuranceQuery, InsuranceDetailDto>
+    public class GetByRegistrationIdInsuranceQueryHandler : IRequestHandler<GetByRegistrationIdInsuranceQuery, List<InsuranceDetailDto>>
     {
         private readonly IMapper _mapper;
         private readonly IInsuranceRepository _insuranceRepository;
@@ -17,7 +17,7 @@ namespace MC.Application.Features.Registration.Insurance.Query.GetByRegistration
             _insuranceRepository = insuranceRepository;
         }
 
-        public async Task<InsuranceDetailDto> Handle(GetByRegistrationIdInsuranceQuery request, CancellationToken cancellationToken)
+        public async Task<List<InsuranceDetailDto>> Handle(GetByRegistrationIdInsuranceQuery request, CancellationToken cancellationToken)
         {
             // Query the database
             var response = await _insuranceRepository.GetInsuranceByRegistrationIdAsync(request.RegistrationId, cancellationToken);
@@ -27,7 +27,7 @@ namespace MC.Application.Features.Registration.Insurance.Query.GetByRegistration
                 throw new NotFoundException(nameof(Domain.Entity.Registration.Insurance), request.RegistrationId);
 
             // convert data object to DTO object
-            var data = _mapper.Map<InsuranceDetailDto>(response);
+            var data = _mapper.Map<List<InsuranceDetailDto>>(response);
 
             // return DTO object
             return data;

@@ -5,7 +5,8 @@ namespace MC.Application.Contracts.Persistence.Registration
 {
     public interface IPreviousExperienceRepository : IGenericRepository<PreviousExperience>
     {
-        Task<PreviousExperienceDetailDto?> GetAllPreviousExperienceByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken);
+        Task<List<PreviousExperienceDetailDto>?> GetAllPreviousExperienceByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken);
+        Task<List<PreviousExperienceDetailDto>?> GetAllPreviousExperienceByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken);
         Task<PreviousExperienceDetailDto?> GetPreviousExperienceByIdAsync(Guid id, CancellationToken cancellationToken);
     }
 }

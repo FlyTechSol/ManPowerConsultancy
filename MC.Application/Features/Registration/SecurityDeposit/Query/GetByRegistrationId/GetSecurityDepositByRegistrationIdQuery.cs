@@ -3,5 +3,5 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.SecurityDeposit.Query.GetByRegistrationId
 {
-   public record GetSecurityDepositByRegistrationIdQuery(int RegistrationId) : IRequest<SecurityDepositDetailDto>;
+   public record GetSecurityDepositByRegistrationIdQuery(string RegistrationId) : IRequest<SecurityDepositDetailDto>;
 }

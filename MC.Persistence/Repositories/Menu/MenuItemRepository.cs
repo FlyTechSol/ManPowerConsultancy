@@ -2,6 +2,7 @@
 using MC.Application.ModelDto.Menu;
 using MC.Domain.Entity.Menu;
 using MC.Persistence.DatabaseContext;
+using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace MC.Persistence.Repositories.Menu
@@ -32,8 +33,6 @@ namespace MC.Persistence.Repositories.Menu
         {
             var response = await _context.MenuItems.AsNoTracking()
                 .Include(lt => lt.Menu)
-                .Include(lt => lt.CreatedByUser)
-                .Include(lt => lt.ModifiedByUser)
                 .FirstOrDefaultAsync(lt => lt.Id == id && !lt.IsDeleted, cancellationToken);
 
             if (response == null)
@@ -49,8 +48,8 @@ namespace MC.Persistence.Repositories.Menu
                 MenuId = response.MenuId,
                 DateCreated = Helper.DateHelper.FormatDate(response.DateCreated),
                 DateModified = Helper.DateHelper.FormatDate(response.DateModified),
-                CreatedByName = Helper.UserHelper.GetFormattedName(response.CreatedByUser),
-                ModifiedByName = Helper.UserHelper.GetFormattedName(response.ModifiedByUser),
+                CreatedByName = response.CreatedByUserName ?? Defaults.Users.Unknown,
+                ModifiedByName = response.ModifiedByUserName ?? Defaults.Users.Unknown,
             };
             return dto;
         }

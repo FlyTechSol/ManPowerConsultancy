@@ -2,6 +2,7 @@
 using MC.Application.ModelDto.Registration;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.DatabaseContext;
+using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace MC.Persistence.Repositories.Registration
@@ -14,7 +15,7 @@ namespace MC.Persistence.Repositories.Registration
             _userProfileRepository = userProfileRepository;
         }
 
-        public async Task<SecurityDepositDetailDto?> GetSecurityDepositByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken)
+        public async Task<SecurityDepositDetailDto?> GetSecurityDepositByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
         {
             var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
 
@@ -23,29 +24,26 @@ namespace MC.Persistence.Repositories.Registration
 
             var response = await _context.SecurityDeposits
                 .AsNoTracking()
-                .Include(ex => ex.UserProfile)
                 .Where(ex => ex.UserProfileId == userProfile.Id && !ex.IsDeleted)
-                .Select(ex => new SecurityDepositDetailDto
-                {
-                    Id = ex.Id,
-                    UserProfileId = ex.UserProfileId,
-                    UserProfileName = ex.UserProfile != null ? ex.UserProfile.FirstName + " " + ex.UserProfile.LastName : string.Empty,
-                    ReciptNumber = ex.ReciptNumber,
-                    Amount = ex.Amount,
-                    RefundableAmount = ex.RefundableAmount,
-                    NonRefundableAmount = ex.NonRefundableAmount,
-                    ReceiptDate = ex.ReceiptDate,
-                    Remark = ex.Remark,
-                    IsActive = ex.IsActive,
-                    DateCreated = Helper.DateHelper.FormatDate(ex.DateCreated),
-                    DateModified = Helper.DateHelper.FormatDate(ex.DateModified),
-                    CreatedByName = Helper.UserHelper.GetFormattedName(ex.CreatedByUser),
-                    ModifiedByName = Helper.UserHelper.GetFormattedName(ex.ModifiedByUser),
-                })
                 .FirstOrDefaultAsync(cancellationToken);
-            return response;
-        }
 
+            if (response == null)
+                return null;
+
+            return MapToDto(response);
+        }
+        public async Task<SecurityDepositDetailDto?> GetSecurityDepositByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken)
+        {
+            var response = await _context.SecurityDeposits
+                .AsNoTracking()
+                .Where(ex => ex.UserProfileId == userProfileId && !ex.IsDeleted)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (response == null)
+                return null;
+
+            return MapToDto(response);
+        }
         public async Task<SecurityDepositDetailDto?> GetSecurityDepositByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var response = await _context.SecurityDeposits
@@ -56,7 +54,12 @@ namespace MC.Persistence.Repositories.Registration
             if (response == null)
                 return null;
 
-            var dto = new SecurityDepositDetailDto
+            return MapToDto(response);
+        }
+
+        private SecurityDepositDetailDto MapToDto(Domain.Entity.Registration.SecurityDeposit response)
+        {
+            return new SecurityDepositDetailDto
             {
                 Id = response.Id,
                 UserProfileId = response.UserProfileId,
@@ -70,10 +73,9 @@ namespace MC.Persistence.Repositories.Registration
                 IsActive = response.IsActive,
                 DateCreated = Helper.DateHelper.FormatDate(response.DateCreated),
                 DateModified = Helper.DateHelper.FormatDate(response.DateModified),
-                CreatedByName = Helper.UserHelper.GetFormattedName(response.CreatedByUser),
-                ModifiedByName = Helper.UserHelper.GetFormattedName(response.ModifiedByUser),
+                CreatedByName = response.CreatedByUserName ?? Defaults.Users.Unknown,
+                ModifiedByName = response.ModifiedByUserName ?? Defaults.Users.Unknown
             };
-            return dto;
         }
     }
 }

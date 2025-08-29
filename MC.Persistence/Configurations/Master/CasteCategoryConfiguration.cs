@@ -25,7 +25,9 @@ namespace MC.Persistence.Configurations.Master
                     DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, DateTimeKind.Utc),
                     DateModified = new DateTime(2025, 8, 1, 0, 0, 0, DateTimeKind.Utc),
                     CreatedByUserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                    ModifiedByUserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9")
+                    ModifiedByUserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                    CreatedByUserName = "System Admin",
+                    ModifiedByUserName = "System Admin"
                 },
                 new CasteCategory
                 {
@@ -36,7 +38,9 @@ namespace MC.Persistence.Configurations.Master
                     DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, DateTimeKind.Utc),
                     DateModified = new DateTime(2025, 8, 1, 0, 0, 0, DateTimeKind.Utc),
                     CreatedByUserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                    ModifiedByUserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9")
+                    ModifiedByUserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                    CreatedByUserName = "System Admin",
+                    ModifiedByUserName = "System Admin"
                 },
                 new CasteCategory
                 {
@@ -47,7 +51,9 @@ namespace MC.Persistence.Configurations.Master
                     DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, DateTimeKind.Utc),
                     DateModified = new DateTime(2025, 8, 1, 0, 0, 0, DateTimeKind.Utc),
                     CreatedByUserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                    ModifiedByUserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9")
+                    ModifiedByUserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                    CreatedByUserName = "System Admin",
+                    ModifiedByUserName = "System Admin"
                 },
                 new CasteCategory
                 {
@@ -58,7 +64,9 @@ namespace MC.Persistence.Configurations.Master
                     DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, DateTimeKind.Utc),
                     DateModified = new DateTime(2025, 8, 1, 0, 0, 0, DateTimeKind.Utc),
                     CreatedByUserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                    ModifiedByUserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9")
+                    ModifiedByUserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                    CreatedByUserName = "System Admin",
+                    ModifiedByUserName = "System Admin"
                 }
             );
         }

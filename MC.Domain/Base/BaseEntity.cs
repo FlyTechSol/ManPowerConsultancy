@@ -8,6 +8,8 @@ namespace MC.Domain.Base
         public bool IsDeleted { get; set; } = false;
         public DateTime? DateCreated { get; set; }
         public DateTime? DateModified { get; set; }
+        public string? CreatedByUserName { get; set; }
+        public string? ModifiedByUserName { get; set; }
         public Guid? CreatedByUserId { get; set; }
         public Guid? ModifiedByUserId { get; set; }
         //navigation propertty

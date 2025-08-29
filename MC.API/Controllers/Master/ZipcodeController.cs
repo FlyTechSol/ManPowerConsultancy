@@ -22,23 +22,23 @@ namespace MC.API.Controllers.Master
             _mediator = mediator;
         }
         [HttpGet]
-        public async Task<List<ZipCodeDto>> Get()
+        public async Task<ActionResult<List<ZipCodeDto>>> Get(CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllZipCodeQuery());
+            var response = await _mediator.Send(new GetAllZipCodeQuery(), cancellationToken);
             return response;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ZipCodeDetailDto>> Get(Guid id)
+        public async Task<ActionResult<ZipCodeDetailDto>> Get(Guid id, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetByIdZipCodeQuery(id));
+            var response = await _mediator.Send(new GetByIdZipCodeQuery(id), cancellationToken);
             return Ok(response);
         }
 
         [HttpGet("get-location-by-zipcode/{zipCode}")]
-        public async Task<ActionResult<ZipCodeDto>> GetLocationByZipCode(string zipCode)
+        public async Task<ActionResult<ZipCodeDto>> GetLocationByZipCode(string zipCode, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetByZipCodeQuery(zipCode));
+            var response = await _mediator.Send(new GetByZipCodeQuery(zipCode), cancellationToken);
             return Ok(response);
         }
 
@@ -47,10 +47,10 @@ namespace MC.API.Controllers.Master
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Post(CreateZipCodeCmd request)
+        public async Task<ActionResult> Post(CreateZipCodeCmd request, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(request);
-            return CreatedAtAction(nameof(Get), new { id = response });
+            var response = await _mediator.Send(request, cancellationToken);
+            return CreatedAtAction(nameof(Get), new { id = response }, null);
         }
 
         [HttpPut("{id}")]
@@ -59,9 +59,9 @@ namespace MC.API.Controllers.Master
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Put(UpdateZipCodeCmd request)
+        public async Task<ActionResult> Put(UpdateZipCodeCmd request, CancellationToken cancellationToken)
         {
-            await _mediator.Send(request);
+            await _mediator.Send(request, cancellationToken);
             return NoContent();
         }
 

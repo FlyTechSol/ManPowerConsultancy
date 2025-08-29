@@ -3,6 +3,7 @@ using MC.Application.Contracts.Persistence.Registration;
 using MC.Application.ModelDto.Registration;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.DatabaseContext;
+using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace MC.Persistence.Repositories.Registration
@@ -15,7 +16,7 @@ namespace MC.Persistence.Repositories.Registration
             _userProfileRepository = userProfileRepository;
         }
 
-        public async Task<UserAssetDetailDto?> GetAllUserAssetByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken)
+        public async Task<List<UserAssetDetailDto>?> GetAllUserAssetByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
         {
             var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
 
@@ -24,45 +25,42 @@ namespace MC.Persistence.Repositories.Registration
 
             var response = await _context.UserAssets
                 .AsNoTracking()
-                .Include(ex => ex.UserProfile)
                 .Where(ex => ex.UserProfileId == userProfile.Id && !ex.IsDeleted)
-                .Select(ex => new UserAssetDetailDto
-                {
-                    Id = ex.Id,
-                    UserProfileId = ex.UserProfileId,
-                    UserProfileName = ex.UserProfile != null ? ex.UserProfile.FirstName + " " + ex.UserProfile.LastName : string.Empty,
-                    AssetId = ex.AssetId,
-                    AssetName = ex.Asset != null ? ex.Asset.Name : string.Empty,
-                    DateOfIssue = ex.DateOfIssue,
-                    SerialNo = ex.SerialNo,
-                    AssetValue = ex.AssetValue,
-                    Quantity = ex.Quantity,
-                    Remarks = ex.Remarks,
-                    IsReturnable = ex.IsReturnable,
-                    IsReturned = ex.IsReturned,
-                    ReturnDate = ex.ReturnDate,
-                    ReturnStatus = ex.ReturnStatus,
-                    IsActive = ex.IsActive,
-                    DateCreated = Helper.DateHelper.FormatDate(ex.DateCreated),
-                    DateModified = Helper.DateHelper.FormatDate(ex.DateModified),
-                    CreatedByName = Helper.UserHelper.GetFormattedName(ex.CreatedByUser),
-                    ModifiedByName = Helper.UserHelper.GetFormattedName(ex.ModifiedByUser),
-                })
-                .FirstOrDefaultAsync(cancellationToken);
-            return response;
-        }
+                .ToListAsync(cancellationToken);
 
+            if (response == null || response.Count == 0)
+                return new List<UserAssetDetailDto>();
+
+            var dtos = response.Select(MapToDto).ToList();
+            return dtos;
+        }
+        public async Task<List<UserAssetDetailDto>?> GetAllUserAssetByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken)
+        {
+            var response = await _context.UserAssets
+                .AsNoTracking()
+                .Where(ex => ex.UserProfileId == userProfileId && !ex.IsDeleted)
+                .ToListAsync(cancellationToken);
+
+            if (response == null || response.Count == 0)
+                return new List<UserAssetDetailDto>();
+
+            var dtos = response.Select(MapToDto).ToList();
+            return dtos;
+        }
         public async Task<UserAssetDetailDto?> GetUserAssetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var response = await _context.UserAssets
                 .AsNoTracking()
-                .Include(ex => ex.UserProfile)
                 .FirstOrDefaultAsync(lt => lt.Id == id && !lt.IsDeleted, cancellationToken);
 
             if (response == null)
                 return null;
 
-            var dto = new UserAssetDetailDto
+            return MapToDto(response);
+        }
+        private UserAssetDetailDto MapToDto(Domain.Entity.Registration.UserAsset response)
+        {
+            return new UserAssetDetailDto
             {
                 Id = response.Id,
                 UserProfileId = response.UserProfileId,
@@ -81,10 +79,9 @@ namespace MC.Persistence.Repositories.Registration
                 IsActive = response.IsActive,
                 DateCreated = Helper.DateHelper.FormatDate(response.DateCreated),
                 DateModified = Helper.DateHelper.FormatDate(response.DateModified),
-                CreatedByName = Helper.UserHelper.GetFormattedName(response.CreatedByUser),
-                ModifiedByName = Helper.UserHelper.GetFormattedName(response.ModifiedByUser),
+                CreatedByName = response.CreatedByUserName ?? Defaults.Users.Unknown,
+                ModifiedByName = response.ModifiedByUserName ?? Defaults.Users.Unknown
             };
-            return dto;
         }
     }
 }

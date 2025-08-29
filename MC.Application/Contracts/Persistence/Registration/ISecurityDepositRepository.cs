@@ -5,7 +5,8 @@ namespace MC.Application.Contracts.Persistence.Registration
 {
     public interface ISecurityDepositRepository : IGenericRepository<SecurityDeposit>
     {
-        Task<SecurityDepositDetailDto?> GetSecurityDepositByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken);
+        Task<SecurityDepositDetailDto?> GetSecurityDepositByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken);
+        Task<SecurityDepositDetailDto?> GetSecurityDepositByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken);
         Task<SecurityDepositDetailDto?> GetSecurityDepositByIdAsync(Guid id, CancellationToken cancellationToken);
     }
 }

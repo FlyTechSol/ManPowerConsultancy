@@ -2,15 +2,19 @@
 using MC.Application.Contracts.Identity;
 using MC.Application.Contracts.Logging;
 using MC.Application.Contracts.Persistence;
+using MC.Application.Contracts.Persistence.FileHandling.Upload;
 using MC.Application.Contracts.Persistence.Master;
 using MC.Application.Contracts.Persistence.Menu;
+using MC.Application.Contracts.Persistence.Organization;
 using MC.Application.Contracts.Persistence.Registration;
 using MC.Application.Settings;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Repositories;
 using MC.Persistence.Repositories.Common;
+using MC.Persistence.Repositories.FileHandling;
 using MC.Persistence.Repositories.Master;
 using MC.Persistence.Repositories.Menu;
+using MC.Persistence.Repositories.Organization;
 using MC.Persistence.Repositories.Registration;
 using MC.Persistence.Services;
 using Microsoft.EntityFrameworkCore;
@@ -60,6 +64,14 @@ namespace MC.Persistence
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IMenuService, MenuService>();
 
+            //organization
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IClientMasterRepository, ClientMasterRepository>();
+            services.AddScoped<IUnitRepository, UnitRepository>();
+
+            //common
+            services.AddScoped<IFileUploadRepository, FileUploadRepository>();
+
             //Menu Service
             services.AddScoped<IMenuRepository, MenuRepository>();
             services.AddScoped<IMenuItemRepository, MenuItemRepository>();
@@ -88,9 +100,12 @@ namespace MC.Persistence
             //Master data services
             services.AddScoped<IAssetRepository, AssetRepository>();
             services.AddScoped<IBankRepository, BankRepository>();
+            services.AddScoped<IBranchRepository, BranchRepository>();
             services.AddScoped<ICasteCategoryRepository, CasteCategoryRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
-            services.AddScoped<IDocumentRepository, DocumentRepository>();
+            services.AddScoped<IDesignationRepository, DesignationRepository>();
+            services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
             services.AddScoped<IGenderRepository, GenderRepository>();
             services.AddScoped<IHighestEducationRepository, HighestEducationRepository>();
             services.AddScoped<IRecruitmentTypeRepository, RecruitmentTypeRepository>();

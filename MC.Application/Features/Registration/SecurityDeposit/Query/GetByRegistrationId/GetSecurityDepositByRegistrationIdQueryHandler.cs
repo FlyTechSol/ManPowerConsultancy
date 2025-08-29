@@ -6,7 +6,7 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.SecurityDeposit.Query.GetByRegistrationId
 {
-   public class GetSecurityDepositByRegistrationIdQueryHandler : IRequestHandler<GetSecurityDepositByRegistrationIdQuery, SecurityDepositDetailDto>
+    public class GetSecurityDepositByRegistrationIdQueryHandler : IRequestHandler<GetSecurityDepositByRegistrationIdQuery, SecurityDepositDetailDto>
     {
         private readonly IMapper _mapper;
         private readonly ISecurityDepositRepository _securityDepositRepository;

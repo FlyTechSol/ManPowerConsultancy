@@ -6,7 +6,7 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.UserAsset.Query.GetAllByRegistrationId
 {
-   public class GetAllUserAssetByRegIdQueryHandler : IRequestHandler<GetAllUserAssetByRegIdQuery, UserAssetDetailDto>
+    public class GetAllUserAssetByRegIdQueryHandler : IRequestHandler<GetAllUserAssetByRegIdQuery, List<UserAssetDetailDto>>
     {
         private readonly IMapper _mapper;
         private readonly IUserAssetRepository _userAssetRepository;
@@ -17,7 +17,7 @@ namespace MC.Application.Features.Registration.UserAsset.Query.GetAllByRegistrat
             _userAssetRepository = userAssetRepository;
         }
 
-        public async Task<UserAssetDetailDto> Handle(GetAllUserAssetByRegIdQuery request, CancellationToken cancellationToken)
+        public async Task<List<UserAssetDetailDto>> Handle(GetAllUserAssetByRegIdQuery request, CancellationToken cancellationToken)
         {
             // Query the database
             var response = await _userAssetRepository.GetAllUserAssetByRegistrationIdAsync(request.RegistrationId, cancellationToken);
@@ -27,7 +27,7 @@ namespace MC.Application.Features.Registration.UserAsset.Query.GetAllByRegistrat
                 throw new NotFoundException(nameof(Domain.Entity.Registration.UserAsset), request.RegistrationId);
 
             // convert data object to DTO object
-            var data = _mapper.Map<UserAssetDetailDto>(response);
+            var data = _mapper.Map<List<UserAssetDetailDto>>(response);
 
             // return DTO object
             return data;

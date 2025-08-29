@@ -7,8 +7,8 @@ using MC.Application.Features.Master.CasteCategory.Command.Create;
 using MC.Application.Features.Master.CasteCategory.Command.Update;
 using MC.Application.Features.Master.Country.Command.Create;
 using MC.Application.Features.Master.Country.Command.Update;
-using MC.Application.Features.Master.Document.Command.Create;
-using MC.Application.Features.Master.Document.Command.Update;
+using MC.Application.Features.Master.DocumentType.Command.Create;
+using MC.Application.Features.Master.DocumentType.Command.Update;
 using MC.Application.Features.Master.Gender.Command.Create;
 using MC.Application.Features.Master.Gender.Command.Update;
 using MC.Application.Features.Master.HighestEducation.Command.Create;
@@ -51,10 +51,10 @@ namespace MC.Application.MappingProfiles
             CreateMap<CreateCountryCmd, Country>();
             CreateMap<UpdateCountryCmd, Country>();
 
-            CreateMap<Document, DocumentDto>().ReverseMap();
-            CreateMap<Document, DocumentDetailDto>();
-            CreateMap<CreateDocumentCmd, Document>();
-            CreateMap<UpdateDocumentCmd, Document>();
+            CreateMap<DocumentType, DocumentTypeDto>().ReverseMap();
+            CreateMap<DocumentType, DocumentTypeDetailDto>();
+            CreateMap<CreateDocumentTypeCmd, DocumentType>();
+            CreateMap<UpdateDocumentTypeCmd, DocumentType>();
 
             CreateMap<Gender, GenderDto>().ReverseMap();
             CreateMap<Gender, GenderDetailDto>();

@@ -6,7 +6,7 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.PreviousExperience.Query.GetAllByRegistrationId
 {
-    public class GetAllByRegistrationIdQueryHandler : IRequestHandler<GetAllByRegistrationIdQuery, PreviousExperienceDetailDto>
+    public class GetAllByRegistrationIdQueryHandler : IRequestHandler<GetAllByRegistrationIdQuery, List<PreviousExperienceDetailDto>>
     {
         private readonly IMapper _mapper;
         private readonly IPreviousExperienceRepository _previousExperienceRepository;
@@ -17,7 +17,7 @@ namespace MC.Application.Features.Registration.PreviousExperience.Query.GetAllBy
             _previousExperienceRepository = previousExperienceRepository;
         }
 
-        public async Task<PreviousExperienceDetailDto> Handle(GetAllByRegistrationIdQuery request, CancellationToken cancellationToken)
+        public async Task<List<PreviousExperienceDetailDto>> Handle(GetAllByRegistrationIdQuery request, CancellationToken cancellationToken)
         {
             // Query the database
             var response = await _previousExperienceRepository.GetAllPreviousExperienceByRegistrationIdAsync(request.RegistrationId, cancellationToken);
@@ -27,7 +27,7 @@ namespace MC.Application.Features.Registration.PreviousExperience.Query.GetAllBy
                 throw new NotFoundException(nameof(Domain.Entity.Registration.PreviousExperience), request.RegistrationId);
 
             // convert data object to DTO object
-            var data = _mapper.Map<PreviousExperienceDetailDto>(response);
+            var data = _mapper.Map<List<PreviousExperienceDetailDto>>(response);
 
             // return DTO object
             return data;

@@ -2,6 +2,7 @@
 using MC.Application.ModelDto.Master.Master;
 using MC.Domain.Entity.Master;
 using MC.Persistence.DatabaseContext;
+using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace MC.Persistence.Repositories.Master
@@ -39,8 +40,6 @@ namespace MC.Persistence.Repositories.Master
         {
             var response = await _context.Titles
                 .AsNoTracking()
-                .Include(lt => lt.CreatedByUser)
-                .Include(lt => lt.ModifiedByUser)
                 .FirstOrDefaultAsync(lt => lt.Id == id && !lt.IsDeleted, cancellationToken);
 
             if (response == null)
@@ -56,8 +55,8 @@ namespace MC.Persistence.Repositories.Master
                 IsMale = response.IsMale,
                 DateCreated = Helper.DateHelper.FormatDate(response.DateCreated),
                 DateModified = Helper.DateHelper.FormatDate(response.DateModified),
-                CreatedByName = Helper.UserHelper.GetFormattedName(response.CreatedByUser),
-                ModifiedByName = Helper.UserHelper.GetFormattedName(response.ModifiedByUser),
+                CreatedByName = response.CreatedByUserName ?? Defaults.Users.Unknown,
+                ModifiedByName = response.ModifiedByUserName ?? Defaults.Users.Unknown,
             };
             return dto;
         }
@@ -71,7 +70,7 @@ namespace MC.Persistence.Repositories.Master
         {
             return !await _context.Titles
                 .AsNoTracking()
-                .AnyAsync(q => q.Name == value
+                .AnyAsync(q => q.Code == value
                             && q.Id != id
                             && !q.IsDeleted, cancellationToken);
         }

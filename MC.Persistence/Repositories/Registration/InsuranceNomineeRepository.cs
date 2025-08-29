@@ -2,6 +2,7 @@
 using MC.Application.ModelDto.Registration;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.DatabaseContext;
+using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace MC.Persistence.Repositories.Registration
@@ -14,7 +15,7 @@ namespace MC.Persistence.Repositories.Registration
             _userProfileRepository = userProfileRepository;
         }
 
-        public async Task<InsuranceNomineeDetailDto?> GetAllInsuranceNomineeByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken)
+        public async Task<List<InsuranceNomineeDetailDto>?> GetAllInsuranceNomineeByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
         {
             var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
 
@@ -23,48 +24,43 @@ namespace MC.Persistence.Repositories.Registration
 
             var response = await _context.InsuranceNominees
                 .AsNoTracking()
-                .Include(ex => ex.UserProfile)
                 .Where(ex => ex.UserProfileId == userProfile.Id && !ex.IsDeleted)
-                .Select(ex => new InsuranceNomineeDetailDto
-                {
-                    Id = ex.Id,
-                    UserProfileId = ex.UserProfileId,
-                    UserProfileName = ex.UserProfile != null ? ex.UserProfile.FirstName + " " + ex.UserProfile.LastName : string.Empty,
-                    NominatedBy = ex.NominatedBy,
-                    NominatedByFather = ex.NominatedByFather,
-                    SoldierNumber = ex.SoldierNumber,
-                    SoldierRank = ex.SoldierRank,
-                    SoldierUnit = ex.SoldierUnit,
-                    NominatedByDoB = ex.NominatedByDoB,
-                    NominatedByPermanentAddress = ex.NominatedByPermanentAddress,
-                    NominatedByCorrespondenceAddress = ex.NominatedByCorrespondenceAddress,
-                    NomineeName = ex.NomineeName,
-                    RelationWithNominee = ex.RelationWithNominee,
-                    NomineeFather = ex.NomineeFather,
-                    NomineeDoB = ex.NomineeDoB,
-                    NomineeByPermanentAddress = ex.NomineeByPermanentAddress,
-                    NomineeByCorrespondenceAddress = ex.NomineeByCorrespondenceAddress,
-                    IsActive = ex.IsActive,
-                    DateCreated = Helper.DateHelper.FormatDate(ex.DateCreated),
-                    DateModified = Helper.DateHelper.FormatDate(ex.DateModified),
-                    CreatedByName = Helper.UserHelper.GetFormattedName(ex.CreatedByUser),
-                    ModifiedByName = Helper.UserHelper.GetFormattedName(ex.ModifiedByUser),
-                })
-                .FirstOrDefaultAsync(cancellationToken);
-            return response;
-        }
+                .ToListAsync(cancellationToken);
 
+            if (response == null || response.Count == 0)
+                return new List<InsuranceNomineeDetailDto>();
+
+            var dtos = response.Select(MapToDto).ToList();
+            return dtos;
+        }
+        public async Task<List<InsuranceNomineeDetailDto>?> GetAllInsuranceNomineeByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken)
+        {
+            var response = await _context.InsuranceNominees
+                .AsNoTracking()
+                .Where(ex => ex.UserProfileId == userProfileId && !ex.IsDeleted)
+                .ToListAsync(cancellationToken);
+
+            if (response == null || response.Count == 0)
+                return new List<InsuranceNomineeDetailDto>();
+
+            var dtos = response.Select(MapToDto).ToList();
+            return dtos;
+        }
         public async Task<InsuranceNomineeDetailDto?> GetInsuranceNomineeByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var response = await _context.InsuranceNominees
                 .AsNoTracking()
-                .Include(ex => ex.UserProfile)
                 .FirstOrDefaultAsync(lt => lt.Id == id && !lt.IsDeleted, cancellationToken);
 
             if (response == null)
                 return null;
 
-            var dto = new InsuranceNomineeDetailDto
+            return MapToDto(response);
+        }
+
+        private InsuranceNomineeDetailDto MapToDto(Domain.Entity.Registration.InsuranceNominee response)
+        {
+            return new InsuranceNomineeDetailDto
             {
                 Id = response.Id,
                 UserProfileId = response.UserProfileId,
@@ -86,10 +82,9 @@ namespace MC.Persistence.Repositories.Registration
                 IsActive = response.IsActive,
                 DateCreated = Helper.DateHelper.FormatDate(response.DateCreated),
                 DateModified = Helper.DateHelper.FormatDate(response.DateModified),
-                CreatedByName = Helper.UserHelper.GetFormattedName(response.CreatedByUser),
-                ModifiedByName = Helper.UserHelper.GetFormattedName(response.ModifiedByUser),
+                CreatedByName = response.CreatedByUserName ?? Defaults.Users.Unknown,
+                ModifiedByName = response.ModifiedByUserName ?? Defaults.Users.Unknown
             };
-            return dto;
         }
     }
 }

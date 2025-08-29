@@ -3,5 +3,5 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.Communication.Query.GetByRegistrationId
 {
-    public record GetByRegistrationIdCommunicationQuery(int RegistrationId) : IRequest<CommunicationDetailDto>;
+    public record GetByRegistrationIdCommunicationQuery(string RegistrationId) : IRequest<CommunicationDetailDto>;
 }

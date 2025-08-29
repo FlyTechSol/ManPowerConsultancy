@@ -1,13 +1,11 @@
-﻿using MC.Application.Features.Master.Document.Command.Create;
-using MC.Application.Features.Master.Document.Command.Delete;
-using MC.Application.Features.Master.Document.Command.Update;
-using MC.Application.Features.Master.Document.Query.GetAll;
-using MC.Application.Features.Master.Document.Query.GetAllAddressProof;
-using MC.Application.Features.Master.Document.Query.GetAllAgeProof;
-using MC.Application.Features.Master.Document.Query.GetAllIdentityProof;
-using MC.Application.Features.Master.Document.Query.GetAllQualificationProof;
-using MC.Application.Features.Master.Document.Query.GetById;
+﻿using MC.Application.Features.Master.DocumentType.Command.Create;
+using MC.Application.Features.Master.DocumentType.Command.Delete;
+using MC.Application.Features.Master.DocumentType.Command.Update;
+using MC.Application.Features.Master.DocumentType.Query.GetAll;
+using MC.Application.Features.Master.DocumentType.Query.GetAllByPurpose;
+using MC.Application.Features.Master.DocumentType.Query.GetById;
 using MC.Application.ModelDto.Master.Master;
+using MC.Domain.Entity.Enum.Common;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,55 +24,37 @@ namespace MC.API.Controllers.Master
         }
 
         [HttpGet]
-        public async Task<List<DocumentDto>> Get()
+        public async Task<ActionResult<List<DocumentTypeDto>>> Get(CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllDocumentQuery());
+            var response = await _mediator.Send(new GetAllDocumentTypeQuery(), cancellationToken);
             return response;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<DocumentDetailDto>> Get(Guid id)
+        public async Task<ActionResult<DocumentTypeDetailDto>> Get(Guid id, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetByIdDocumentQuery(id));
+            var response = await _mediator.Send(new GetByIdDocumentTypeQuery(id), cancellationToken);
             return Ok(response);
         }
 
-        [HttpGet("get-all-identity-proof")]
-        public async Task<ActionResult<DocumentDto>> GetAllIdentityDocument()
+        [HttpGet("purpose/{purpose}")]
+        [ProducesResponseType(typeof(List<DocumentTypeDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByPurpose([FromRoute] DocumentPurpose purpose, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllIdentityProofQuery());
-            return Ok(response);
+            var query = new GetAllByPurposeQuery(purpose);
+            var result = await _mediator.Send(query, cancellationToken);
+            return Ok(result);
         }
 
-        [HttpGet("get-all-address-proof")]
-        public async Task<ActionResult<DocumentDto>> GetAllAddressDocument()
-        {
-            var response = await _mediator.Send(new GetAllAddressProofQuery());
-            return Ok(response);
-        }
-
-        [HttpGet("get-all-age-proof")]
-        public async Task<ActionResult<DocumentDto>> GetAllAgeProofDocument()
-        {
-            var response = await _mediator.Send(new GetAllAgeProofQuery());
-            return Ok(response);
-        }
-
-        [HttpGet("get-all-qualification-proof")]
-        public async Task<ActionResult<DocumentDto>> GetAllQualificationDocument()
-        {
-            var response = await _mediator.Send(new GetAllQualificationProofQuery());
-            return Ok(response);
-        }
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Post(CreateDocumentCmd request)
+        public async Task<ActionResult> Post(CreateDocumentTypeCmd request, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(request);
-            return CreatedAtAction(nameof(Get), new { id = response });
+            var response = await _mediator.Send(request, cancellationToken);
+            return CreatedAtAction(nameof(Get), new { id = response }, null);
         }
 
         [HttpPut("{id}")]
@@ -83,9 +63,9 @@ namespace MC.API.Controllers.Master
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Put(UpdateDocumentCmd request)
+        public async Task<ActionResult> Put(UpdateDocumentTypeCmd request, CancellationToken cancellationToken)
         {
-            await _mediator.Send(request);
+            await _mediator.Send(request, cancellationToken);
             return NoContent();
         }
 
@@ -94,10 +74,10 @@ namespace MC.API.Controllers.Master
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Delete(Guid id)
+        public async Task<ActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
-            var command = new DeleteDocumentCmd { Id = id };
-            await _mediator.Send(command);
+            var command = new DeleteDocumentTypeCmd { Id = id };
+            await _mediator.Send(command, cancellationToken);
             return NoContent();
         }
     }

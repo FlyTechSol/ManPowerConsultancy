@@ -47,7 +47,7 @@ namespace MC.Persistence.Services
             _userProfileRepository = userProfileRepository;
         }
 
-        public async Task<AuthResponse> LoginAsync(AuthRequest request)
+        public async Task<AuthResponse> LoginAsync(AuthRequest request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null) throw new UnauthorizedAccessException("Invalid credentials or email.");
@@ -87,7 +87,7 @@ namespace MC.Persistence.Services
                 }
             }
 
-            var userProfile = await _userProfileRepository.GetByIdAsync(user.Id);    
+            var userProfile = await _userProfileRepository.GetUserProfileByApplicationUserIdAsync(user.Id, cancellationToken);    
             return new AuthResponse
             {
                 Id = user.Id,
@@ -97,14 +97,14 @@ namespace MC.Persistence.Services
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 Email = user.Email ?? string.Empty,
                 UserName = user.UserName ?? string.Empty,
-                RegistrationId = userProfile?.RegistrationId ?? 0,
+                RegistrationId = userProfile !=null ? userProfile.RegistrationId : string.Empty,
                 Roles = roleDetails,
                 //Menus = menus,
                 //ProfilePictureUrl = userProfile != null ? userProfile.ProfilePictureUrl : string.Empty,
                 IsActive = user.IsActive,
             };
         }
-        public async Task<RegistrationResponse> RegisterAsync(RegistrationRequest request)
+        public async Task<RegistrationResponse> RegisterAsync(RegistrationRequest request, CancellationToken cancellationToken)
         {
             var profile = new UserProfile
             {

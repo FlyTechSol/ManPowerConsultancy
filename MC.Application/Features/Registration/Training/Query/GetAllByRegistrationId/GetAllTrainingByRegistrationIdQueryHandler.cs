@@ -6,7 +6,7 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.Training.Query.GetAllByRegistrationId
 {
-    public class GetAllTrainingByRegistrationIdQueryHandler : IRequestHandler<GetAllTrainingByRegistrationIdQuery, TrainingDetailDto>
+    public class GetAllTrainingByRegistrationIdQueryHandler : IRequestHandler<GetAllTrainingByRegistrationIdQuery, List<TrainingDetailDto>>
     {
         private readonly IMapper _mapper;
         private readonly ITrainingRepository _trainingRepository;
@@ -17,7 +17,7 @@ namespace MC.Application.Features.Registration.Training.Query.GetAllByRegistrati
             _trainingRepository = trainingRepository;
         }
 
-        public async Task<TrainingDetailDto> Handle(GetAllTrainingByRegistrationIdQuery request, CancellationToken cancellationToken)
+        public async Task<List<TrainingDetailDto>> Handle(GetAllTrainingByRegistrationIdQuery request, CancellationToken cancellationToken)
         {
             // Query the database
             var response = await _trainingRepository.GetAllTrainingByRegistrationIdAsync(request.RegistrationId, cancellationToken);
@@ -27,7 +27,7 @@ namespace MC.Application.Features.Registration.Training.Query.GetAllByRegistrati
                 throw new NotFoundException(nameof(Domain.Entity.Registration.Training), request.RegistrationId);
 
             // convert data object to DTO object
-            var data = _mapper.Map<TrainingDetailDto>(response);
+            var data = _mapper.Map<List<TrainingDetailDto>>(response);
 
             // return DTO object
             return data;

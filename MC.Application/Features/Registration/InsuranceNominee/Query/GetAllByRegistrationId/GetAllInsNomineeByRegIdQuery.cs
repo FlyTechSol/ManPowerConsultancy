@@ -3,5 +3,5 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.InsuranceNominee.Query.GetAllByRegistrationId
 {
-   public record GetAllInsNomineeByRegIdQuery(int RegistrationId) : IRequest<InsuranceNomineeDetailDto>;
+   public record GetAllInsNomineeByRegIdQuery(string RegistrationId) : IRequest<List<InsuranceNomineeDetailDto>>;
 }

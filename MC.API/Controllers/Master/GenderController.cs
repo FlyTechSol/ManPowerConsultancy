@@ -22,16 +22,16 @@ namespace MC.API.Controllers.Master
         }
 
         [HttpGet]
-        public async Task<List<GenderDto>> Get()
+        public async Task<ActionResult<List<GenderDto>>> Get(CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllGenderQuery());
+            var response = await _mediator.Send(new GetAllGenderQuery(), cancellationToken);
             return response;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GenderDetailDto>> Get(Guid id)
+        public async Task<ActionResult<GenderDetailDto>> Get(Guid id, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetByIdGenderQuery(id));
+            var response = await _mediator.Send(new GetByIdGenderQuery(id), cancellationToken);
             return Ok(response);
         }
 
@@ -40,10 +40,10 @@ namespace MC.API.Controllers.Master
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Post(CreateGenderCmd request)
+        public async Task<ActionResult> Post(CreateGenderCmd request, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(request);
-            return CreatedAtAction(nameof(Get), new { id = response });
+            var response = await _mediator.Send(request, cancellationToken);
+            return CreatedAtAction(nameof(Get), new { id = response }, null);
         }
 
         [HttpPut("{id}")]
@@ -52,9 +52,9 @@ namespace MC.API.Controllers.Master
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Put(UpdateGenderCmd request)
+        public async Task<ActionResult> Put(UpdateGenderCmd request, CancellationToken cancellationToken)
         {
-            await _mediator.Send(request);
+            await _mediator.Send(request, cancellationToken);
             return NoContent();
         }
 
@@ -63,10 +63,10 @@ namespace MC.API.Controllers.Master
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Delete(Guid id)
+        public async Task<ActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
             var command = new DeleteGenderCmd { Id = id };
-            await _mediator.Send(command);
+            await _mediator.Send(command, cancellationToken);
             return NoContent();
         }
     }

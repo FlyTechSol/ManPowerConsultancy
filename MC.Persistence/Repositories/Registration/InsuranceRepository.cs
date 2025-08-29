@@ -2,6 +2,7 @@
 using MC.Application.ModelDto.Registration;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.DatabaseContext;
+using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace MC.Persistence.Repositories.Registration
@@ -14,41 +15,67 @@ namespace MC.Persistence.Repositories.Registration
             _userProfileRepository = userProfileRepository;
         }
 
-        public async Task<InsuranceDetailDto?> GetInsuranceByRegistrationIdAsync(int registrationId, CancellationToken cancellationToken)
+        public async Task<List<InsuranceDetailDto>?> GetInsuranceByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
         {
             var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
 
             if (userProfile == null)
                 return null;
 
-            var address = await _context.Insurances
+            var response = await _context.Insurances
                 .AsNoTracking()
-                .Include(a => a.UserProfile)
-                .Include(a => a.CreatedByUser!)
-                    .ThenInclude(u => u.UserProfile)
-                .Include(a => a.ModifiedByUser!)
-                    .ThenInclude(u => u.UserProfile)
-                .Where(addr => addr.UserProfileId == userProfile.Id && addr.IsActive)
-                .Select(addr => new InsuranceDetailDto
-                {
-                    Id = addr.Id,
-                    UserProfileId = addr.UserProfileId,
-                    UserProfileName = addr.UserProfile.FirstName + " " + addr.UserProfile.LastName,
-                    InsuranceCompanyName = addr.InsuranceCompanyName,
-                    PolicyNumber = addr.PolicyNumber,
-                    PolicyStartDate = addr.PolicyStartDate,
-                    PolicyEndDate = addr.PolicyEndDate,
-                    PolicyRemarks = addr.PolicyRemarks,
-                    IsActive = addr.IsActive,
-                    DateCreated = Helper.DateHelper.FormatDate(addr.DateCreated),
-                    DateModified = Helper.DateHelper.FormatDate(addr.DateModified),
-                    CreatedByName = Helper.UserHelper.GetFormattedName(addr.CreatedByUser),
-                    ModifiedByName = Helper.UserHelper.GetFormattedName(addr.ModifiedByUser),
+                .Where(response => response.UserProfileId == userProfile.Id && !response.IsDeleted)
+                .ToListAsync(cancellationToken);
 
-                })
-                .FirstOrDefaultAsync(cancellationToken);
+            if (response == null || response.Count == 0)
+                return new List<InsuranceDetailDto>();
 
-            return address;
+            var dtos = response.Select(MapToDto).ToList();
+            return dtos;
+        }
+        public async Task<List<InsuranceDetailDto>?> GetInsuranceByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken)
+        {
+            var response = await _context.Insurances
+                .AsNoTracking()
+                .Where(response => response.UserProfileId == userProfileId && !response.IsDeleted)
+                .ToListAsync(cancellationToken);
+
+            if (response == null || response.Count == 0)
+                return new List<InsuranceDetailDto>();
+
+            var dtos = response.Select(MapToDto).ToList();
+            return dtos;
+        }
+        public async Task<InsuranceDetailDto?> GetInsuranceByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            var response = await _context.Insurances
+                .AsNoTracking()
+                .Include(ex => ex.UserProfile)
+                .FirstOrDefaultAsync(lt => lt.Id == id && !lt.IsDeleted, cancellationToken);
+
+            if (response == null)
+                return null;
+
+            return MapToDto(response);
+        }
+        private InsuranceDetailDto MapToDto(Domain.Entity.Registration.Insurance response)
+        {
+            return new InsuranceDetailDto
+            {
+                Id = response.Id,
+                UserProfileId = response.UserProfileId,
+                UserProfileName = response.UserProfile.FirstName + " " + response.UserProfile.LastName,
+                InsuranceCompanyName = response.InsuranceCompanyName,
+                PolicyNumber = response.PolicyNumber,
+                PolicyStartDate = response.PolicyStartDate,
+                PolicyEndDate = response.PolicyEndDate,
+                PolicyRemarks = response.PolicyRemarks,
+                IsActive = response.IsActive,
+                DateCreated = Helper.DateHelper.FormatDate(response.DateCreated),
+                DateModified = Helper.DateHelper.FormatDate(response.DateModified),
+                CreatedByName = response.CreatedByUserName ?? Defaults.Users.Unknown,
+                ModifiedByName = response.ModifiedByUserName ?? Defaults.Users.Unknown
+            };
         }
     }
 }

@@ -24,23 +24,23 @@ namespace MC.API.Controllers.Menu
         }
 
         [HttpGet]
-        public async Task<List<MenuItemDto>> Get()
+        public async Task<List<MenuItemDto>> Get(CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllMenuItemQuery());
+            var response = await _mediator.Send(new GetAllMenuItemQuery(), cancellationToken);
             return response;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<MenuItemDetailDto>> Get(Guid id)
+        public async Task<ActionResult<MenuItemDetailDto>> Get(Guid id, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetByIdMenuItemQuery(id));
+            var response = await _mediator.Send(new GetByIdMenuItemQuery(id), cancellationToken);
             return Ok(response);
         }
 
         [HttpGet("MenuItemByMenuId/{menuId}")]
-        public async Task<ActionResult<MenuItemDto>> GetMenuItemByMenuId(Guid menuId)
+        public async Task<ActionResult<MenuItemDto>> GetMenuItemByMenuId(Guid menuId, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetMenuItemByMenuIdQuery(menuId));
+            var response = await _mediator.Send(new GetMenuItemByMenuIdQuery(menuId), cancellationToken);
             return Ok(response);
         }
 
@@ -49,9 +49,9 @@ namespace MC.API.Controllers.Menu
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Post(CreateMenuItemCmd request)
+        public async Task<ActionResult> Post(CreateMenuItemCmd request, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(request);
+            var response = await _mediator.Send(request, cancellationToken);
             return CreatedAtAction(nameof(Get), new { id = response });
         }
 
@@ -61,9 +61,9 @@ namespace MC.API.Controllers.Menu
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Put(UpdateMenuItemCmd request)
+        public async Task<ActionResult> Put(UpdateMenuItemCmd request, CancellationToken cancellationToken)
         {
-            await _mediator.Send(request);
+            await _mediator.Send(request, cancellationToken);
             return NoContent();
         }
 
@@ -72,10 +72,10 @@ namespace MC.API.Controllers.Menu
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Delete(Guid id)
+        public async Task<ActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
             var command = new DeleteMenuItemCmd { Id = id };
-            await _mediator.Send(command);
+            await _mediator.Send(command, cancellationToken);
             return NoContent();
         }
     }

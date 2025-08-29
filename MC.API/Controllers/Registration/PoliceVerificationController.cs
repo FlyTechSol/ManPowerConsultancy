@@ -1,7 +1,10 @@
-﻿using MC.Application.Features.Registration.PoliceVerification.Command.Create;
+﻿using MC.Application.Features.Registration.Insurance.Query.GetById;
+using MC.Application.Features.Registration.PoliceVerification.Command.Create;
 using MC.Application.Features.Registration.PoliceVerification.Command.Delete;
 using MC.Application.Features.Registration.PoliceVerification.Command.Update;
+using MC.Application.Features.Registration.PoliceVerification.Query.GetById;
 using MC.Application.Features.Registration.PoliceVerification.Query.GetByRegistrationId;
+using MC.Application.Features.Registration.PoliceVerification.Query.GetByUserProfileId;
 using MC.Application.ModelDto.Registration;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -19,22 +22,34 @@ namespace MC.API.Controllers.Registration
         {
             _mediator = mediator;
         }
-        [HttpGet("{registrationId}")]
-        public async Task<PoliceVerificationDetailDto> Get(int registrationId)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PoliceVerificationDetailDto>> Get(Guid id, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetPoliceVeriByRegistrationIdQuery(registrationId));
-            return response;
+            var response = await _mediator.Send(new GetPoliceVeriByIdQuery(id), cancellationToken);
+            return Ok(response);
         }
 
+        [HttpGet("get-police-verification-by-registration-id/{registrationId}")]
+        public async Task<ActionResult<PoliceVerificationDetailDto>> GetPoliceVerificationByRegId(string registrationId, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetPoliceVeriByRegistrationIdQuery(registrationId), cancellationToken);
+            return response;
+        }
+        [HttpGet("get-police-verification-by-user-profile-id/{userProfileId}")]
+        public async Task<ActionResult<PoliceVerificationDetailDto>> GetPoliceVerificationByUserProfile(Guid userProfileId, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetByUserProfileQuery(userProfileId), cancellationToken);
+            return response;
+        }
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Post(CreatePoliceVeriCmd request)
+        public async Task<ActionResult> Post(CreatePoliceVeriCmd request, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(request);
-            return CreatedAtAction(nameof(Get), new { id = response });
+            var response = await _mediator.Send(request, cancellationToken);
+            return CreatedAtAction(nameof(Get), new { id = response }, null);
         }
 
         [HttpPut("{id}")]
@@ -43,9 +58,9 @@ namespace MC.API.Controllers.Registration
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Put(UpdatePoliceVeriCmd request)
+        public async Task<ActionResult> Put(UpdatePoliceVeriCmd request, CancellationToken cancellationToken)
         {
-            await _mediator.Send(request);
+            await _mediator.Send(request, cancellationToken);
             return NoContent();
         }
 
@@ -54,10 +69,10 @@ namespace MC.API.Controllers.Registration
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Delete(Guid id)
+        public async Task<ActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
             var command = new DeletePoliceVeriCmd { Id = id };
-            await _mediator.Send(command);
+            await _mediator.Send(command, cancellationToken);
             return NoContent();
         }
     }

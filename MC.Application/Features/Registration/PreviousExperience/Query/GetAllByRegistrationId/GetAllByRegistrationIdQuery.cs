@@ -3,5 +3,5 @@ using MediatR;
 
 namespace MC.Application.Features.Registration.PreviousExperience.Query.GetAllByRegistrationId
 {
-   public record GetAllByRegistrationIdQuery(int RegistrationId) : IRequest<PreviousExperienceDetailDto>;
+   public record GetAllByRegistrationIdQuery(string RegistrationId) : IRequest<List<PreviousExperienceDetailDto>>;
 }

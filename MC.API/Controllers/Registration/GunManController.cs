@@ -3,6 +3,7 @@ using MC.Application.Features.Registration.GunMan.Command.Delete;
 using MC.Application.Features.Registration.GunMan.Command.Update;
 using MC.Application.Features.Registration.GunMan.Query.GetAllByRegistrationId;
 using MC.Application.Features.Registration.GunMan.Query.GetById;
+using MC.Application.Features.Registration.GunMan.Query.GetAllByUserProfileId;
 using MC.Application.ModelDto.Registration;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -21,16 +22,22 @@ namespace MC.API.Controllers.Registration
             _mediator = mediator;
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<GunManDetailDto>> Get(Guid id)
+        public async Task<ActionResult<GunManDetailDto>> Get(Guid id, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetGunManByIdQuery(id));
+            var response = await _mediator.Send(new GetGunManByIdQuery(id), cancellationToken);
             return Ok(response);
         }
 
-        [HttpGet("get-all-gun-men/{registrationId}")]
-        public async Task<ActionResult<GunManDetailDto>> GetAll(int registrationId)
+        [HttpGet("get-all-gun-men-by-registration-id/{registrationId}")]
+        public async Task<ActionResult<List<GunManDetailDto>>> GetAll(string registrationId, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllGunManByRegIdQuery(registrationId));
+            var response = await _mediator.Send(new GetAllGunManByRegIdQuery(registrationId), cancellationToken);
+            return Ok(response);
+        }
+        [HttpGet("get-all-gun-men-by-user-profile-id/{userProfileId}")]
+        public async Task<ActionResult<List<GunManDetailDto>>> GetAllByUserProfile(Guid userProfileId, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetAllByUserProfileQuery(userProfileId), cancellationToken);
             return Ok(response);
         }
         [HttpPost]
@@ -38,10 +45,10 @@ namespace MC.API.Controllers.Registration
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Post(CreateGunManCmd request)
+        public async Task<ActionResult> Post(CreateGunManCmd request, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(request);
-            return CreatedAtAction(nameof(Get), new { id = response });
+            var response = await _mediator.Send(request, cancellationToken);
+            return CreatedAtAction(nameof(Get), new { id = response }, null);
         }
 
         [HttpPut("{id}")]
@@ -50,9 +57,9 @@ namespace MC.API.Controllers.Registration
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Put(UpdateGunManCmd request)
+        public async Task<ActionResult> Put(UpdateGunManCmd request, CancellationToken cancellationToken)
         {
-            await _mediator.Send(request);
+            await _mediator.Send(request, cancellationToken);
             return NoContent();
         }
 
@@ -61,10 +68,10 @@ namespace MC.API.Controllers.Registration
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Delete(Guid id)
+        public async Task<ActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
             var command = new DeleteGunManCmd { Id = id };
-            await _mediator.Send(command);
+            await _mediator.Send(command, cancellationToken);
             return NoContent();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using MC.Application.Contracts.Persistence.Master;
 using MC.Application.ModelDto.Master.Master;
 using MC.Persistence.DatabaseContext;
+using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace MC.Persistence.Repositories.Master
@@ -31,8 +32,6 @@ namespace MC.Persistence.Repositories.Master
         {
             var response = await _context.Countries
                 .AsNoTracking()
-                .Include(g => g.CreatedByUser)
-                .Include(g => g.ModifiedByUser)
                 .FirstOrDefaultAsync(g => !g.IsDeleted && g.Id == id, cancellationToken);
 
             if (response == null)
@@ -67,8 +66,8 @@ namespace MC.Persistence.Repositories.Master
                 Name = response.Name,
                 DateCreated = Helper.DateHelper.FormatDate(response.DateCreated),
                 DateModified = Helper.DateHelper.FormatDate(response.DateModified),
-                CreatedByName = Helper.UserHelper.GetFormattedName(response.CreatedByUser),
-                ModifiedByName = Helper.UserHelper.GetFormattedName(response.ModifiedByUser),
+                CreatedByName = response.CreatedByUserName ?? Defaults.Users.Unknown,
+                ModifiedByName = response.ModifiedByUserName ?? Defaults.Users.Unknown,
             };
         }
     }

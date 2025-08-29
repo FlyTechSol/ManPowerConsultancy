@@ -2,6 +2,6 @@
 {
     public interface IRegistrationIdGeneratorRepository
     {
-        Task<int> GetNextRegistrationIdAsync();
+        Task<string> GetNextRegistrationIdAsync(Guid companyId);
     }
 }
