@@ -4,6 +4,7 @@ using MC.Application.Features.Organization.ClientUnit.Command.Update;
 using MC.Application.Features.Organization.ClientUnit.Query.GetAll;
 using MC.Application.Features.Organization.ClientUnit.Query.GetByClientMasterId;
 using MC.Application.Features.Organization.ClientUnit.Query.GetById;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Organization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -28,19 +29,18 @@ namespace MC.API.Controllers.Organization
             var response = await _mediator.Send(new GetUnitByIdQuery(id), cancellationToken);
             return Ok(response);
         }
-
         [HttpGet]
-        public async Task<ActionResult<List<UnitDetailDto>>> GetAll(CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<UnitDetailDto>>>> GetAll([FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllUnitQuery(), cancellationToken);
-            return response;
+            var response = await _mediator.Send(new GetAllUnitQuery(queryParams), cancellationToken);
+            return Ok(response);
         }
 
         [HttpGet("get-clinet-unit-by-client-master-id/{clientMasterId}")]
-        public async Task<ActionResult<List<UnitDetailDto>>> GetByClientMasterId(Guid clientMasterId, CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<UnitDetailDto>>>> GetByClientMasterId([FromQuery] QueryParams queryParams, Guid clientMasterId, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetUnitByClientMasterQuery(clientMasterId), cancellationToken);
-            return response;
+            var response = await _mediator.Send(new GetUnitByClientMasterQuery(queryParams, clientMasterId), cancellationToken);
+            return Ok(response);
         }
 
         [HttpPost]

@@ -18,7 +18,7 @@ public class UpdateBankCmdValidator : AbstractValidator<UpdateBankCmd>
         RuleFor(p => p.Code)
             .NotEmpty().WithMessage("{PropertyName} is required")
             .NotNull()
-            .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters")
+            .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters")
              .MustAsync((command, code, cancellationToken) =>
                 DecodeMustBeUniqueForUpdate(command.Id, code, cancellationToken))
             .WithMessage("{PropertyName} must be unique.");
@@ -26,7 +26,7 @@ public class UpdateBankCmdValidator : AbstractValidator<UpdateBankCmd>
         RuleFor(p => p.Name)
             .NotEmpty().WithMessage("{PropertyName} is required")
             .NotNull()
-            .MaximumLength(70).WithMessage("{PropertyName} must be fewer than 70 characters");
+            .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
     }
 
     private async Task<bool> DecodeMustBeUniqueForUpdate(Guid id, string decode, CancellationToken cancellationToken)

@@ -1,9 +1,11 @@
 ﻿using MC.Application.Contracts.Persistence.Master;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MC.Domain.Entity.Enum.Common;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 
 namespace MC.Persistence.Repositories.Master
 {
@@ -12,22 +14,55 @@ namespace MC.Persistence.Repositories.Master
         public DocumentTypeRepository(ApplicationDatabaseContext context) : base(context)
         {
         }
-
-        public async Task<List<DocumentTypeDto>?> GetAllDetailsAsync(CancellationToken cancellationToken)
+        public async Task<PaginatedResponse<DocumentTypeDetailDto>?> GetAllDetailsAsync(QueryParams queryParams, CancellationToken cancellationToken)
         {
-            return await _context.DocumentTypes
-               .AsNoTracking()
-               .Where(q => !q.IsDeleted)
-               .Select(response => new DocumentTypeDto
-               {
-                   Id = response.Id,
-                   Name = response.Name,
-                   Description = response.Description,
-                   Purpose = response.Purpose
-               })
-               .ToListAsync(cancellationToken);
+            var query = _context.DocumentTypes
+                .AsNoTracking()
+                .Where(q => !q.IsDeleted);
+
+            // Search filter
+            if (!string.IsNullOrWhiteSpace(queryParams.Query))
+            {
+                var search = queryParams.Query.ToLower();
+                query = query.Where(q =>
+                    q.Purpose.ToString().ToLower().Contains(search) ||
+                    q.Name.ToLower().Contains(search)
+                );
+            }
+
+            // Total count before pagination
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            // Sorting
+            if (!string.IsNullOrWhiteSpace(queryParams.Column))
+            {
+                string column = queryParams.Column;
+                string direction = queryParams.Dir?.ToLower() == "desc" ? "descending" : "";
+
+                query = query.OrderBy($"{column} {direction}");
+            }
+            else
+            {
+                query = query.OrderBy(a => a.Name); // default sort
+            }
+
+            // Pagination
+            var data = await query
+                .Skip((queryParams.Page - 1) * queryParams.Limit)
+                .Take(queryParams.Limit)
+                .ToListAsync(cancellationToken);
+
+            var dtos = data.Select(MapToDto).ToList();
+
+            return new PaginatedResponse<DocumentTypeDetailDto>
+            {
+                Data = dtos,
+                CurrentPage = queryParams.Page,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)queryParams.Limit)
+            };
         }
-      
+
         public async Task<DocumentTypeDetailDto?> GetDetailsAsync(Guid id, CancellationToken cancellationToken)
         {
             var response = await _context.DocumentTypes
@@ -39,18 +74,53 @@ namespace MC.Persistence.Repositories.Master
 
             return MapToDto(response);
         }
-        public async Task<List<DocumentTypeDto>> GetDocumentsByPurposeAsync(DocumentPurpose purpose, CancellationToken cancellationToken)
+        public async Task<PaginatedResponse<DocumentTypeDetailDto>?> GetDocumentsByPurposeAsync(QueryParams queryParams, DocumentPurpose purpose, CancellationToken cancellationToken)
         {
-            return await _context.DocumentTypes
-                .Where(d => (d.Purpose & purpose) == purpose) // matches any document with this purpose flag
-                .Select(d => new DocumentTypeDto
-                {
-                    Id = d.Id,
-                    Name = d.Name,
-                    Purpose = d.Purpose,
-                    Description = d.Description
-                })
+            var query = _context.DocumentTypes
+                .AsNoTracking()
+                .Where(q => !q.IsDeleted && (q.Purpose & purpose) == purpose);
+
+            // Search filter
+            if (!string.IsNullOrWhiteSpace(queryParams.Query))
+            {
+                var search = queryParams.Query.ToLower();
+                query = query.Where(q =>
+                    q.Purpose.ToString().ToLower().Contains(search) ||
+                    q.Name.ToLower().Contains(search)
+                );
+            }
+
+            // Total count before pagination
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            // Sorting
+            if (!string.IsNullOrWhiteSpace(queryParams.Column))
+            {
+                string column = queryParams.Column;
+                string direction = queryParams.Dir?.ToLower() == "desc" ? "descending" : "";
+
+                query = query.OrderBy($"{column} {direction}");
+            }
+            else
+            {
+                query = query.OrderBy(a => a.Name); // default sort
+            }
+
+            // Pagination
+            var data = await query
+                .Skip((queryParams.Page - 1) * queryParams.Limit)
+                .Take(queryParams.Limit)
                 .ToListAsync(cancellationToken);
+
+            var dtos = data.Select(MapToDto).ToList();
+
+            return new PaginatedResponse<DocumentTypeDetailDto>
+            {
+                Data = dtos,
+                CurrentPage = queryParams.Page,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)queryParams.Limit)
+            };
         }
         public async Task<bool> IsUnique(string code, CancellationToken cancellationToken)
         {

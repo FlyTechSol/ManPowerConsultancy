@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using MC.Application.Contracts.Logging;
 using MC.Application.Contracts.Persistence.Master;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MediatR;
 
 namespace MC.Application.Features.Master.DocumentType.Query.GetAll
 {
-    public class GetAllDocumentTypeQueryHandler : IRequestHandler<GetAllDocumentTypeQuery, List<DocumentTypeDto>>
+    public class GetAllDocumentTypeQueryHandler : IRequestHandler<GetAllDocumentTypeQuery, ApiResponse<PaginatedResponse<DocumentTypeDetailDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IDocumentTypeRepository _documentTypeRepository;
@@ -20,18 +21,16 @@ namespace MC.Application.Features.Master.DocumentType.Query.GetAll
             _documentTypeRepository = documentTypeRepository;
             _logger = logger;
         }
-
-        public async Task<List<DocumentTypeDto>> Handle(GetAllDocumentTypeQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PaginatedResponse<DocumentTypeDetailDto>>> Handle(GetAllDocumentTypeQuery request, CancellationToken cancellationToken)
         {
             // Query the database
-            var record = await _documentTypeRepository.GetAllDetailsAsync(cancellationToken);
-
-            // convert data objects to DTO objects
-            var data = _mapper.Map<List<DocumentTypeDto>>(record);
-
-            // return list of DTO object
-            _logger.LogInformation("Document type were retrieved successfully");
-            return data;
+            var record = await _documentTypeRepository.GetAllDetailsAsync(request.QueryParams, cancellationToken);
+            return new ApiResponse<PaginatedResponse<DocumentTypeDetailDto>>
+            {
+                Status = 200,
+                Message = "Success",
+                ResData = record
+            };
         }
     }
 }

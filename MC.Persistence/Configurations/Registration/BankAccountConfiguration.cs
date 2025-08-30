@@ -10,7 +10,7 @@ namespace MC.Persistence.Configurations.Registration
         {
             builder.ConfigureAuditFields();
 
-            builder.Property(z => z.BankName).HasMaxLength(100);
+            //builder.Property(z => z.BankName).HasMaxLength(100);
             builder.Property(z => z.IFSCCode).HasMaxLength(15);
             builder.Property(z => z.AccountNo).HasMaxLength(20);
             builder.Property(z => z.PassbookUrl).HasMaxLength(256);
@@ -25,6 +25,12 @@ namespace MC.Persistence.Configurations.Registration
                .HasForeignKey(b => b.UserProfileId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
+
+           builder.HasOne(b => b.Bank)
+              .WithMany(bk => bk.BankAccounts) // Add collection navigation property in Bank
+              .HasForeignKey(b => b.BankId)
+              .IsRequired()
+              .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

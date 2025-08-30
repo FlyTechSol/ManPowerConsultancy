@@ -1,8 +1,10 @@
 ﻿using MC.Application.Contracts.Persistence.Organization;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Organization;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 
 namespace MC.Persistence.Repositories.Organization
 {
@@ -22,18 +24,55 @@ namespace MC.Persistence.Repositories.Organization
 
             return MapToDto(response);
         }
-        public async Task<List<CompanyDetailDto>> GetAllDetailsAsync(CancellationToken cancellationToken)
+        public async Task<PaginatedResponse<CompanyDetailDto>?> GetAllDetailsAsync(QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var response = await _context.Companies
+            var query = _context.Companies
                .AsNoTracking()
-               .Where(q => !q.IsDeleted)
-               .ToListAsync(cancellationToken);
+               .Where(q => !q.IsDeleted);
 
-            if (response == null || response.Count == 0)
-                return new List<CompanyDetailDto>();
+            // Search filter
+            if (!string.IsNullOrWhiteSpace(queryParams.Query))
+            {
+                var search = queryParams.Query.ToLower();
+                query = query.Where(q =>
+                    q.CompanyName.ToLower().Contains(search) ||
+                    (q.LegalName != null && q.LegalName.ToLower().Contains(search)) ||
+                    (q.RegistrationNumber != null && q.RegistrationNumber.ToLower().Contains(search))
 
-            var dtos = response.Select(MapToDto).ToList();
-            return dtos;
+                );
+            }
+
+            // Total count before pagination
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            // Sorting
+            if (!string.IsNullOrWhiteSpace(queryParams.Column))
+            {
+                string column = queryParams.Column;
+                string direction = queryParams.Dir?.ToLower() == "desc" ? "descending" : "";
+
+                query = query.OrderBy($"{column} {direction}");
+            }
+            else
+            {
+                query = query.OrderBy(a => a.CompanyName); // default sort
+            }
+
+            // Pagination
+            var data = await query
+                .Skip((queryParams.Page - 1) * queryParams.Limit)
+                .Take(queryParams.Limit)
+                .ToListAsync(cancellationToken);
+
+            var dtos = data.Select(MapToDto).ToList();
+
+            return new PaginatedResponse<CompanyDetailDto>
+            {
+                Data = dtos,
+                CurrentPage = queryParams.Page,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)queryParams.Limit)
+            };
         }
         public async Task<bool> IsUnique(string companyName, CancellationToken cancellationToken)
         {
@@ -41,7 +80,6 @@ namespace MC.Persistence.Repositories.Organization
                 .AsNoTracking()
                 .AnyAsync(q => q.CompanyName == companyName && !q.IsDeleted, cancellationToken);
         }
-
         public async Task<bool> IsUniqueForUpdate(Guid id, string companyName, CancellationToken cancellationToken)
         {
             return !await _context.Companies

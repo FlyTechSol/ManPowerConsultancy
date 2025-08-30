@@ -1,7 +1,16 @@
-﻿using MC.Application.ModelDto.Master.Master;
+﻿using MC.Application.ModelDto.Common.Pagination;
+using MC.Application.ModelDto.Master.Master;
 using MediatR;
 
 namespace MC.Application.Features.Master.RecruitmentType.Query.GetAll
 {
-    public record GetAllRecruitmentTypeQuery : IRequest<List<RecruitmentTypeDto>>;
+    public class GetAllRecruitmentTypeQuery : IRequest<ApiResponse<PaginatedResponse<RecruitmentTypeDetailDto>>>
+    {
+        public QueryParams QueryParams { get; set; }
+
+        public GetAllRecruitmentTypeQuery(QueryParams queryParams)
+        {
+            QueryParams = queryParams;
+        }
+    }
 }

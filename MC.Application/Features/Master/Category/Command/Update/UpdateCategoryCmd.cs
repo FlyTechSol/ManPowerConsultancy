@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
 namespace MC.Application.Features.Master.Category.Command.Update
 {
-    internal class UpdateCategoryCmd
+    public class UpdateCategoryCmd : IRequest<Unit>
     {
+        public Guid Id { get; set; }
+        public int? DisplayOrder { get; set; }
+        public string Code { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
     }
 }

@@ -3,6 +3,7 @@ using MC.Application.Features.Master.Gender.Command.Delete;
 using MC.Application.Features.Master.Gender.Command.Update;
 using MC.Application.Features.Master.Gender.Query.GetAll;
 using MC.Application.Features.Master.Gender.Query.GetById;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -22,10 +23,10 @@ namespace MC.API.Controllers.Master
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GenderDto>>> Get(CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<GenderDetailDto>>>> GetAll([FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllGenderQuery(), cancellationToken);
-            return response;
+            var response = await _mediator.Send(new GetAllGenderQuery(queryParams), cancellationToken);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]

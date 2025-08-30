@@ -3,6 +3,7 @@ using MC.Application.Features.Master.Asset.Command.Delete;
 using MC.Application.Features.Master.Asset.Command.Update;
 using MC.Application.Features.Master.Asset.Query.GetAll;
 using MC.Application.Features.Master.Asset.Query.GetById;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -22,10 +23,10 @@ namespace MC.API.Controllers.Master
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<AssetDto>>> GetAll(CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<AssetDto>>>> GetAll([FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllAssetQuery(), cancellationToken);
-            return response;
+            var response = await _mediator.Send(new GetAllAssetQuery(queryParams), cancellationToken);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]

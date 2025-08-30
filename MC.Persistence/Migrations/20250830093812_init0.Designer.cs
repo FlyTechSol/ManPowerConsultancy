@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MC.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDatabaseContext))]
-    [Migration("20250829143125_init1")]
-    partial class init1
+    [Migration("20250830093812_init0")]
+    partial class init0
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -845,8 +845,8 @@ namespace MC.Persistence.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<Guid?>("CreatedByUserId")
                         .HasColumnType("char(36)");
@@ -877,8 +877,8 @@ namespace MC.Persistence.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("varchar(70)");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 
@@ -890,6 +890,3130 @@ namespace MC.Persistence.Migrations
                     b.HasIndex("ModifiedByUserId");
 
                     b.ToTable("Banks");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("2079d0e5-e7f5-44cb-a629-155584478427"),
+                            Code = "ABHYUDAYA CO-OPERATIVE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 2,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ABHYUDAYA CO-OPERATIVE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("89a3b2d3-243c-4b5d-b601-fa5273885145"),
+                            Code = "AIRTEL PAYMENTS BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 3,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "AIRTEL PAYMENTS BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("adf48968-eb4e-4f99-b0ae-f8aa915da4fc"),
+                            Code = "ALLAHABAD BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 4,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ALLAHABAD BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("28b82d0e-2203-4084-a728-30f4ffd0a7f5"),
+                            Code = "ALLAHABAD UP GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 5,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ALLAHABAD UP GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("769a7c61-7077-4a6c-a9b9-c1d8f9841a50"),
+                            Code = "ALMORA URBAN CO-OPERATIVE BANK LTD.",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 6,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ALMORA URBAN CO-OPERATIVE BANK LTD."
+                        },
+                        new
+                        {
+                            Id = new Guid("ddd90498-2d2d-4a1f-ba16-d29ad0a4fe3e"),
+                            Code = "ANDHRA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 7,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ANDHRA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("26181a95-2fe8-4c76-97ce-d280c0a6ac18"),
+                            Code = "ANDHRA PRADESH GRAMEENA VIKAS BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 8,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ANDHRA PRADESH GRAMEENA VIKAS BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("a76cf399-d4f4-4f3e-913f-a5c510a57685"),
+                            Code = "ANDHRA PRADESH GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 9,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ANDHRA PRADESH GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("bfcbbbad-d85f-4146-8d0e-8e10f540a1b9"),
+                            Code = "ANDHRA PRAGATHI GRAMEENA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 10,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ANDHRA PRAGATHI GRAMEENA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("475e14e0-edc5-4407-9aa9-6c451b7a9ced"),
+                            Code = "APNA SAHAKARI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 11,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "APNA SAHAKARI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("cfdcb715-b85e-4824-b4b4-b8f5af424853"),
+                            Code = "ARYAVART BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 12,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ARYAVART BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("4d100f12-5cfc-471a-b5e3-8d4c6ec72ec5"),
+                            Code = "ARYAVART GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 13,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ARYAVART GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("d96d32a1-b858-42f8-82dd-9f17f4637712"),
+                            Code = "ARYAVART KSHETRIYA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 14,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ARYAVART KSHETRIYA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("084a40be-fa93-40bc-b07d-3bd1118f6355"),
+                            Code = "ARYAVART UP GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 15,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ARYAVART UP GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("ccad733b-6e9e-4bd0-8ac4-d90b6395a5ef"),
+                            Code = "ASHOK SAHAKARI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 16,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ASHOK SAHAKARI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("0861f82b-97e8-4caf-8753-48dd9bd75f32"),
+                            Code = "ASSAM COOPERATIVE APEX BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 17,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ASSAM COOPERATIVE APEX BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("8c39c267-02c5-4250-8129-1afd23ea6589"),
+                            Code = "AU SMALL FINANCE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 18,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "AU SMALL FINANCE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("a84433da-f09f-4955-ad79-9150f59626ba"),
+                            Code = "AWADH GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 19,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "AWADH GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("025b255c-12fd-42c4-939d-b269f1456480"),
+                            Code = "AXIS BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 20,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "AXIS BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("20fa46f2-d611-4e22-b6a0-fd8ab010aa8f"),
+                            Code = "BANDHAN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 21,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "BANDHAN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("2f592e05-fc23-4029-bf1c-02141e339997"),
+                            Code = "BANK OF BARODA",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 22,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "BANK OF BARODA"
+                        },
+                        new
+                        {
+                            Id = new Guid("3ffe37e8-ff8c-4956-a7e7-d7e6310b64c5"),
+                            Code = "BANK OF INDIA",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 23,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "BANK OF INDIA"
+                        },
+                        new
+                        {
+                            Id = new Guid("e44140e2-66ee-4160-95c4-f8b7f0bda992"),
+                            Code = "BANK OF MAHARASHTRA",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 24,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "BANK OF MAHARASHTRA"
+                        },
+                        new
+                        {
+                            Id = new Guid("3988eeb8-dc98-489e-bf08-51146b5e0298"),
+                            Code = "BAREILLY KSHETRIYA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 25,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "BAREILLY KSHETRIYA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("a1ea2c61-7df8-40cd-a96a-224929f9b930"),
+                            Code = "BARODA EASTERN UP GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 26,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "BARODA EASTERN UP GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("bd1a6d12-48e4-4512-b198-f7db484c7517"),
+                            Code = "BARODA RAJSTHAN KSHETRIYA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 27,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "BARODA RAJSTHAN KSHETRIYA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("a180a5b2-0e38-499e-aa06-1a87974ef0fb"),
+                            Code = "BARODA UP BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 28,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "BARODA UP BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("dee4a6db-e808-4cfa-9f75-2b310937218e"),
+                            Code = "BARODA UTTAR PRADESH GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 29,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "BARODA UTTAR PRADESH GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("1943ea69-4ce2-424d-a8bf-22fa4155e22b"),
+                            Code = "BASSEIN CATHOLIC CO-OP BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 30,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "BASSEIN CATHOLIC CO-OP BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("dea048dd-d06c-4343-af2f-38c399a8494d"),
+                            Code = "BASTI GRAMEEN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 31,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "BASTI GRAMEEN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("5ec923c7-ca28-4d66-ad79-3eb0e2be9785"),
+                            Code = "BHAGINI NIVEDITA SAHAKARI BANK LTD PUNE",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 32,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "BHAGINI NIVEDITA SAHAKARI BANK LTD PUNE"
+                        },
+                        new
+                        {
+                            Id = new Guid("0ad7b967-4e06-46be-ad73-f03b4180948b"),
+                            Code = "BHAGIRATH GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 33,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "BHAGIRATH GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("b845b89c-7fc5-48ff-b37a-e0da6fe49c6c"),
+                            Code = "BHARAT BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 34,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "BHARAT BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("b392c8c2-42f8-4719-9fe4-7ff6fde8023a"),
+                            Code = "BHARAT CO-OPERATIVE BANK LTD.",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 35,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "BHARAT CO-OPERATIVE BANK LTD."
+                        },
+                        new
+                        {
+                            Id = new Guid("a35a5698-6958-496b-8557-a0be39fb6264"),
+                            Code = "BOMBAY MERCANTILE COOPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 36,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "BOMBAY MERCANTILE COOPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("538dc659-ca3e-4aa6-ad19-a3be90feddde"),
+                            Code = "CANARA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 37,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "CANARA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("a1bce2ee-eb63-48ae-b587-11c8733a8604"),
+                            Code = "CASH",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 38,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "CASH"
+                        },
+                        new
+                        {
+                            Id = new Guid("2af0b91c-335e-4337-bdb2-1f4abc4f1af7"),
+                            Code = "CENTRAL BANK OF INDIA",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 39,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "CENTRAL BANK OF INDIA"
+                        },
+                        new
+                        {
+                            Id = new Guid("f913648a-4020-4da7-b162-a20f41bffeab"),
+                            Code = "CHAITANYA GODAVARI GRAMEENA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 40,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "CHAITANYA GODAVARI GRAMEENA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("9c95b08c-6728-427f-ae86-5c4c33bdcb64"),
+                            Code = "CHAMPARAN KSHETRIYA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 41,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "CHAMPARAN KSHETRIYA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("8906f565-ecde-4e95-85fa-0bc1458887ad"),
+                            Code = "CHHATTISGARH GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 42,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "CHHATTISGARH GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("20142b1d-2cfc-45e8-b0d6-cb97b795e5d4"),
+                            Code = "CHHATTISHGARH RAJYA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 43,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "CHHATTISHGARH RAJYA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("57c17b5a-f8cb-4704-834a-d52e4dfc6de5"),
+                            Code = "CITI BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 44,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "CITI BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("ccccfdef-1fa9-4de0-9e7b-bf2b22dca92e"),
+                            Code = "CITY UNION BANK LIMITED",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 45,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "CITY UNION BANK LIMITED"
+                        },
+                        new
+                        {
+                            Id = new Guid("89273570-31cc-439f-a41d-ea73c9bcd9f4"),
+                            Code = "COASTAL LOCAL AREA BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 46,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "COASTAL LOCAL AREA BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("ab5ae5b3-de81-41eb-af6c-52fec2bbfb16"),
+                            Code = "CORPORATION BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 47,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "CORPORATION BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("5881f4e9-88d7-45c7-a17f-612c4dda0c78"),
+                            Code = "COSMOS BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 48,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "COSMOS BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("7d92d409-4312-4d78-ada2-71d8bb268d61"),
+                            Code = "CSB BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 49,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "CSB BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("2d62cb2c-d295-4889-8c44-21a54adf5020"),
+                            Code = "DAKSHIN BIHAR GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 50,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "DAKSHIN BIHAR GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("556ebcf7-8691-4f8d-a6d3-72580d4a5e81"),
+                            Code = "DARUSSALAM BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 51,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "DARUSSALAM BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("bc2b58b5-1a07-4a88-8c01-f27bf8f5af2a"),
+                            Code = "DBS BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 52,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "DBS BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("9deb42c0-4834-41f4-b66e-c274a5f4c361"),
+                            Code = "DCB BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 53,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "DCB BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("48bc2f6f-373e-4538-86cf-e3b102805138"),
+                            Code = "DENA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 54,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "DENA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("8a75c77f-6989-4ca9-8aa9-729f6908b65a"),
+                            Code = "DEUTSCHE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 55,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "DEUTSCHE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("6976e70f-87f6-4267-9ed8-45c10cb73226"),
+                            Code = "DHANLAKSHMI BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 56,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "DHANLAKSHMI BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("a7549d42-7774-452a-ac5d-2e444eb674d0"),
+                            Code = "DISTRICT CO OPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 57,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "DISTRICT CO OPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("b537362e-fd65-45c0-aa37-821f0b722875"),
+                            Code = "DMK JAOLI BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 58,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "DMK JAOLI BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("00d1a0b7-6c0c-43bb-9a6d-badda3ef27b9"),
+                            Code = "DOMBIVLI NAGARI SAHAKARI BANK LIMITED",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 59,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "DOMBIVLI NAGARI SAHAKARI BANK LIMITED"
+                        },
+                        new
+                        {
+                            Id = new Guid("a5a5f1d1-91a6-4853-a45e-7cd98a7e382a"),
+                            Code = "EQUITAS SMALL FINANCE BANK LIMITED",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 60,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "EQUITAS SMALL FINANCE BANK LIMITED"
+                        },
+                        new
+                        {
+                            Id = new Guid("5bbd93ba-96f2-438f-9725-1712267cdbe6"),
+                            Code = "ESAF SMALL FINANCE BANK LIMITED",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 61,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ESAF SMALL FINANCE BANK LIMITED"
+                        },
+                        new
+                        {
+                            Id = new Guid("bad3c242-a880-4685-b0bc-6f9f01fb1fe5"),
+                            Code = "ETAWAH DISTRICT CO-OPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 62,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ETAWAH DISTRICT CO-OPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("2824800f-0f0d-4b59-bd8b-f8bd46da0813"),
+                            Code = "FEDERAL BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 63,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "FEDERAL BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("3fda0cd1-9b03-40cf-929c-74ae02a3ab80"),
+                            Code = "FINCARE SMALL FINANCE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 64,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "FINCARE SMALL FINANCE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("bcd54457-0447-4a2a-800b-9c0281055670"),
+                            Code = "FINO PAYMENTS BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 65,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "FINO PAYMENTS BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("007e68d1-99b7-43c7-a84e-118874adcdd3"),
+                            Code = "GOPINATH PATIL PARSIK JANATA SAHAKARI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 66,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "GOPINATH PATIL PARSIK JANATA SAHAKARI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("31c938ea-b082-421a-ab6c-e14980aed73a"),
+                            Code = "GP PARSIK JANATA SAHAKARI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 67,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "GP PARSIK JANATA SAHAKARI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("eb496b6e-81f0-417f-8885-94acea5005f6"),
+                            Code = "GRAMIN BANK OF ARYAVART",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 68,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "GRAMIN BANK OF ARYAVART"
+                        },
+                        new
+                        {
+                            Id = new Guid("81af9ae5-bea1-4b5d-97dc-0fdc53e257f0"),
+                            Code = "GUJARAT STATE COOPERATIVE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 69,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "GUJARAT STATE COOPERATIVE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("cc280009-0b08-4b82-833d-d7748ea80c8b"),
+                            Code = "GULSHAN MERCANTILE URBAN CO OPERATIVE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 70,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "GULSHAN MERCANTILE URBAN CO OPERATIVE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("d9aaf2dc-c8eb-4f91-9c9d-5a27a90e4bf6"),
+                            Code = "HARYANA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 71,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "HARYANA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("6667c3bf-caeb-4df4-94c4-7731840e0d58"),
+                            Code = "HDFC BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 72,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "HDFC BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("506e065c-1145-445c-8e44-3bc2ae61795f"),
+                            Code = "HE SHAMRAO VITHAL CO-?OPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 73,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "HE SHAMRAO VITHAL CO-?OPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("cdd50902-9585-4e33-98cd-972756a623f2"),
+                            Code = "HIMACHAL PRADESH STATE COOPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 74,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "HIMACHAL PRADESH STATE COOPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("5e546a14-b6e7-4bf0-aa4d-6de4dfcb46f1"),
+                            Code = "HSBC",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 75,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "HSBC"
+                        },
+                        new
+                        {
+                            Id = new Guid("a2f4be03-7db7-45ff-8cdc-4f7b0485918c"),
+                            Code = "ICICI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 76,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ICICI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("fc6680fa-99c9-4646-8dd2-12887d7661e2"),
+                            Code = "IDBI BANK LTD.",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 77,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "IDBI BANK LTD."
+                        },
+                        new
+                        {
+                            Id = new Guid("d3af658a-fc77-4c80-b262-1d039eb1dec2"),
+                            Code = "IDFC BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 78,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "IDFC BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("bdf0f3de-28c9-4d89-9c81-7c653a918993"),
+                            Code = "IDFC FIRST BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 79,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "IDFC FIRST BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("d851b272-f5fc-4658-8105-3946332fcf40"),
+                            Code = "INDIA POST PAYMENTS BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 80,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "INDIA POST PAYMENTS BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("d2b58ba4-26d7-4a81-8c25-286ac853c2df"),
+                            Code = "INDIAN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 81,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "INDIAN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("1d40b380-395d-46d4-89f0-465acd681341"),
+                            Code = "INDIAN OVERSEAS BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 82,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "INDIAN OVERSEAS BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("4a57a69e-b303-4ca3-90f7-3188795504f5"),
+                            Code = "INDUSLND BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 83,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "INDUSLND BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("1e7add2a-56cc-4f97-8326-58881199b2d2"),
+                            Code = "J D C C BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 84,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "J D C C BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("1cbaa997-f5ef-4de8-8e13-3e5bfb67ddec"),
+                            Code = "JALGAON JANTA SAHAKARI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 85,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "JALGAON JANTA SAHAKARI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("1d8158dd-394f-4f0b-be1d-ddc316d629f6"),
+                            Code = "JALGAON PEOPLES CO-OPERATIVE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 86,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "JALGAON PEOPLES CO-OPERATIVE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("66c93611-d25b-47ab-9dca-9cccc99c5b22"),
+                            Code = "JAMMU AND KASHMIR BANK LIMITED",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 87,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "JAMMU AND KASHMIR BANK LIMITED"
+                        },
+                        new
+                        {
+                            Id = new Guid("8b2b6420-6456-443d-aeb5-833ab1ba8d78"),
+                            Code = "JAMSHEDPUR URBAN CO-OPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 88,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "JAMSHEDPUR URBAN CO-OPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("a9933762-7b96-484e-b653-40d90035a28b"),
+                            Code = "JANAKALYAN SAHAKRI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 89,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "JANAKALYAN SAHAKRI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("6ae1e141-64f9-4ccc-9836-9ef6cd8851ed"),
+                            Code = "JANASEVA SAHAKARI BANK (BORIVLI) LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 90,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "JANASEVA SAHAKARI BANK (BORIVLI) LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("32d03d7c-1cd6-4b26-8213-84444f0e0912"),
+                            Code = "JANTA SAHAKARI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 91,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "JANTA SAHAKARI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("a95d41f6-9727-4708-aab9-763fb5efcf2d"),
+                            Code = "JHARKHAND RAJYA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 92,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "JHARKHAND RAJYA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("fb1931d2-b3d0-4fac-b2fb-0b33aabbb8cb"),
+                            Code = "JHARKHAND STATE COOPERATIVE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 93,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "JHARKHAND STATE COOPERATIVE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("9b10c320-7aa9-46d9-ab0f-37a728e0c0c8"),
+                            Code = "KANGRA CENTRAL COOPERATIVE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 94,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "KANGRA CENTRAL COOPERATIVE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("59d3dc35-ee3a-47ea-bc6a-5c3bde26cd36"),
+                            Code = "KANPUR KSHETRIYA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 95,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "KANPUR KSHETRIYA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("11d341bb-fd22-4b5b-80c2-c2e5cbe17a28"),
+                            Code = "KARNATAKA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 96,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "KARNATAKA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("ab1320da-abfa-42be-9b6c-c001ab5ee82f"),
+                            Code = "KARNATAKA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 97,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "KARNATAKA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("5bfea989-2e26-477f-a8bd-bc46f94dd8e8"),
+                            Code = "KARNATAKA VIKASH GRAMEEN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 98,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "KARNATAKA VIKASH GRAMEEN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("0fd3d106-31af-4ade-abc4-e44f974d1cf6"),
+                            Code = "KARUR VYSYA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 99,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "KARUR VYSYA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("f3be7c43-fab1-477d-adae-899a0399a767"),
+                            Code = "KASHI GOMTI SAMYUT GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 100,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "KASHI GOMTI SAMYUT GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("da20892f-6629-4bc2-967c-10569ad5523b"),
+                            Code = "KAVERI GRAMEENA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 101,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "KAVERI GRAMEENA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("8339f95e-ffbb-4027-a26b-1120d5f6294e"),
+                            Code = "KERALA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 102,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "KERALA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("1eefeb0e-eb56-4520-88ca-057e467973c7"),
+                            Code = "KHAMGAON URBAN CO-OP BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 103,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "KHAMGAON URBAN CO-OP BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("074cc2d0-8a54-48cc-9a5e-de32527c2e8b"),
+                            Code = "KOTAK MAHINDRA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 104,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "KOTAK MAHINDRA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("1e72b96b-f49f-4c6f-878d-6302d75d8185"),
+                            Code = "KSHETRIYA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 105,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "KSHETRIYA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("e53b9ca7-f1d0-40eb-af88-a2fe9e692aea"),
+                            Code = "LAKSHMI VILAS BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 106,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "LAKSHMI VILAS BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("c48f72a8-63f8-479b-af11-3c3e0680e299"),
+                            Code = "LONAVALA SAHAKARI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 107,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "LONAVALA SAHAKARI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("2b7c1cd8-f170-4c32-bbd5-dca367ae91ca"),
+                            Code = "LUCKNOW KSHETRIYA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 108,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "LUCKNOW KSHETRIYA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("e417e32c-fbf9-446e-ae31-7932d2834c5f"),
+                            Code = "MADHYA BIHAR GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 109,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "MADHYA BIHAR GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("f90fcece-d8cb-48d4-9f5d-a8ca86c87127"),
+                            Code = "MAHARASHTRA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 110,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "MAHARASHTRA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("10047970-d4d3-4b5f-a83d-2e3a95729bb7"),
+                            Code = "MANSAROVAR URBAN COOPRATIVE BANK LIMITED",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 111,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "MANSAROVAR URBAN COOPRATIVE BANK LIMITED"
+                        },
+                        new
+                        {
+                            Id = new Guid("8c91a354-e332-4506-be4a-66c625283b06"),
+                            Code = "NAGAR VIKAS SAHKARI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 112,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "NAGAR VIKAS SAHKARI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("0c0944c1-8304-4b11-9289-92d0d8f41505"),
+                            Code = "NAINITAL BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 113,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "NAINITAL BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("16fc8083-06bc-4021-9ce3-3630b1103343"),
+                            Code = "NAINITAL DISTRICT COOPERATIVE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 114,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "NAINITAL DISTRICT COOPERATIVE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("d63edf62-a28c-423b-8c96-5e5dc850c37c"),
+                            Code = "NARMADA JHABUA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 115,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "NARMADA JHABUA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("faf8c4cb-a7bf-47eb-8f7e-6e2ff79cc64b"),
+                            Code = "NATIONAL SECURITIES DEPOSITORY LIMITED",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 116,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "NATIONAL SECURITIES DEPOSITORY LIMITED"
+                        },
+                        new
+                        {
+                            Id = new Guid("a8f13e58-1083-44ce-b366-7dd4aa6cd37f"),
+                            Code = "NAVANAGARA URBAN COOP BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 117,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "NAVANAGARA URBAN COOP BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("be47744a-9dee-4e48-8a16-3e43d43076d7"),
+                            Code = "NEW DELHI - ORIENTAL BANK OF COMMERCE -",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 118,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "NEW DELHI - ORIENTAL BANK OF COMMERCE -"
+                        },
+                        new
+                        {
+                            Id = new Guid("1dab31da-a847-4b4c-a032-94c03f702731"),
+                            Code = "NEW INDIA CO-OPERATIVE BANK LTD.",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 119,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "NEW INDIA CO-OPERATIVE BANK LTD."
+                        },
+                        new
+                        {
+                            Id = new Guid("074c4fab-6a47-4267-bb32-75d70d68dfa3"),
+                            Code = "NKGSB CO-OP BANK LTD.",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 120,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "NKGSB CO-OP BANK LTD."
+                        },
+                        new
+                        {
+                            Id = new Guid("22441372-21a3-49b0-8154-fac693f0c4bf"),
+                            Code = "NONE",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 121,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "NONE"
+                        },
+                        new
+                        {
+                            Id = new Guid("c35c7e86-8060-4b24-ba75-4270489e1d60"),
+                            Code = "ODISHA GRAMYA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 122,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ODISHA GRAMYA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("326ba258-460e-4a7f-8259-7db6df73e24e"),
+                            Code = "ORIENTAL BANK OF COMMERCE",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 123,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ORIENTAL BANK OF COMMERCE"
+                        },
+                        new
+                        {
+                            Id = new Guid("acf27871-27a0-4016-8f4a-8a46cfbefa52"),
+                            Code = "PALLAVAN GRAMA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 124,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "PALLAVAN GRAMA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("d289797d-d204-47b3-8b62-c53097537c57"),
+                            Code = "PARSIK SAHAKARI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 125,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "PARSIK SAHAKARI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("d97e10f6-7d1d-47c0-af5f-049bd608cf64"),
+                            Code = "PATLIPUTRA CENTRAL CO-OPERATIVE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 126,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "PATLIPUTRA CENTRAL CO-OPERATIVE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("e4f4417b-6c02-4329-995a-b0c1ac90960c"),
+                            Code = "PAYMENTS BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 127,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "PAYMENTS BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("d03474f8-db96-4ecb-a169-37aa8e1a7892"),
+                            Code = "PAYTM BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 128,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "PAYTM BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("728126d8-4ad8-409f-8139-dd4e3f72cbdc"),
+                            Code = "PITHORAGARH JILA SAHKARI BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 129,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "PITHORAGARH JILA SAHKARI BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("551183d4-5e5e-4b10-9081-82677c2bb1a7"),
+                            Code = "PRAGATHI KRISHNA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 130,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "PRAGATHI KRISHNA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("facef942-c5af-4932-a5c9-5400ddd2ced7"),
+                            Code = "PRATHAMA UP GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 131,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "PRATHAMA UP GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("17a08039-0109-4035-8289-3a5e28dc27a9"),
+                            Code = "PRATHMA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 132,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "PRATHMA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("509e595b-14b5-475f-8afd-54ff889b2146"),
+                            Code = "PRERANA CO OPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 133,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "PRERANA CO OPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("3c195c5b-04a2-4fc6-84a8-26be17484c49"),
+                            Code = "PUNE CANTOMENT SAHAKARI BANK LTD.",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 134,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "PUNE CANTOMENT SAHAKARI BANK LTD."
+                        },
+                        new
+                        {
+                            Id = new Guid("ebba3866-aa39-4495-bbbe-f9b89e3ff47f"),
+                            Code = "PUNE DISTRICT CENTRAL CO-OP BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 135,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "PUNE DISTRICT CENTRAL CO-OP BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("d7544d0c-e369-46bc-bd4a-1d5431f1bd07"),
+                            Code = "PUNJAB AND SINDH BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 136,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "PUNJAB AND SINDH BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("fa9a6e7c-2fcc-425b-95d6-7bfb77509b69"),
+                            Code = "PUNJAB GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 137,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "PUNJAB GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("14e6fbca-fe93-4656-b541-3905af47760d"),
+                            Code = "PUNJAB NATIONAL BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 138,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "PUNJAB NATIONAL BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("a41dcdf2-26fb-4b5c-8873-7fa237672202"),
+                            Code = "PURVANCHAL GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 139,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "PURVANCHAL GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("dcff5c6e-704b-49c2-92c9-22bfa27de152"),
+                            Code = "RAEBARELI KSHETRIYA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 140,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "RAEBARELI KSHETRIYA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("2ef05166-eee9-40a2-aaa5-47d0558f1014"),
+                            Code = "RAJASTHAN MARUDHARA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 141,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "RAJASTHAN MARUDHARA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("b2f1c747-f6b6-4708-bf08-6361c634417f"),
+                            Code = "RAJDHANI NAGAR SAHKARI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 142,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "RAJDHANI NAGAR SAHKARI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("8d38a42c-1f6a-4fa1-ac2d-12dfeda9c0c2"),
+                            Code = "RBL BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 143,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "RBL BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("999bcb61-5781-4946-9708-bd5f64f77f32"),
+                            Code = "SAHKARI BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 144,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "SAHKARI BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("4dc7c776-9b8b-4b0d-888d-35213cf8673a"),
+                            Code = "SAPTAGIRI GRAMEENA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 145,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "SAPTAGIRI GRAMEENA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("485eab65-286f-4f06-8e3b-837e6b322b2d"),
+                            Code = "SARASWAT BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 146,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "SARASWAT BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("7d30573a-0381-459f-bb8a-464673b042b3"),
+                            Code = "SARVA HARAYANA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 147,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "SARVA HARAYANA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("1025537c-1ad4-4f4c-8c8e-e64f8bd06299"),
+                            Code = "SARVA UP GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 148,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "SARVA UP GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("c2c28f8c-6d90-4707-a383-d3915c910962"),
+                            Code = "SARYU GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 149,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "SARYU GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("be0ab054-adcf-412c-8846-e72213c2552d"),
+                            Code = "SHAHJAHANPUR KSHETRIYA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 150,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "SHAHJAHANPUR KSHETRIYA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("09147bf6-6c31-4e22-8495-8496ea5e4fcb"),
+                            Code = "SHARAD NAGARI SAHAKARI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 151,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "SHARAD NAGARI SAHAKARI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("a64ea08c-32f1-48ff-81e4-486784bb86fb"),
+                            Code = "SHINHAN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 152,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "SHINHAN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("fb913603-a66e-4541-bda2-4e4ad69b0420"),
+                            Code = "SOUTH INDIAN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 153,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "SOUTH INDIAN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("10717b2a-4663-4617-92bb-518d7b9ce925"),
+                            Code = "STANDARD CHARTERED BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 154,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "STANDARD CHARTERED BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("b94c2851-07b3-4f52-bacd-31a4026667fe"),
+                            Code = "STATE BANK OF BIKANER &amp; JAIPUR",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 155,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "STATE BANK OF BIKANER &amp; JAIPUR"
+                        },
+                        new
+                        {
+                            Id = new Guid("17749cd7-6c60-4ff0-b2d4-c5f8c0d8fe5b"),
+                            Code = "STATE BANK OF HYDERABAD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 156,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "STATE BANK OF HYDERABAD"
+                        },
+                        new
+                        {
+                            Id = new Guid("700cbe4b-dae5-4395-b34c-b553fa5ee0f9"),
+                            Code = "STATE BANK OF INDIA",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 157,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "STATE BANK OF INDIA"
+                        },
+                        new
+                        {
+                            Id = new Guid("f55889f8-a69d-4228-b571-cc0d00a9c62a"),
+                            Code = "STATE BANK OF MYSORE",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 158,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "STATE BANK OF MYSORE"
+                        },
+                        new
+                        {
+                            Id = new Guid("37dc06ee-fde4-4210-b399-87bd21f83691"),
+                            Code = "STATE BANK OF PATIALA",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 159,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "STATE BANK OF PATIALA"
+                        },
+                        new
+                        {
+                            Id = new Guid("453477bd-dbad-48e4-95a3-42c945d7e879"),
+                            Code = "STATE BANK OF TRAVANCORE",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 160,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "STATE BANK OF TRAVANCORE"
+                        },
+                        new
+                        {
+                            Id = new Guid("7a5b936f-d429-42c8-b3a8-9e8bcd5e70fe"),
+                            Code = "STERLING URBAN COOPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 161,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "STERLING URBAN COOPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("b744db4a-6528-401e-826d-78c3b9713569"),
+                            Code = "SUCO BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 162,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "SUCO BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("475a8c81-3497-4cb1-9fdf-927c5cf79b44"),
+                            Code = "SURYODAY SMALL FINANCE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 163,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "SURYODAY SMALL FINANCE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("083d844f-2679-48a3-8be6-f7d70c4399d6"),
+                            Code = "SVC CO-OPERATIVE BANK LTD.",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 164,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "SVC CO-OPERATIVE BANK LTD."
+                        },
+                        new
+                        {
+                            Id = new Guid("9249654e-45f5-4595-8794-90b24f0c89d3"),
+                            Code = "SYNDICATE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 165,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "SYNDICATE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("a32b4d47-de6e-48ba-b17f-c78bd7a12c3b"),
+                            Code = "TAMIL NADU GRAMA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 166,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "TAMIL NADU GRAMA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("a70feff6-dcad-4509-b4a4-8da027ae6a43"),
+                            Code = "TAMILNAD MERCANTILE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 167,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "TAMILNAD MERCANTILE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("98774dad-9769-416b-9be5-be6b3c48f3a7"),
+                            Code = "TEHRI GARHWAL ZILA SAHKARI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 168,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "TEHRI GARHWAL ZILA SAHKARI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("a1502c73-540c-4c42-a21b-b6b9c19cbcf2"),
+                            Code = "TELANGANA GRAMEENA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 169,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "TELANGANA GRAMEENA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("4cd9fdd0-a5b1-4cad-bb00-0d588ddb6a09"),
+                            Code = "TELANGANA STATE CO-OPERATIVE APEX BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 170,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "TELANGANA STATE CO-OPERATIVE APEX BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("50884196-df3c-4ff0-a531-de9e77eaee86"),
+                            Code = "THE ANDHRA PRADESH STATE COOP BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 172,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE ANDHRA PRADESH STATE COOP BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("8b3fe5d9-98d2-456d-800a-99d26ee41fc1"),
+                            Code = "THE BUNDI CENTRAL CO-OPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 173,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE BUNDI CENTRAL CO-OPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("3959ae43-cf9e-40d1-95e2-e839002bcf01"),
+                            Code = "THE COSMOS CO-OPERATIVE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 174,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE COSMOS CO-OPERATIVE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("80101a88-d27c-4866-8f2c-22bad564dab9"),
+                            Code = "THE DECCAN MERCHANTS CO-OPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 175,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE DECCAN MERCHANTS CO-OPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("d29e8fb6-32fd-4d77-878e-4737d164dfe5"),
+                            Code = "THE DELHI STATE COOPERATIVE BANK LTD.",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 176,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE DELHI STATE COOPERATIVE BANK LTD."
+                        },
+                        new
+                        {
+                            Id = new Guid("50d5452e-376f-401c-b75c-2d92173952a2"),
+                            Code = "THE FEDERAL BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 177,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE FEDERAL BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("4768c653-8f00-4d1e-b959-dc9f05665e20"),
+                            Code = "THE GAYATRI COOPERATIVE URBAN BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 178,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE GAYATRI COOPERATIVE URBAN BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("68cf47b6-05c0-447f-9ea1-d4d07feffa54"),
+                            Code = "THE HINDUSTAN CO-OPERATIVE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 179,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE HINDUSTAN CO-OPERATIVE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("a6239563-3e25-47f5-b40f-b7c339b8bc1b"),
+                            Code = "THE HUBALI URBAN COOPERATIVE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 180,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE HUBALI URBAN COOPERATIVE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("0fc3071a-a205-44f1-b01a-dea02f40e44d"),
+                            Code = "THE JALGAON DISTRICT CENTRAL CO-OPERATIVE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 181,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE JALGAON DISTRICT CENTRAL CO-OPERATIVE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("f38b35bf-5ce6-4903-ac3e-c9af77381c95"),
+                            Code = "THE JALGAON PEOPLES CO-OPERATIVE BANK LTD.",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 182,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE JALGAON PEOPLES CO-OPERATIVE BANK LTD."
+                        },
+                        new
+                        {
+                            Id = new Guid("4fd7931d-8483-4e04-9e07-08118ea218d6"),
+                            Code = "THE JAMMU &amp; KASHMIR BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 183,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE JAMMU &amp; KASHMIR BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("a2954730-4438-4c77-b6e2-8b8278ba04d1"),
+                            Code = "THE KALYAN JANATA SAHAKARI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 184,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE KALYAN JANATA SAHAKARI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("1b756edb-e4f6-4aa3-aeec-1f758d9e4eda"),
+                            Code = "THE KANAKAMAHALAKSHMI CO-OPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 185,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE KANAKAMAHALAKSHMI CO-OPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("475506dd-7255-43e3-9f35-45b472889ff3"),
+                            Code = "THE KANGRA CENTRAL CO-OPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 186,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE KANGRA CENTRAL CO-OPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("0d30f1e2-c8de-4e7b-a123-1fb15dfd89c5"),
+                            Code = "THE KARUR VYSYA BANK LIMITED",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 187,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE KARUR VYSYA BANK LIMITED"
+                        },
+                        new
+                        {
+                            Id = new Guid("c6a0a30f-bacf-4f42-8e70-bfb6cb2488b8"),
+                            Code = "THE KURMANCHAL NAGR SAHKARI BANK LTD.",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 188,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE KURMANCHAL NAGR SAHKARI BANK LTD."
+                        },
+                        new
+                        {
+                            Id = new Guid("e4336178-8291-4edd-8206-dbff849a2b96"),
+                            Code = "THE LAKSHMI VILAS BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 189,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE LAKSHMI VILAS BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("b464e5a5-9e1a-46db-9af1-dd474a819f76"),
+                            Code = "THE MUMBAI DISTRICT CENTRAL COOPERATIVE BANK LIMIT",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 190,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE MUMBAI DISTRICT CENTRAL COOPERATIVE BANK LIMIT"
+                        },
+                        new
+                        {
+                            Id = new Guid("67fca534-82c9-4711-8ad2-2d5435ec5f8a"),
+                            Code = "THE NAINITAL BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 191,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE NAINITAL BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("b3f9f3a2-2b0c-4165-a4e3-8c454f4d498f"),
+                            Code = "THE NASIK MERCHANTS CO-OP BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 192,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE NASIK MERCHANTS CO-OP BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("b0021989-a576-4672-a20e-e7188b4edf6f"),
+                            Code = "THE NATIONAL BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 193,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE NATIONAL BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("31de070c-96e2-487c-b491-57ceaf97a212"),
+                            Code = "THE NAWANAGAR CO-OPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 194,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE NAWANAGAR CO-OPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("5dfca64d-15d2-41d8-a18e-9cae3f6a9420"),
+                            Code = "THE RATNAKAR BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 195,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE RATNAKAR BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("4ae80e09-1261-4098-b5da-c2df2b15e76e"),
+                            Code = "THE SARASWAT CO-OPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 196,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE SARASWAT CO-OPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("0d0f14ff-d4b8-43d4-aac7-ec1278f03fba"),
+                            Code = "THE SATARA SAHAKARI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 197,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE SATARA SAHAKARI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("7808d875-549c-4921-96cd-8504d68d0545"),
+                            Code = "THE SHAMRAO VITHAL CO-OPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 198,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE SHAMRAO VITHAL CO-OPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("9a655a53-6255-4649-8ee2-90caa7650da5"),
+                            Code = "THE TAMILNADU STATE APEX COOPERATIVE BANK LIMITED",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 199,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE TAMILNADU STATE APEX COOPERATIVE BANK LIMITED"
+                        },
+                        new
+                        {
+                            Id = new Guid("2b479133-9d7d-4bbd-83e0-4447c541f8cf"),
+                            Code = "THE THANE BHARAT SAHAKARI BANK LIMITED",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 200,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE THANE BHARAT SAHAKARI BANK LIMITED"
+                        },
+                        new
+                        {
+                            Id = new Guid("ca90e938-9f03-423b-a68a-8e951d2e9f3c"),
+                            Code = "THE THANE DISTRICT CENTRAL CO. OP. BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 201,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE THANE DISTRICT CENTRAL CO. OP. BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("7199840d-b48f-4bf7-9a49-a066d31099b7"),
+                            Code = "THE VISAKHAPATNAM CO-OP BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 202,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE VISAKHAPATNAM CO-OP BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("02389832-11f7-44f3-b3db-c6e8c2e79395"),
+                            Code = "THE WEST BENGAL STATE COOPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 203,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "THE WEST BENGAL STATE COOPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("de597b4f-adcd-4dcb-99d5-3094ea036561"),
+                            Code = "TJSB SAHAKARI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 204,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "TJSB SAHAKARI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("4ccd81c3-cc3a-493a-a490-737ce82cca1a"),
+                            Code = "UCO BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 207,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "UCO BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("5d16dc6b-4cd9-442d-b9eb-7443adaeba78"),
+                            Code = "UJJIVAN SMALL FINANCE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 208,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "UJJIVAN SMALL FINANCE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("fe74423b-2e4e-4caf-bbcf-d6224414f433"),
+                            Code = "UJJIVAN SMALL FINANCE BANK LTD.",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 209,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "UJJIVAN SMALL FINANCE BANK LTD."
+                        },
+                        new
+                        {
+                            Id = new Guid("aeb27e92-88a5-4ada-8c53-70d7e0973c7e"),
+                            Code = "UNION BANK OF INDIA",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 210,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "UNION BANK OF INDIA"
+                        },
+                        new
+                        {
+                            Id = new Guid("de7bd02c-219a-45e2-b81e-817b47b62656"),
+                            Code = "UNITED BANK OF INDIA",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 211,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "UNITED BANK OF INDIA"
+                        },
+                        new
+                        {
+                            Id = new Guid("0d667980-7a91-4510-88a4-90e14ac9a458"),
+                            Code = "URBAN CO-OPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 212,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "URBAN CO-OPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("687ab5ba-a7f7-4b02-88a2-427c3b9b5853"),
+                            Code = "URBAN CO-OPERATIVE BANK LTD. BAREILLY",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 213,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "URBAN CO-OPERATIVE BANK LTD. BAREILLY"
+                        },
+                        new
+                        {
+                            Id = new Guid("07911c5f-aaa9-46c1-ad91-ff73cf9d6041"),
+                            Code = "UTKAL GRAMYA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 214,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "UTKAL GRAMYA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("c085de7e-4ad9-4e4f-8e58-092094daf631"),
+                            Code = "UTKARSH SMALL FINANCE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 215,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "UTKARSH SMALL FINANCE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("5d909461-f189-4c73-9f53-9fa8c67a1640"),
+                            Code = "UTTAR BANGA KHETRIYA GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 216,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "UTTAR BANGA KHETRIYA GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("1e93e87f-9ffa-4403-ae3f-4a9edf04f278"),
+                            Code = "UTTAR BIHAR GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 217,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "UTTAR BIHAR GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("e8c96811-42a8-46f1-a6c4-25460011e17d"),
+                            Code = "UTTAR PRADESH COOPERATIVE BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 218,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "UTTAR PRADESH COOPERATIVE BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("5aa43a26-b4e1-450a-8f43-6216c5ac650f"),
+                            Code = "UTTAR PRADESH GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 219,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "UTTAR PRADESH GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("3c182fd0-c1ed-4db2-8850-ce653654e478"),
+                            Code = "UTTARAKHAND GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 220,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "UTTARAKHAND GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("08b3d7c8-2f93-498c-9008-227a56795699"),
+                            Code = "UTTARAKHAND STATE CO-OPERATIVE BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 221,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "UTTARAKHAND STATE CO-OPERATIVE BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("3928a2ae-b5b1-41b4-83e2-69b7d248cd15"),
+                            Code = "UTTARANCHAL GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 222,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "UTTARANCHAL GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("e05c3403-518c-4356-8a48-16885fdd998e"),
+                            Code = "VASAI VIKAS SAHAKARI BANK LTD",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 223,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "VASAI VIKAS SAHAKARI BANK LTD"
+                        },
+                        new
+                        {
+                            Id = new Guid("009eb91a-9bfb-400b-a080-92d87af9c5f8"),
+                            Code = "VIDHARBHA KONKAN GRAMIN BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 224,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "VIDHARBHA KONKAN GRAMIN BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("d8983048-21d6-495a-bf02-06e88290750a"),
+                            Code = "VIJAYA BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 225,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "VIJAYA BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("a208be69-88fc-4776-85ae-1080312fd1db"),
+                            Code = "YES BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 226,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "YES BANK"
+                        },
+                        new
+                        {
+                            Id = new Guid("e401236f-4423-4349-8407-afb198778b89"),
+                            Code = "ZILA SAHKARI BANK",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 227,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Name = "ZILA SAHKARI BANK"
+                        });
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Master.Branch", b =>
@@ -12437,10 +15561,8 @@ namespace MC.Persistence.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<string>("BankName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                    b.Property<Guid>("BankId")
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("CreatedByUserId")
                         .HasColumnType("char(36)");
@@ -12484,6 +15606,8 @@ namespace MC.Persistence.Migrations
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BankId");
 
                     b.HasIndex("CreatedByUserId");
 
@@ -14417,6 +17541,12 @@ namespace MC.Persistence.Migrations
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.BankAccount", b =>
                 {
+                    b.HasOne("MC.Domain.Entity.Master.Bank", "Bank")
+                        .WithMany("BankAccounts")
+                        .HasForeignKey("BankId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
                         .WithMany()
                         .HasForeignKey("CreatedByUserId")
@@ -14432,6 +17562,8 @@ namespace MC.Persistence.Migrations
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Bank");
 
                     b.Navigation("CreatedByUser");
 
@@ -15009,6 +18141,11 @@ namespace MC.Persistence.Migrations
             modelBuilder.Entity("MC.Domain.Entity.Identity.ApplicationUser", b =>
                 {
                     b.Navigation("UserProfile");
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Master.Bank", b =>
+                {
+                    b.Navigation("BankAccounts");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Menu.Menu", b =>

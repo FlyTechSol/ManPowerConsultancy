@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using MC.Application.Contracts.Logging;
 using MC.Application.Contracts.Persistence.Master;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MediatR;
 
 namespace MC.Application.Features.Master.ZipCode.Query.GetAll
 {
-    public class GetAllZipCodeQueryHandler : IRequestHandler<GetAllZipCodeQuery, List<ZipCodeDto>>
+    public class GetAllZipCodeQueryHandler : IRequestHandler<GetAllZipCodeQuery, ApiResponse<PaginatedResponse<ZipCodeDetailDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IZipCodeRepository _zipCodeRepository;
@@ -20,18 +21,17 @@ namespace MC.Application.Features.Master.ZipCode.Query.GetAll
             _zipCodeRepository = zipCodeRepository;
             _logger = logger;
         }
-
-        public async Task<List<ZipCodeDto>> Handle(GetAllZipCodeQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PaginatedResponse<ZipCodeDetailDto>>> Handle(GetAllZipCodeQuery request, CancellationToken cancellationToken)
         {
             // Query the database
-            var response = await _zipCodeRepository.GetAllDetailsAsync(cancellationToken);
+            var record = await _zipCodeRepository.GetAllDetailsAsync(request.QueryParams, cancellationToken);
 
-            // convert data objects to DTO objects
-            var data = _mapper.Map<List<ZipCodeDto>>(response);
-
-            // return list of DTO object
-            _logger.LogInformation("zip code were retrieved successfully");
-            return data;
+            return new ApiResponse<PaginatedResponse<ZipCodeDetailDto>>
+            {
+                Status = 200,
+                Message = "Success",
+                ResData = record
+            };
         }
     }
 }

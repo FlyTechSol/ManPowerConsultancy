@@ -1,6 +1,5 @@
 ﻿using MC.Application.Contracts.Persistence.Registration;
 using MC.Application.ModelDto.Registration;
-using MC.Domain.Entity.Master;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Helper;
@@ -116,7 +115,8 @@ namespace MC.Persistence.Repositories.Registration
                 Id = response.Id,
                 UserProfileId = response.UserProfileId,
                 UserProfileName = response.UserProfile != null ? response.UserProfile.FirstName + " " + response.UserProfile.LastName : string.Empty,
-                BankName = response.BankName,
+                BankId = response.BankId,
+                BankName = response.Bank.Name,
                 IFSCCode = response.IFSCCode,
                 AccountNo = response.AccountNo,
                 AccountType = response.AccountType,

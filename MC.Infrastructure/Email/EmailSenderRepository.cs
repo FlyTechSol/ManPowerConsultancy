@@ -6,7 +6,6 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
 
-
 namespace MC.Infrastructure.Email
 {
     public class EmailSenderRepository : IEmailSenderRepository
@@ -20,18 +19,18 @@ namespace MC.Infrastructure.Email
             _emailTemplateRepository = emailTemplateRepository;
         }
 
-        public async Task<bool> SendEmail(EmailMessage email)
+        public async Task<bool> SendEmail(EmailMessage email, CancellationToken cancellationToken)
         {
             // Send email via SMTP
             return await SendEmailViaSmtp(email);
         }
 
-        public async Task<bool> SendEmailUsingTemplateAsync(string recipientEmail, EmailTemplateType templateType, Dictionary<string, string> placeholders)
+        public async Task<bool> SendEmailUsingTemplateAsync(string recipientEmail, EmailTemplateType templateType, Dictionary<string, string> placeholders, CancellationToken cancellationToken)
         {
-            var template = await _emailTemplateRepository.GetEmailTemplateByEmailTemplateAsync(templateType);
+            var template = await _emailTemplateRepository.GetEmailTemplateByEmailTemplateAsync(templateType, cancellationToken);
 
-            if(template==null)
-                return false; 
+            if (template == null)
+                return false;
             // Replace placeholders in the template body
             var body = template.Body;
             var subject = template.Subject;
@@ -47,14 +46,14 @@ namespace MC.Infrastructure.Email
                 To = recipientEmail,
                 Subject = subject,
                 Body = body
-            };              
+            };
 
-            return await SendEmail(emailMessage);
+            return await SendEmail(emailMessage, cancellationToken);
         }
 
-        public async Task<bool> SendResetPasswordEmailAsync(string email, string resetLink)
+        public async Task<bool> SendResetPasswordEmailAsync(string email, string resetLink, CancellationToken cancellationToken)
         {
-            var template = await _emailTemplateRepository.GetEmailTemplateByEmailTemplateAsync(EmailTemplateType.ForgotPassword);
+            var template = await _emailTemplateRepository.GetEmailTemplateByEmailTemplateAsync(EmailTemplateType.ForgotPassword, cancellationToken);
 
             if (template == null)
                 return false;
@@ -69,7 +68,7 @@ namespace MC.Infrastructure.Email
                 Body = body
             };
 
-            return await SendEmail(emailMessage);
+            return await SendEmail(emailMessage, cancellationToken);
         }
         private async Task<bool> SendEmailViaSmtp(EmailMessage email)
         {

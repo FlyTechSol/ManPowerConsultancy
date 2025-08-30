@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MC.Application.ModelDto.Common.Pagination;
+using MC.Application.ModelDto.Master.Master;
+using MediatR;
 
 namespace MC.Application.Features.Master.Designation.Query.GetAll
 {
-    internal class GetAllDesignationQuery
+    public class GetAllDesignationQuery : IRequest<ApiResponse<PaginatedResponse<DesignationDetailDto>>>
     {
+        public QueryParams QueryParams { get; set; }
+
+        public GetAllDesignationQuery(QueryParams queryParams)
+        {
+            QueryParams = queryParams;
+        }
     }
 }

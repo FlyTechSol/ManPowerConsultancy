@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using MC.Application.Contracts.Logging;
 using MC.Application.Contracts.Persistence.Master;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MediatR;
 
 namespace MC.Application.Features.Master.Branch.Query.GetAll
 {
-    public class GetAllBranchesQueryHandler : IRequestHandler<GetAllBranchesQuery, List<BranchDetailDto>>
+    public class GetAllBranchesQueryHandler : IRequestHandler<GetAllBranchesQuery, ApiResponse<PaginatedResponse<BranchDetailDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IBranchRepository _branchRepository;
@@ -21,17 +22,17 @@ namespace MC.Application.Features.Master.Branch.Query.GetAll
             _logger = logger;
         }
 
-        public async Task<List<BranchDetailDto>> Handle(GetAllBranchesQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PaginatedResponse<BranchDetailDto>>> Handle(GetAllBranchesQuery request, CancellationToken cancellationToken)
         {
             // Query the database
-            var record = await _branchRepository.GetAllDetailsAsync(cancellationToken);
+            var record = await _branchRepository.GetAllDetailsAsync(request.QueryParams, cancellationToken);
 
-            // convert data objects to DTO objects
-            var data = _mapper.Map<List<BranchDetailDto>>(record);
-
-            // return list of DTO object
-            _logger.LogInformation("Branch were retrieved successfully");
-            return data;
+            return new ApiResponse<PaginatedResponse<BranchDetailDto>>
+            {
+                Status = 200,
+                Message = "Success",
+                ResData = record
+            };
         }
     }
 }

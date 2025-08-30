@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using MC.Application.Contracts.Logging;
 using MC.Application.Contracts.Persistence.Master;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MediatR;
 
 namespace MC.Application.Features.Master.CasteCategory.Query.GetAll
 {
-    public class GetAllCasteCategoryQueryHandler : IRequestHandler<GetAllCasteCategoryQuery, List<CasteCategoryDto>>
+    public class GetAllCasteCategoryQueryHandler : IRequestHandler<GetAllCasteCategoryQuery, ApiResponse<PaginatedResponse<CasteCategoryDetailDto>>>
     {
         private readonly IMapper _mapper;
         private readonly ICasteCategoryRepository _casteCategoryRepository;
@@ -20,18 +21,17 @@ namespace MC.Application.Features.Master.CasteCategory.Query.GetAll
             _casteCategoryRepository = casteCategoryRepository;
             _logger = logger;
         }
-
-        public async Task<List<CasteCategoryDto>> Handle(GetAllCasteCategoryQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PaginatedResponse<CasteCategoryDetailDto>>> Handle(GetAllCasteCategoryQuery request, CancellationToken cancellationToken)
         {
             // Query the database
-            var record = await _casteCategoryRepository.GetAllDetailsAsync(cancellationToken);
+            var record = await _casteCategoryRepository.GetAllDetailsAsync(request.QueryParams, cancellationToken);
 
-            // convert data objects to DTO objects
-            var data = _mapper.Map<List<CasteCategoryDto>>(record);
-
-            // return list of DTO object
-            _logger.LogInformation("Caste category were retrieved successfully");
-            return data;
+            return new ApiResponse<PaginatedResponse<CasteCategoryDetailDto>>
+            {
+                Status = 200,
+                Message = "Success",
+                ResData = record
+            };
         }
     }
 }
