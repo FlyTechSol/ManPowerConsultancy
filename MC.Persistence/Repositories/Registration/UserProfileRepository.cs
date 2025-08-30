@@ -76,7 +76,7 @@ namespace MC.Persistence.Repositories.Registration
                 })
                 .FirstOrDefaultAsync(cancellationToken);
         }
-        public async Task<Guid> CreateUserProfileAsync(UserProfileDto request)
+        public async Task<Guid> CreateUserProfileAsync(UserProfileDto request, CancellationToken cancellationToken)
         {
             var RegId = await _registrationIdGeneratorRepository.GetNextRegistrationIdAsync(request.CompanyId);
 
@@ -115,7 +115,7 @@ namespace MC.Persistence.Repositories.Registration
                     { "UserName", $"{userProfile.FirstName} {(userProfile.LastName ?? "")}".Trim() },
                     { "DateOfJoining", userProfile.DateOfJoining.ToString("dd MMM yyyy") }
                 };
-                var emailsend = await _emailSenderRepository.SendEmailUsingTemplateAsync(userProfile.Email, EmailTemplateType.StaffCreated, replacements);
+                var emailsend = await _emailSenderRepository.SendEmailUsingTemplateAsync(userProfile.Email, EmailTemplateType.StaffCreated, replacements, cancellationToken);
             }
             // Upload profile picture if provided
             if (request.ProfilePicture != null)

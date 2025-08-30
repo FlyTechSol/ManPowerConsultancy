@@ -8,7 +8,8 @@ namespace MC.Application.ModelDto.Registration
         public Guid UserProfileId { get; set; }
         public string UserProfileName { get; set; } = string.Empty;
         public string EmployeeNumber { get; set; } = string.Empty;
-        public string BankName { get; set; } = string.Empty;
+        public Guid BankId { get; set; }
+        public string BankName { get; set; } = null!;
         public string IFSCCode { get; set; } = string.Empty;
         public string AccountNo { get; set; } = string.Empty;
         public AccountType AccountType { get; set; }

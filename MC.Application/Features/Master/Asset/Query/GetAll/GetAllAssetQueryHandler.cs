@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using MC.Application.Contracts.Logging;
 using MC.Application.Contracts.Persistence.Master;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MediatR;
 
 namespace MC.Application.Features.Master.Asset.Query.GetAll
 {
-    public class GetAllAssetQueryHandler : IRequestHandler<GetAllAssetQuery, List<AssetDto>>
+    public class GetAllAssetQueryHandler : IRequestHandler<GetAllAssetQuery, ApiResponse<PaginatedResponse<AssetDetailDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IAssetRepository _assetRepository;
@@ -21,17 +22,17 @@ namespace MC.Application.Features.Master.Asset.Query.GetAll
             _logger = logger;
         }
 
-        public async Task<List<AssetDto>> Handle(GetAllAssetQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PaginatedResponse<AssetDetailDto>>> Handle(GetAllAssetQuery request, CancellationToken cancellationToken)
         {
             // Query the database
-            var record = await _assetRepository.GetAllDetailsAsync(cancellationToken);
+            var record = await _assetRepository.GetAllDetailsAsync(request.QueryParams, cancellationToken);
 
-            // convert data objects to DTO objects
-            var data = _mapper.Map<List<AssetDto>>(record);
-
-            // return list of DTO object
-            _logger.LogInformation("Asset were retrieved successfully");
-            return data;
+            return new ApiResponse<PaginatedResponse<AssetDetailDto>>
+            {
+                Status = 200,
+                Message = "Success",
+                ResData = record
+            };
         }
     }
 }

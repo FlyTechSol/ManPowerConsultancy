@@ -3,6 +3,7 @@ using MC.Application.Features.Master.Title.Command.Delete;
 using MC.Application.Features.Master.Title.Command.Update;
 using MC.Application.Features.Master.Title.Query.GetAll;
 using MC.Application.Features.Master.Title.Query.GetById;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -22,12 +23,11 @@ namespace MC.API.Controllers.Master
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<TitleDto>>> Get([FromQuery] bool? isMale, CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<TitleDetailDto>>>> GetAll([FromQuery] QueryParams queryParams, [FromQuery] bool? isMale, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllTitleQuery { IsMale = isMale }, cancellationToken);
-            return response;
+            var response = await _mediator.Send(new GetAllTitleQuery(queryParams, isMale), cancellationToken);
+            return Ok(response);
         }
-
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TitleDetailDto>> Get(Guid id, CancellationToken cancellationToken)

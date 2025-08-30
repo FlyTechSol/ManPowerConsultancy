@@ -3,6 +3,7 @@ using MC.Application.Features.Master.Bank.Command.Delete;
 using MC.Application.Features.Master.Bank.Command.Update;
 using MC.Application.Features.Master.Bank.Query.GetAll;
 using MC.Application.Features.Master.Bank.Query.GetById;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -20,12 +21,11 @@ namespace MC.API.Controllers.Master
         {
             _mediator = mediator;
         }
-
         [HttpGet]
-        public async Task<ActionResult<List<BankDto>>> GetAll(CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<BankDetailDto>>>> GetAll([FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllBankQuery(), cancellationToken);
-            return response;
+            var response = await _mediator.Send(new GetAllBankQuery(queryParams), cancellationToken);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]

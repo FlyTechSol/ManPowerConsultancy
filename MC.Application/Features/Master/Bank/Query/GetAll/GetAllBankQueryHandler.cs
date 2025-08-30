@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using MC.Application.Contracts.Logging;
 using MC.Application.Contracts.Persistence.Master;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MediatR;
 
 namespace MC.Application.Features.Master.Bank.Query.GetAll
 {
-    public class GetAllBankQueryHandler : IRequestHandler<GetAllBankQuery, List<BankDto>>
+    public class GetAllBankQueryHandler : IRequestHandler<GetAllBankQuery, ApiResponse<PaginatedResponse<BankDetailDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IBankRepository _bankRepository;
@@ -21,17 +22,17 @@ namespace MC.Application.Features.Master.Bank.Query.GetAll
             _logger = logger;
         }
 
-        public async Task<List<BankDto>> Handle(GetAllBankQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PaginatedResponse<BankDetailDto>>> Handle(GetAllBankQuery request, CancellationToken cancellationToken)
         {
             // Query the database
-            var record = await _bankRepository.GetAllDetailsAsync(cancellationToken);
+            var record = await _bankRepository.GetAllDetailsAsync(request.QueryParams, cancellationToken);
 
-            // convert data objects to DTO objects
-            var data = _mapper.Map<List<BankDto>>(record);
-
-            // return list of DTO object
-            _logger.LogInformation("Bank were retrieved successfully");
-            return data;
+            return new ApiResponse<PaginatedResponse<BankDetailDto>>
+            {
+                Status = 200,
+                Message = "Success",
+                ResData = record
+            };
         }
     }
 }

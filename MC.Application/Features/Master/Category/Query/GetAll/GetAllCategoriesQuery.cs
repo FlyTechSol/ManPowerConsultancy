@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MC.Application.ModelDto.Common.Pagination;
+using MC.Application.ModelDto.Master.Master;
+using MediatR;
 
 namespace MC.Application.Features.Master.Category.Query.GetAll
 {
-    internal class GetAllCategoriesQuery
+    public class GetAllCategoriesQuery : IRequest<ApiResponse<PaginatedResponse<CategoryDetailDto>>>
     {
+        public QueryParams QueryParams { get; set; }
+
+        public GetAllCategoriesQuery(QueryParams queryParams)
+        {
+            QueryParams = queryParams;
+        }
     }
 }

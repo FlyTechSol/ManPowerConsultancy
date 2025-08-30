@@ -159,7 +159,7 @@ namespace MC.Persistence.Services
                             { "EmailVerificationLink", verificationLink }
                         };
 
-                    var emailSent = await _emailSenderRepository.SendEmailUsingTemplateAsync(user.Email, EmailTemplateType.RegistrationDone, placeholders);
+                    var emailSent = await _emailSenderRepository.SendEmailUsingTemplateAsync(user.Email, EmailTemplateType.RegistrationDone, placeholders, cancellationToken);
 
                     if (!emailSent)
                     {

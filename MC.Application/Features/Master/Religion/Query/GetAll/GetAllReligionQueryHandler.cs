@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using MC.Application.Contracts.Logging;
 using MC.Application.Contracts.Persistence.Master;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MediatR;
 
 namespace MC.Application.Features.Master.Religion.Query.GetAll
 {
-    public class GetAllReligionQueryHandler : IRequestHandler<GetAllReligionQuery, List<ReligionDto>>
+    public class GetAllReligionQueryHandler : IRequestHandler<GetAllReligionQuery, ApiResponse<PaginatedResponse<ReligionDetailDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IReligionRepository _religionRepository;
@@ -20,18 +21,17 @@ namespace MC.Application.Features.Master.Religion.Query.GetAll
             _religionRepository = religionRepository;
             _logger = logger;
         }
-
-        public async Task<List<ReligionDto>> Handle(GetAllReligionQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PaginatedResponse<ReligionDetailDto>>> Handle(GetAllReligionQuery request, CancellationToken cancellationToken)
         {
             // Query the database
-            var record = await _religionRepository.GetAllDetailsAsync(cancellationToken);
+            var record = await _religionRepository.GetAllDetailsAsync(request.QueryParams, cancellationToken);
 
-            // convert data objects to DTO objects
-            var data = _mapper.Map<List<ReligionDto>>(record);
-
-            // return list of DTO object
-            _logger.LogInformation("Asset were retrieved successfully");
-            return data;
+            return new ApiResponse<PaginatedResponse<ReligionDetailDto>>
+            {
+                Status = 200,
+                Message = "Success",
+                ResData = record
+            };
         }
     }
 }

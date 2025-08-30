@@ -3,6 +3,7 @@ using MC.Application.Features.Master.HighestEducation.Command.Delete;
 using MC.Application.Features.Master.HighestEducation.Command.Update;
 using MC.Application.Features.Master.HighestEducation.Query.GetAll;
 using MC.Application.Features.Master.HighestEducation.Query.GetById;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -20,12 +21,12 @@ namespace MC.API.Controllers.Master
         {
             _mediator = mediator;
         }
-
+        
         [HttpGet]
-        public async Task<ActionResult<List<HighestEducationDto>>> Get(CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<HighestEducationDetailDto>>>> GetAll([FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllHighestEducationQuery(), cancellationToken);
-            return response;
+            var response = await _mediator.Send(new GetAllHighestEducationQuery(queryParams), cancellationToken);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]

@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using MC.Application.Contracts.Logging;
 using MC.Application.Contracts.Persistence.Master;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MediatR;
 
 namespace MC.Application.Features.Master.Gender.Query.GetAll
 {
-    public class GetAllGenderQueryHandler : IRequestHandler<GetAllGenderQuery, List<GenderDto>>
+    public class GetAllGenderQueryHandler : IRequestHandler<GetAllGenderQuery, ApiResponse<PaginatedResponse<GenderDetailDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IGenderRepository _genderRepository;
@@ -20,18 +21,16 @@ namespace MC.Application.Features.Master.Gender.Query.GetAll
             _genderRepository = genderRepository;
             _logger = logger;
         }
-
-        public async Task<List<GenderDto>> Handle(GetAllGenderQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PaginatedResponse<GenderDetailDto>>> Handle(GetAllGenderQuery request, CancellationToken cancellationToken)
         {
             // Query the database
-            var gender = await _genderRepository.GetAllDetailsAsync(cancellationToken);
-
-            // convert data objects to DTO objects
-            var data = _mapper.Map<List<GenderDto>>(gender);
-
-            // return list of DTO object
-            _logger.LogInformation("Gender were retrieved successfully");
-            return data;
+            var record = await _genderRepository.GetAllDetailsAsync(request.QueryParams, cancellationToken);
+            return new ApiResponse<PaginatedResponse<GenderDetailDto>>
+            {
+                Status = 200,
+                Message = "Success",
+                ResData = record
+            };
         }
     }
 }

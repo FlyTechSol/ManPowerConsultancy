@@ -1,7 +1,16 @@
-﻿using MC.Application.ModelDto.Master.Master;
+﻿using MC.Application.ModelDto.Common.Pagination;
+using MC.Application.ModelDto.Master.Master;
 using MediatR;
 
 namespace MC.Application.Features.Master.HighestEducation.Query.GetAll
 {
-     public record GetAllHighestEducationQuery : IRequest<List<HighestEducationDto>>;
+    public class GetAllHighestEducationQuery : IRequest<ApiResponse<PaginatedResponse<HighestEducationDetailDto>>>
+    {
+        public QueryParams QueryParams { get; set; }
+
+        public GetAllHighestEducationQuery(QueryParams queryParams)
+        {
+            QueryParams = queryParams;
+        }
+    }
 }

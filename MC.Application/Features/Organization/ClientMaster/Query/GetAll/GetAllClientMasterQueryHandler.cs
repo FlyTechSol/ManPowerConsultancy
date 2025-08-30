@@ -1,12 +1,16 @@
 ﻿using AutoMapper;
 using MC.Application.Contracts.Logging;
+using MC.Application.Contracts.Persistence.Master;
 using MC.Application.Contracts.Persistence.Organization;
+using MC.Application.Features.Master.Title.Query.GetAll;
+using MC.Application.ModelDto.Common.Pagination;
+using MC.Application.ModelDto.Master.Master;
 using MC.Application.ModelDto.Organization;
 using MediatR;
 
 namespace MC.Application.Features.Organization.ClientMaster.Query.GetAll
 {
-    public class GetAllClientMasterQueryHandler : IRequestHandler<GetAllClientMasterQuery, List<ClientMasterDetailDto>>
+    public class GetAllClientMasterQueryHandler : IRequestHandler<GetAllClientMasterQuery, ApiResponse<PaginatedResponse<ClientMasterDetailDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IClientMasterRepository _clientMasterRepository;
@@ -21,17 +25,16 @@ namespace MC.Application.Features.Organization.ClientMaster.Query.GetAll
             _logger = logger;
         }
 
-        public async Task<List<ClientMasterDetailDto>> Handle(GetAllClientMasterQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PaginatedResponse<ClientMasterDetailDto>>> Handle(GetAllClientMasterQuery request, CancellationToken cancellationToken)
         {
             // Query the database
-            var record = await _clientMasterRepository.GetAllDetailsAsync(cancellationToken);
-
-            // convert data objects to DTO objects
-            var data = _mapper.Map<List<ClientMasterDetailDto>>(record);
-
-            // return list of DTO object
-            _logger.LogInformation("Client master were retrieved successfully");
-            return data;
+            var record = await _clientMasterRepository.GetAllDetailsAsync(request.QueryParams, cancellationToken);
+            return new ApiResponse<PaginatedResponse<ClientMasterDetailDto>>
+            {
+                Status = 200,
+                Message = "Success",
+                ResData = record
+            };
         }
     }
 }

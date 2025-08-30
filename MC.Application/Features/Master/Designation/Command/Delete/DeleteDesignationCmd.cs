@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
 namespace MC.Application.Features.Master.Designation.Command.Delete
 {
-    internal class DeleteDesignationCmd
+    public class DeleteDesignationCmd : IRequest<Unit>
     {
+        public Guid Id { get; set; }
     }
 }

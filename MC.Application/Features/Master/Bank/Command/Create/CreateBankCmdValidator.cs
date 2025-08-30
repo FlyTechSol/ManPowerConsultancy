@@ -14,12 +14,12 @@ namespace MC.Application.Features.Master.Bank.Command.Create
             RuleFor(p => p.Code)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
-                .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters");
+                .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
 
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
-                .MaximumLength(70).WithMessage("{PropertyName} must be fewer than 70 characters");
+                .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
 
             RuleFor(q => q)
                 .MustAsync(CodeMustUnique)

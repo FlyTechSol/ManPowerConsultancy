@@ -1,8 +1,10 @@
 ﻿using MC.Application.Contracts.Persistence.Master;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 
 namespace MC.Persistence.Repositories.Master
 {
@@ -11,21 +13,54 @@ namespace MC.Persistence.Repositories.Master
         public BranchRepository(ApplicationDatabaseContext context) : base(context)
         {
         }
-
-        public async Task<List<BranchDetailDto>> GetAllDetailsAsync(CancellationToken cancellationToken)
+        public async Task<PaginatedResponse<BranchDetailDto>> GetAllDetailsAsync(QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var response = await _context.Branches
-               .AsNoTracking()
-               .Where(q => !q.IsDeleted)
-               .ToListAsync(cancellationToken);
+            var query = _context.Branches
+                .AsNoTracking()
+                .Where(q => !q.IsDeleted);
 
-            if (response == null || response.Count == 0)
-                return new List<BranchDetailDto>();
+            // Search filter
+            if (!string.IsNullOrWhiteSpace(queryParams.Query))
+            {
+                var search = queryParams.Query.ToLower();
+                query = query.Where(q =>
+                    q.Code.ToLower().Contains(search) ||
+                    q.Name.ToLower().Contains(search)
+                );
+            }
 
-            var dtos = response.Select(MapToDto).ToList();
-            return dtos;
+            // Total count before pagination
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            // Sorting
+            if (!string.IsNullOrWhiteSpace(queryParams.Column))
+            {
+                string column = queryParams.Column;
+                string direction = queryParams.Dir?.ToLower() == "desc" ? "descending" : "";
+
+                query = query.OrderBy($"{column} {direction}");
+            }
+            else
+            {
+                query = query.OrderBy(a => a.Code); // default sort
+            }
+
+            // Pagination
+            var data = await query
+                .Skip((queryParams.Page - 1) * queryParams.Limit)
+                .Take(queryParams.Limit)
+                .ToListAsync(cancellationToken);
+
+            var dtos = data.Select(MapToDto).ToList();
+
+            return new PaginatedResponse<BranchDetailDto>
+            {
+                Data = dtos,
+                CurrentPage = queryParams.Page,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)queryParams.Limit)
+            };
         }
-
         public async Task<BranchDetailDto?> GetDetailsAsync(Guid id, CancellationToken cancellationToken)
         {
             var response = await _context.Branches

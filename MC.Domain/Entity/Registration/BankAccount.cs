@@ -1,5 +1,6 @@
 ﻿using MC.Domain.Base;
 using MC.Domain.Entity.Enum.Registration;
+using MC.Domain.Entity.Master;
 
 namespace MC.Domain.Entity.Registration
 {
@@ -7,7 +8,8 @@ namespace MC.Domain.Entity.Registration
     {
         public Guid UserProfileId { get; set; }
         public required UserProfile UserProfile { get; set; } // Navigation property to AspNetUsers
-        public string BankName { get; set; } = string.Empty;
+        public Guid BankId { get; set; }
+        public Bank Bank { get; set; } = null!;
         public string IFSCCode { get; set; } = string.Empty;
         public string AccountNo { get; set; } = string.Empty;
         public AccountType AccountType { get; set; } 

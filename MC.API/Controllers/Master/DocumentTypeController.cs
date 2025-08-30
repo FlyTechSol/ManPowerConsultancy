@@ -4,6 +4,7 @@ using MC.Application.Features.Master.DocumentType.Command.Update;
 using MC.Application.Features.Master.DocumentType.Query.GetAll;
 using MC.Application.Features.Master.DocumentType.Query.GetAllByPurpose;
 using MC.Application.Features.Master.DocumentType.Query.GetById;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MC.Domain.Entity.Enum.Common;
 using MediatR;
@@ -15,19 +16,19 @@ namespace MC.API.Controllers.Master
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class DocumentController : ControllerBase
+    public class DocumentTypeController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public DocumentController(IMediator mediator)
+        public DocumentTypeController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DocumentTypeDto>>> Get(CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<DocumentTypeDetailDto>>>> GetAll([FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllDocumentTypeQuery(), cancellationToken);
-            return response;
+            var response = await _mediator.Send(new GetAllDocumentTypeQuery(queryParams), cancellationToken);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
@@ -39,9 +40,10 @@ namespace MC.API.Controllers.Master
 
         [HttpGet("purpose/{purpose}")]
         [ProducesResponseType(typeof(List<DocumentTypeDto>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByPurpose([FromRoute] DocumentPurpose purpose, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetByPurpose([FromRoute] DocumentPurpose purpose, [FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var query = new GetAllByPurposeQuery(purpose);
+            // Now we're passing both purpose and queryParams explicitly to the query
+            var query = new GetAllByPurposeQuery(queryParams, purpose);
             var result = await _mediator.Send(query, cancellationToken);
             return Ok(result);
         }

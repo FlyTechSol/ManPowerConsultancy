@@ -1,9 +1,11 @@
-﻿using MC.Application.Features.Master.ZipCode.Command.Create;
+﻿using MC.Application.Features.Master.Religion.Query.GetAll;
+using MC.Application.Features.Master.ZipCode.Command.Create;
 using MC.Application.Features.Master.ZipCode.Command.Delete;
 using MC.Application.Features.Master.ZipCode.Command.Update;
 using MC.Application.Features.Master.ZipCode.Query.GetAll;
 using MC.Application.Features.Master.ZipCode.Query.GetById;
 using MC.Application.Features.Master.ZipCode.Query.GetByZipCode;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -22,10 +24,10 @@ namespace MC.API.Controllers.Master
             _mediator = mediator;
         }
         [HttpGet]
-        public async Task<ActionResult<List<ZipCodeDto>>> Get(CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<ZipCodeDetailDto>>>> GetAll([FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllZipCodeQuery(), cancellationToken);
-            return response;
+            var response = await _mediator.Send(new GetAllZipCodeQuery(queryParams), cancellationToken);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]

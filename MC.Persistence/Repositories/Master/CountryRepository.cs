@@ -1,8 +1,10 @@
 ﻿using MC.Application.Contracts.Persistence.Master;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 
 namespace MC.Persistence.Repositories.Master
 {
@@ -11,23 +13,54 @@ namespace MC.Persistence.Repositories.Master
         public CountryRepository(ApplicationDatabaseContext context) : base(context)
         {
         }
-
-        public async Task<List<CountryDto>> GetAllDetailsAsync(CancellationToken cancellationToken)
+        public async Task<PaginatedResponse<CountryDetailDto>> GetAllDetailsAsync(QueryParams queryParams, CancellationToken cancellationToken)
         {
-            return await _context.Countries
-               .AsNoTracking()
-               .Where(q => !q.IsDeleted)
-               .Select(lt => new CountryDto
-               {
-                   Id = lt.Id,
-                   DisplayOrder = lt.DisplayOrder,
-                   DialCode = lt.DialCode,
-                   Code = lt.Code,
-                   Name = lt.Name,
-               })
-               .ToListAsync(cancellationToken);
-        }
+            var query = _context.Countries
+                .AsNoTracking()
+                .Where(q => !q.IsDeleted);
 
+            // Search filter
+            if (!string.IsNullOrWhiteSpace(queryParams.Query))
+            {
+                var search = queryParams.Query.ToLower();
+                query = query.Where(q =>
+                    q.Code.ToLower().Contains(search) ||
+                    q.Name.ToLower().Contains(search)
+                );
+            }
+
+            // Total count before pagination
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            // Sorting
+            if (!string.IsNullOrWhiteSpace(queryParams.Column))
+            {
+                string column = queryParams.Column;
+                string direction = queryParams.Dir?.ToLower() == "desc" ? "descending" : "";
+
+                query = query.OrderBy($"{column} {direction}");
+            }
+            else
+            {
+                query = query.OrderBy(a => a.Code); // default sort
+            }
+
+            // Pagination
+            var data = await query
+                .Skip((queryParams.Page - 1) * queryParams.Limit)
+                .Take(queryParams.Limit)
+                .ToListAsync(cancellationToken);
+
+            var dtos = data.Select(MapToDto).ToList();
+
+            return new PaginatedResponse<CountryDetailDto>
+            {
+                Data = dtos,
+                CurrentPage = queryParams.Page,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)queryParams.Limit)
+            };
+        }
         public async Task<CountryDetailDto?> GetDetailsAsync(Guid id, CancellationToken cancellationToken)
         {
             var response = await _context.Countries

@@ -3,6 +3,7 @@ using MC.Application.Features.Master.CasteCategory.Command.Delete;
 using MC.Application.Features.Master.CasteCategory.Command.Update;
 using MC.Application.Features.Master.CasteCategory.Query.GetAll;
 using MC.Application.Features.Master.CasteCategory.Query.GetById;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -20,12 +21,11 @@ namespace MC.API.Controllers.Master
         {
             _mediator = mediator;
         }
-
         [HttpGet]
-        public async Task<ActionResult<List<CasteCategoryDto>>> Get(CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<CasteCategoryDetailDto>>>> GetAll([FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllCasteCategoryQuery(), cancellationToken);
-            return response;
+            var response = await _mediator.Send(new GetAllCasteCategoryQuery(queryParams), cancellationToken);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]

@@ -3,6 +3,7 @@ using MC.Application.Features.Master.Country.Command.Delete;
 using MC.Application.Features.Master.Country.Command.Update;
 using MC.Application.Features.Master.Country.Query.GetAll;
 using MC.Application.Features.Master.Country.Query.GetById;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -22,12 +23,12 @@ namespace MC.API.Controllers.Master
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CountryDto>>> Get(CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<CountryDetailDto>>>> GetAll([FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllCountryQuery(), cancellationToken);
-            return response;
+            var response = await _mediator.Send(new GetAllCountryQuery(queryParams), cancellationToken);
+            return Ok(response);
         }
-
+               
         [HttpGet("{id}")]
         public async Task<ActionResult<CountryDetailDto>> Get(Guid id, CancellationToken cancellationToken)
         {

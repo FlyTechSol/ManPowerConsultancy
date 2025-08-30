@@ -1,7 +1,16 @@
-﻿using MC.Application.ModelDto.Organization;
+﻿using MC.Application.ModelDto.Common.Pagination;
+using MC.Application.ModelDto.Organization;
 using MediatR;
 
 namespace MC.Application.Features.Organization.Company.Query.GetAll
 {
-   public record GetAllCompanyQuery : IRequest<List<CompanyDetailDto>>;
+    public class GetAllCompanyQuery : IRequest<ApiResponse<PaginatedResponse<CompanyDetailDto>>>
+    {
+        public QueryParams QueryParams { get; set; }
+
+        public GetAllCompanyQuery(QueryParams queryParams)
+        {
+            QueryParams = queryParams;
+        }
+    }
 }

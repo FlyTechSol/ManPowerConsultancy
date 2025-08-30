@@ -4,6 +4,7 @@ using MC.Application.Features.Organization.ClientMaster.Command.Update;
 using MC.Application.Features.Organization.ClientMaster.Query.GetAll;
 using MC.Application.Features.Organization.ClientMaster.Query.GetByCompanyId;
 using MC.Application.Features.Organization.ClientMaster.Query.GetById;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Organization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -28,19 +29,18 @@ namespace MC.API.Controllers.Organization
             var response = await _mediator.Send(new GetClientMasterByIdQuery(id), cancellationToken);
             return Ok(response);
         }
-
-        [HttpGet]
-        public async Task<ActionResult<List<ClientMasterDetailDto>>> GetAll(CancellationToken cancellationToken)
+        [HttpGet("get-all-client-master")]
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<ClientMasterDetailDto>>>> GetAll([FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllClientMasterQuery(), cancellationToken);
-            return response;
+            var response = await _mediator.Send(new GetAllClientMasterQuery(queryParams), cancellationToken);
+            return Ok(response);
         }
 
-        [HttpGet("get-clinet-master-by-company-id/{companyId}")]
-        public async Task<ActionResult<List<ClientMasterDetailDto>>> GetByClientMasterId(Guid companyId, CancellationToken cancellationToken)
+        [HttpGet("get-all-by-compnay/{companyId}")]
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<ClientMasterDetailDto>>>> GetAllByCompany([FromQuery] QueryParams queryParams, Guid companyId, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetClientMasterByCompanyIdQuery(companyId), cancellationToken);
-            return response;
+            var response = await _mediator.Send(new GetClientMasterByCompanyIdQuery(queryParams, companyId), cancellationToken);
+            return Ok(response);
         }
 
         [HttpPost]

@@ -3,6 +3,7 @@ using MC.Application.Features.Organization.Company.Command.Delete;
 using MC.Application.Features.Organization.Company.Command.Update;
 using MC.Application.Features.Organization.Company.Query.GetAll;
 using MC.Application.Features.Organization.Company.Query.GetById;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Organization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -29,12 +30,12 @@ namespace MC.API.Controllers.Organization
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CompanyDetailDto>>> GetAll(CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<CompanyDetailDto>>>> GetAll([FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllCompanyQuery(), cancellationToken);
-            return response;
+            var response = await _mediator.Send(new GetAllCompanyQuery(queryParams), cancellationToken);
+            return Ok(response);
         }
-
+               
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ProducesResponseType(201)]
