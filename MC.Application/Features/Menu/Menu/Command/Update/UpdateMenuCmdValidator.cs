@@ -6,26 +6,32 @@ namespace MC.Application.Features.Menu.Menu.Command.Update
     public class UpdateMenuCmdValidator : AbstractValidator<UpdateMenuCmd>
     {
         private readonly IMenuRepository _menuRepository;
+
         public UpdateMenuCmdValidator(IMenuRepository menuRepository)
         {
             _menuRepository = menuRepository;
 
             RuleFor(p => p.Id)
                 .NotEmpty().WithMessage("{PropertyName} is required")
-                .MustAsync(MenuMustExist);
+                .MustAsync(MenuMustExist).WithMessage("Menu does not exist.");
 
             RuleFor(p => p.Title)
-                    .NotEmpty().WithMessage("{PropertyName} is required")
-                    .NotNull()
-                    .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
-
-            RuleFor(p => p.IconUrl)
-               .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
-
-            RuleFor(p => p.NavigationURL)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
-                .MaximumLength(256).WithMessage("{PropertyName} must be fewer than 256 characters");
+                .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
+
+            RuleFor(p => p.IconUrl)
+                .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
+
+            //RuleFor(p => p.NavigationURL)
+            //    .NotEmpty().WithMessage("{PropertyName} is required")
+            //    .NotNull()
+            //    .MaximumLength(256).WithMessage("{PropertyName} must be fewer than 256 characters");
+
+            // Uniqueness check on menu title
+            RuleFor(cmd => cmd)
+                .MustAsync(RecordMustBeUnique)
+                .WithMessage("A menu with the same title already exists.");
         }
 
         private async Task<bool> MenuMustExist(Guid id, CancellationToken cancellationToken)
@@ -34,9 +40,10 @@ namespace MC.Application.Features.Menu.Menu.Command.Update
             return response != null;
         }
 
-        private async Task<bool> BeUniqueTitle(UpdateMenuCmd command, string title, CancellationToken cancellationToken)
+        private Task<bool> RecordMustBeUnique(UpdateMenuCmd command, CancellationToken cancellationToken)
         {
-            return await _menuRepository.IsUnique(title, command.RoleId, cancellationToken);
+            return _menuRepository.IsUniqueForUpdate(command.Id, command.Title, cancellationToken);
         }
     }
+
 }

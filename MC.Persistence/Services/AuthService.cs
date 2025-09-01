@@ -31,12 +31,13 @@ namespace MC.Persistence.Services
         private readonly IEmailSenderRepository _emailSenderRepository;
         private readonly IConfiguration _configuration;
         private readonly IUserProfileRepository _userProfileRepository;
-
+        private readonly IMenuService _menuService;
         public AuthService(UserManager<ApplicationUser> userManager,
                            RoleManager<ApplicationRole> roleManager,
                            IOptions<JwtSettings> jwtSettings,
                            IEmailSenderRepository emailSenderRepository,
                            IUserProfileRepository userProfileRepository,
+                           IMenuService menuService,
                            IConfiguration configuration)
         {
             _userManager = userManager;
@@ -45,6 +46,7 @@ namespace MC.Persistence.Services
             _emailSenderRepository = emailSenderRepository;
             _configuration = configuration;
             _userProfileRepository = userProfileRepository;
+            _menuService = menuService;
         }
 
         public async Task<AuthResponse> LoginAsync(AuthRequest request, CancellationToken cancellationToken)
@@ -69,11 +71,9 @@ namespace MC.Persistence.Services
             var roles = await _userManager.GetRolesAsync(user); // Fetch user roles
 
             if (!roles.Any())
-            {
                 throw new NotFoundException($"User with {request.Email} does not have any role.", request.Email);
-            }
-            // Fetch role details (names and IDs)
-            var roleDetails = new List<RoleDetails>();  // RoleDetails is a custom class containing RoleName and RoleId
+
+            var roleDetails = new List<RoleDetails>();
             foreach (var roleName in roles)
             {
                 var role = await _roleManager.FindByNameAsync(roleName);
@@ -87,7 +87,11 @@ namespace MC.Persistence.Services
                 }
             }
 
-            var userProfile = await _userProfileRepository.GetUserProfileByApplicationUserIdAsync(user.Id, cancellationToken);    
+            var userProfile = await _userProfileRepository.GetUserProfileByApplicationUserIdAsync(user.Id, cancellationToken);
+
+            //Fetch menus based on roles
+            var menus = await _menuService.GetMenusForRolesAsync(roles.ToList(), cancellationToken);
+
             return new AuthResponse
             {
                 Id = user.Id,
@@ -99,9 +103,10 @@ namespace MC.Persistence.Services
                 UserName = user.UserName ?? string.Empty,
                 RegistrationId = userProfile !=null ? userProfile.RegistrationId : string.Empty,
                 Roles = roleDetails,
-                //Menus = menus,
-                //ProfilePictureUrl = userProfile != null ? userProfile.ProfilePictureUrl : string.Empty,
+                CompanyName = userProfile !=null ? userProfile.CompanyName ?? string.Empty : string.Empty,
+                ProfilePictureUrl = userProfile != null ? userProfile.ProfilePictureUrl ?? string.Empty : string.Empty,
                 IsActive = user.IsActive,
+                Menus = menus,
             };
         }
         public async Task<RegistrationResponse> RegisterAsync(RegistrationRequest request, CancellationToken cancellationToken)

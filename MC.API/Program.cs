@@ -94,6 +94,15 @@ builder.Services.AddCors(options =>
             .AllowCredentials();
     });
 });
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowAll", policy =>
+//    {
+//        policy.AllowAnyOrigin() // Remove this in production if using credentials
+//              .AllowAnyHeader()
+//              .AllowAnyMethod();
+//    });
+//});
 
 // ---------- JWT Authentication ----------
 var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
@@ -183,6 +192,7 @@ app.UseHttpsRedirection();
 app.UseGlobalExceptionHandler();
 
 app.UseCors("CorsPolicy");
+//app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();

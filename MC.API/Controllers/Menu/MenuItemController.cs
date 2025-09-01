@@ -2,8 +2,10 @@
 using MC.Application.Features.Menu.MenuItem.Command.Delete;
 using MC.Application.Features.Menu.MenuItem.Command.Update;
 using MC.Application.Features.Menu.MenuItem.Query.GetAll;
+using MC.Application.Features.Menu.MenuItem.Query.GetAllByTitle;
 using MC.Application.Features.Menu.MenuItem.Query.GetById;
 using MC.Application.Features.Menu.MenuItem.Query.GetMenuItemByMenuId;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Menu;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -24,10 +26,10 @@ namespace MC.API.Controllers.Menu
         }
 
         [HttpGet]
-        public async Task<List<MenuItemDto>> Get(CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<MenuItemDto>>>> GetAll([FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllMenuItemQuery(), cancellationToken);
-            return response;
+            var response = await _mediator.Send(new GetAllMenuItemQuery(queryParams), cancellationToken);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
@@ -38,21 +40,27 @@ namespace MC.API.Controllers.Menu
         }
 
         [HttpGet("MenuItemByMenuId/{menuId}")]
-        public async Task<ActionResult<MenuItemDto>> GetMenuItemByMenuId(Guid menuId, CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<MenuItemDto>>>> GetMenuItemByMenuId([FromQuery] QueryParams queryParams, Guid menuId, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetMenuItemByMenuIdQuery(menuId), cancellationToken);
+            var response = await _mediator.Send(new GetMenuItemByMenuIdQuery(queryParams, menuId), cancellationToken);
             return Ok(response);
         }
-
+        [HttpGet("MenuTitle")]
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<MenuItemTitleDto>>>> GetMenuTitle([FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetAllByTitleQuery(queryParams), cancellationToken);
+            return Ok(response);
+        }
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Post(CreateMenuItemCmd request, CancellationToken cancellationToken)
+        public async Task<ActionResult> Post([FromBody] CreateMenuItemCmd request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
-            return CreatedAtAction(nameof(Get), new { id = response });
+            //return CreatedAtAction(nameof(Get), new { id = response });
+            return CreatedAtAction(nameof(Get), new { id = response }, response);
         }
 
         [HttpPut("{id}")]
@@ -61,7 +69,7 @@ namespace MC.API.Controllers.Menu
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Put(UpdateMenuItemCmd request, CancellationToken cancellationToken)
+        public async Task<ActionResult> Put([FromBody] UpdateMenuItemCmd request, CancellationToken cancellationToken)
         {
             await _mediator.Send(request, cancellationToken);
             return NoContent();

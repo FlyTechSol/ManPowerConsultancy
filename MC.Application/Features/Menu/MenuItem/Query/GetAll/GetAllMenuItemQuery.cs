@@ -1,7 +1,16 @@
-﻿using MC.Application.ModelDto.Menu;
+﻿using MC.Application.ModelDto.Common.Pagination;
+using MC.Application.ModelDto.Menu;
 using MediatR;
 
 namespace MC.Application.Features.Menu.MenuItem.Query.GetAll
 {
-    public record GetAllMenuItemQuery : IRequest<List<MenuItemDto>>;
+    public class GetAllMenuItemQuery : IRequest<ApiResponse<PaginatedResponse<MenuItemDto>>>
+    {
+        public QueryParams QueryParams { get; set; }
+
+        public GetAllMenuItemQuery(QueryParams queryParams)
+        {
+            QueryParams = queryParams;
+        }
+    }
 }

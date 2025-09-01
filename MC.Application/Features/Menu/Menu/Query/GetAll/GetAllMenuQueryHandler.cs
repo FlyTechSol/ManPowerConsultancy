@@ -1,37 +1,28 @@
-﻿using AutoMapper;
-using MC.Application.Contracts.Logging;
-using MC.Application.Contracts.Persistence.Menu;
+﻿using MC.Application.Contracts.Persistence.Menu;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Menu;
 using MediatR;
 
 namespace MC.Application.Features.Menu.Menu.Query.GetAll
 {
-   public class GetAllMenuQueryHandler : IRequestHandler<GetAllMenuQuery, List<MenuDto>>
+    public class GetAllMenuQueryHandler : IRequestHandler<GetAllMenuQuery, ApiResponse<PaginatedResponse<MenuDto>>>
     {
-        private readonly IMapper _mapper;
         private readonly IMenuRepository _menuRepository;
-        private readonly IAppLogger<GetAllMenuQueryHandler> _logger;
-
-        public GetAllMenuQueryHandler(IMapper mapper,
-            IMenuRepository menuRepository,
-            IAppLogger<GetAllMenuQueryHandler> logger)
+     
+        public GetAllMenuQueryHandler(IMenuRepository menuRepository)
         {
-            _mapper = mapper;
             _menuRepository = menuRepository;
-            _logger = logger;
         }
-
-        public async Task<List<MenuDto>> Handle(GetAllMenuQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PaginatedResponse<MenuDto>>> Handle(GetAllMenuQuery request, CancellationToken cancellationToken)
         {
-            // Query the database
-            var response = await _menuRepository.GetAllDetailsAsync(cancellationToken);
+            var record = await _menuRepository.GetAllDetailsAsync(request.QueryParams, cancellationToken);
 
-            // convert data objects to DTO objects
-            var data = _mapper.Map<List<MenuDto>>(response);
-
-            // return list of DTO object
-            _logger.LogInformation("Menu were retrieved successfully");
-            return data;
+            return new ApiResponse<PaginatedResponse<MenuDto>>
+            {
+                Status = 200,
+                Message = "Success",
+                ResData = record
+            };
         }
     }
 }

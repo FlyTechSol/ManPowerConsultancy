@@ -16,10 +16,10 @@ namespace MC.Application.Features.Menu.Menu.Command.Create
                 .NotNull()
                 .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
 
-            RuleFor(p => p.NavigationURL)
-                .NotEmpty().WithMessage("{PropertyName} is required")
-                .NotNull()
-                .MaximumLength(256).WithMessage("{PropertyName} must be fewer than 256 characters");
+            //RuleFor(p => p.NavigationURL)
+            //    .NotEmpty().WithMessage("{PropertyName} is required")
+            //    .NotNull()
+            //    .MaximumLength(256).WithMessage("{PropertyName} must be fewer than 256 characters");
 
             RuleFor(p => p.IconUrl)
                 .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
@@ -31,7 +31,7 @@ namespace MC.Application.Features.Menu.Menu.Command.Create
 
         private Task<bool> TitleMustUnique(CreateMenuCmd command, CancellationToken token)
         {
-            return _menuRepository.IsUnique(command.Title, command.RoleId, token);
+            return _menuRepository.IsUnique(command.Title, token);
         }
     }
 }

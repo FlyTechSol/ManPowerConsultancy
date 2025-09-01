@@ -1,6 +1,5 @@
 ﻿using MC.Application.Contracts.Persistence.Organization;
 using MC.Application.ModelDto.Common.Pagination;
-using MC.Application.ModelDto.Master.Master;
 using MC.Application.ModelDto.Organization;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Helper;
@@ -124,6 +123,8 @@ namespace MC.Persistence.Repositories.Organization
                 TotalPages = (int)Math.Ceiling(totalCount / (double)queryParams.Limit)
             };
         }
+
+
         public async Task<PaginatedResponse<ClientMasterDetailDto>?> GetClientMasterByCompanyIdAsync(QueryParams queryParams, Guid companyId, CancellationToken cancellationToken)
         {
             var query = _context.ClientMasters
