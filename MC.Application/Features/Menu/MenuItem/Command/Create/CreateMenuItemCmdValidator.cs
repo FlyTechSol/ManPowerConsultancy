@@ -24,14 +24,20 @@ namespace MC.Application.Features.Menu.MenuItem.Command.Create
             RuleFor(p => p.IconUrl)
                .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
 
+            RuleFor(p => p.RoleId)
+                .NotEmpty().WithMessage("{PropertyName} is required");
+
+            RuleFor(p => p.MenuId)
+                .NotEmpty().WithMessage("{PropertyName} is required");
+
             RuleFor(q => q)
-                .MustAsync(TitleMustUnique)
-                .WithMessage("Menu item already exists");
+                .MustAsync(RecordMustUnique)
+                .WithMessage("A menu item with the same title already exists for this menu and role");
         }
 
-        private Task<bool> TitleMustUnique(CreateMenuItemCmd command, CancellationToken token)
+        private Task<bool> RecordMustUnique(CreateMenuItemCmd command, CancellationToken token)
         {
-            return _menuItemRepository.IsUnique(command.Title, command.MenuId, token);
+            return _menuItemRepository.IsUnique(command.Title, command.MenuId, command.RoleId, token);
         }
     }
 }

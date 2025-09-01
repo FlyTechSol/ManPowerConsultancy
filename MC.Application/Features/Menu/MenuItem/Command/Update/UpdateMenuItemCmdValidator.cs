@@ -1,10 +1,5 @@
 ﻿using FluentValidation;
 using MC.Application.Contracts.Persistence.Menu;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MC.Application.Features.Menu.MenuItem.Command.Update
 {
@@ -18,14 +13,11 @@ namespace MC.Application.Features.Menu.MenuItem.Command.Update
 
             RuleFor(p => p.Id)
                 .NotNull()
-                .MustAsync(MenuItemMustExist);
+                .MustAsync(RecordMustExist);
 
             RuleFor(p => p.Title)
-                .NotEmpty().WithMessage("{PropertyName} is required")
-                .NotNull()
-                .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
-
-            RuleFor(p => p.IconUrl)
+               .NotEmpty().WithMessage("{PropertyName} is required")
+               .NotNull()
                .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
 
             RuleFor(p => p.Url)
@@ -33,12 +25,28 @@ namespace MC.Application.Features.Menu.MenuItem.Command.Update
                 .NotNull()
                 .MaximumLength(256).WithMessage("{PropertyName} must be fewer than 256 characters");
 
+            RuleFor(p => p.IconUrl)
+               .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
+
+            RuleFor(p => p.RoleId)
+                .NotEmpty().WithMessage("{PropertyName} is required");
+
+            RuleFor(p => p.MenuId)
+                .NotEmpty().WithMessage("{PropertyName} is required");
+
+            RuleFor(cmd => cmd)
+                .MustAsync(RecordMustBeUnique)
+                .WithMessage("A menu item with the same title already exists for this menu and role.");
         }
 
-        private async Task<bool> MenuItemMustExist(Guid id, CancellationToken cancellationToken)
+        private async Task<bool> RecordMustExist(Guid id, CancellationToken cancellationToken)
         {
             var response = await _menuItemRepository.GetByIdAsync(id, cancellationToken);
             return response != null;
+        }
+        private Task<bool> RecordMustBeUnique(UpdateMenuItemCmd command, CancellationToken token)
+        {
+            return _menuItemRepository.IsUniqueForUpdate(command.Id, command.Title, command.MenuId, command.RoleId, token);
         }
     }
 }

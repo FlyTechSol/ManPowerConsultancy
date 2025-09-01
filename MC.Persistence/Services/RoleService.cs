@@ -1,8 +1,10 @@
 ﻿using MC.Application.Contracts.Identity;
 using MC.Application.Model.Identity.Roles;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Domain.Entity.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 
 namespace MC.Persistence.Services
 {
@@ -13,18 +15,58 @@ namespace MC.Persistence.Services
         {
             _roleManager = roleManager;
         }
-        public async Task<List<RoleDto>> GetAllRolesAsync()
+        public async Task<PaginatedResponse<RoleDto>> GetAllRolesAsync(QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var roles = await _roleManager.Roles.Cast<ApplicationRole>().ToListAsync();
-            return roles.Select(role => new RoleDto
+            var query = _roleManager.Roles
+                .AsQueryable()
+                .Cast<ApplicationRole>();
+
+            // Optional search (if query string is provided)
+            if (!string.IsNullOrWhiteSpace(queryParams.Query))
+            {
+                var search = queryParams.Query.ToLower();
+                query = query.Where(r => r.Name != null && r.Name.ToLower().Contains(search));
+            }
+
+            // Total count before pagination
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            // Dynamic sorting
+            if (!string.IsNullOrWhiteSpace(queryParams.Column))
+            {
+                var direction = queryParams.Dir?.ToLower() == "desc" ? "descending" : "ascending";
+                query = query.OrderBy($"{queryParams.Column} {direction}");
+            }
+            else
+            {
+                query = query.OrderBy(r => r.DisplayOrder); // Default sort
+            }
+
+            // Apply pagination
+            var roles = await query
+                .Skip((queryParams.Page - 1) * queryParams.Limit)
+                .Take(queryParams.Limit)
+                .ToListAsync(cancellationToken);
+
+            // Map to DTO
+            var dtos = roles.Select(role => new RoleDto
             {
                 Id = role.Id,
-                DisplayOrder = role.DisplayOrder,
-                Name = role.Name ?? string.Empty
+                Name = role.Name ?? string.Empty,
+                DisplayOrder = role.DisplayOrder
             }).ToList();
+
+            return new PaginatedResponse<RoleDto>
+            {
+                Data = dtos,
+                CurrentPage = queryParams.Page,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)queryParams.Limit)
+            };
         }
 
-        public async Task<Guid> CreateRolesAsync(CreateRoleDto request)
+
+        public async Task<Guid> CreateRolesAsync(CreateRoleDto request, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(request.Name))
                 throw new ArgumentException("Role name cannot be empty");
@@ -49,25 +91,30 @@ namespace MC.Persistence.Services
 
             return role.Id;
         }
-        public async Task<bool> UpdateRoleAsync(Guid roleId, RoleDto request)
-        {
-            var role = await _roleManager.FindByIdAsync(roleId.ToString()) as ApplicationRole; 
-
-            if (role == null) return false;
-
-            role.Name = request.Name;
-            role.DisplayOrder = request.DisplayOrder; 
-
-            var result = await _roleManager.UpdateAsync(role);
-            return result.Succeeded;
-        }
-        public async Task<bool> DeleteRoleAsync(Guid roleId)
+        public async Task<bool> UpdateRoleAsync(Guid roleId, RoleDto request, CancellationToken cancellationToken)
         {
             var role = await _roleManager.FindByIdAsync(roleId.ToString());
-            if (role == null) return false;
+
+            if (role is not ApplicationRole appRole)
+                return false;
+
+            appRole.Name = request.Name;
+            appRole.DisplayOrder = request.DisplayOrder;
+
+            var result = await _roleManager.UpdateAsync(appRole);
+            return result.Succeeded;
+        }
+
+        public async Task<bool> DeleteRoleAsync(Guid roleId, CancellationToken cancellationToken)
+        {
+            var role = await _roleManager.FindByIdAsync(roleId.ToString());
+
+            if (role == null)
+                return false;
 
             var result = await _roleManager.DeleteAsync(role);
             return result.Succeeded;
         }
+
     }
 }

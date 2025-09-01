@@ -9,8 +9,8 @@ namespace MC.Application.Features.Menu.MenuItem.Command.Update
         public string Title { get; set; } = string.Empty;
         public string Url { get; set; } = string.Empty;
         public string IconUrl { get; set; } = string.Empty;
-        public string Component { get; set; } = string.Empty;
-        // Foreign key for Parent Menu
+        //public string Component { get; set; } = string.Empty;
+        public Guid RoleId { get; set; }
         public Guid MenuId { get; set; }
     }
 }

@@ -1,9 +1,11 @@
-﻿using MC.Application.ModelDto.Menu;
+﻿using MC.Application.ModelDto.Common.Pagination;
+using MC.Application.ModelDto.Menu;
 
 namespace MC.Application.Contracts.Identity
 {
     public interface IMenuService
     {
-        Task<List<MenuDto>> GetMenusForRolesAsync(IList<string> roles);
+        Task<PaginatedResponse<MenuDto>> GetMenusForRolesAsync(QueryParams queryParams, IList<string> roles, CancellationToken cancellationToken);
+        public Task<List<MenuDto>> GetMenusForRolesAsync(IList<string> roles, CancellationToken cancellationToken);
     }
 }

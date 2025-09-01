@@ -1,30 +1,29 @@
-﻿using AutoMapper;
-using MC.Application.Contracts.Persistence.Menu;
+﻿using MC.Application.Contracts.Persistence.Menu;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Menu;
 using MediatR;
 
 namespace MC.Application.Features.Menu.MenuItem.Query.GetMenuItemByMenuId
 {
-    public class GetMenuItemByMenuIdQueryHandler : IRequestHandler<GetMenuItemByMenuIdQuery, List<MenuItemDto>>
+    public class GetMenuItemByMenuIdQueryHandler : IRequestHandler<GetMenuItemByMenuIdQuery, ApiResponse<PaginatedResponse<MenuItemDto>>>
     {
-        private readonly IMapper _mapper;
         private readonly IMenuItemRepository _menuItemRepository;
 
-        public GetMenuItemByMenuIdQueryHandler(IMapper mapper, IMenuItemRepository menuItemRepository)
+        public GetMenuItemByMenuIdQueryHandler(IMenuItemRepository menuItemRepository)
         {
-            _mapper = mapper;
             _menuItemRepository = menuItemRepository;
         }
 
-        public async Task<List<MenuItemDto>> Handle(GetMenuItemByMenuIdQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PaginatedResponse<MenuItemDto>>> Handle(GetMenuItemByMenuIdQuery request, CancellationToken cancellationToken)
         {
-            var response = await _menuItemRepository.GetMenuItemByMenuIdAsync(request.MenuId, cancellationToken);
+            var record = await _menuItemRepository.GetMenuItemByMenuIdAsync(request.QueryParams, request.MenuId, cancellationToken);
 
-            // convert data objects to DTO objects
-            var data = _mapper.Map<List<MenuItemDto>>(response);
-
-            // return list of DTO object
-             return data;
+            return new ApiResponse<PaginatedResponse<MenuItemDto>>
+            {
+                Status = 200,
+                Message = "Success",
+                ResData = record
+            };
         }
     }
 }

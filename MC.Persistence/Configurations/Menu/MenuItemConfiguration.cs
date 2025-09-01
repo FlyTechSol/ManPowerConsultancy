@@ -12,6 +12,11 @@ namespace MC.Persistence.Configurations.Menu
             builder.Property(z => z.Title).HasMaxLength(100);
             builder.Property(z => z.Url).HasMaxLength(256);
             builder.Property(z => z.IconUrl).HasMaxLength(100);
+
+            builder.HasOne(mi => mi.Role)
+               .WithMany() // assuming no navigation property in ApplicationRole
+               .HasForeignKey(mi => mi.RoleId)
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

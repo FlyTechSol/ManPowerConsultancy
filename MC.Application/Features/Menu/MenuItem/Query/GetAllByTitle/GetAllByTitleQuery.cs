@@ -2,15 +2,15 @@
 using MC.Application.ModelDto.Menu;
 using MediatR;
 
-namespace MC.Application.Features.Menu.Menu.Query.GetAll
+namespace MC.Application.Features.Menu.MenuItem.Query.GetAllByTitle
 {
-    public class GetAllMenuQuery : IRequest<ApiResponse<PaginatedResponse<MenuDto>>>
+    public class GetAllByTitleQuery : IRequest<ApiResponse<PaginatedResponse<MenuItemTitleDto>>>
     {
         public QueryParams QueryParams { get; set; }
-
-        public GetAllMenuQuery(QueryParams queryParams)
+        public GetAllByTitleQuery(QueryParams queryParams)
         {
             QueryParams = queryParams;
+
         }
     }
 }

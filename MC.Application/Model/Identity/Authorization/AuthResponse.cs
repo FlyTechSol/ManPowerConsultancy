@@ -13,9 +13,10 @@ namespace MC.Application.Model.Identity.Authorization
         public string RegistrationId { get; set; } = string.Empty;
         public bool IsActive { get; set; } = true;
         public string Token { get; set; } = string.Empty;
+        public string CompanyName { get; set; } = string.Empty;
         public string ProfilePictureUrl { get; set; } = string.Empty;
-        public List<RoleDetails> Roles { get; set; } = new List<RoleDetails>();
-        public List<MenuDto> Menus { get; set; } = new List<MenuDto>();
+        public List<RoleDetails> Roles { get; set; } = new();
+        public List<MenuDto> Menus { get; set; } = new();
     }
     public class RoleDetails
     {

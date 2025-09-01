@@ -63,6 +63,7 @@ namespace MC.Persistence.Repositories.Registration
         {
             return await _context.UserProfiles
                 .AsNoTracking()
+                .Include(x => x.Company)
                 .Where(up => up.UserId == userId && !up.IsDeleted)
                 .Select(up => new UserProfileShortDto
                 {
@@ -73,6 +74,8 @@ namespace MC.Persistence.Repositories.Registration
                     Email = up.Email,
                     MobileNumber = up.MobileNumber,
                     RoleName = "",
+                    CompanyName = up.Company != null ? up.Company.CompanyName ?? string.Empty : string.Empty,
+                    ProfilePictureUrl = up.ProfilePictureUrl,
                 })
                 .FirstOrDefaultAsync(cancellationToken);
         }
