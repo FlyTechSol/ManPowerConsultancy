@@ -31,4 +31,8 @@
     <ProjectReference Include="..\MC.Shared\MC.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

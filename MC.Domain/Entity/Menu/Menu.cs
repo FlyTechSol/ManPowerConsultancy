@@ -9,7 +9,7 @@ namespace MC.Domain.Entity.Menu
         public int MenuDisplayOrder { get; set; }
         public string Title { get; set; } = string.Empty;
         //public bool IsParent { get; set; }
-        //public string NavigationURL { get; set; } = string.Empty;
+        public string NavigationURL { get; set; } = string.Empty;
         public string IconUrl { get; set; } = string.Empty;
         //public Guid RoleId { get; set; }
 

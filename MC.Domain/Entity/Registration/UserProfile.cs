@@ -44,8 +44,8 @@ namespace MC.Domain.Entity.Registration
         public Gender? Gender { get; set; }
         public string? IdentityMarks { get; set; }
         public bool IsActive { get; set; } = true;
+        public string? ProfilePictureUrl { get; set; } // persisted URL
 
-        public string ProfilePictureUrl { get; set; } = string.Empty;
         public BodyMeasurement? BodyMeasurement { get; set; } // optional if not always present
         public Insurance? Insurance { get; set; }
         public Communication? Communication { get; set; }

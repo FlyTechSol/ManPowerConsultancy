@@ -1,6 +1,7 @@
 ﻿using MC.Application.Contracts.Email;
 using MC.Application.Contracts.Identity;
 using MC.Application.Contracts.Logging;
+using MC.Application.Contracts.Navigation;
 using MC.Application.Contracts.Persistence;
 using MC.Application.Contracts.Persistence.FileHandling.Upload;
 using MC.Application.Contracts.Persistence.Master;
@@ -14,6 +15,7 @@ using MC.Persistence.Repositories.Common;
 using MC.Persistence.Repositories.FileHandling;
 using MC.Persistence.Repositories.Master;
 using MC.Persistence.Repositories.Menu;
+using MC.Persistence.Repositories.Navigation;
 using MC.Persistence.Repositories.Organization;
 using MC.Persistence.Repositories.Registration;
 using MC.Persistence.Services;
@@ -76,6 +78,9 @@ namespace MC.Persistence
             services.AddScoped<IMenuRepository, MenuRepository>();
             services.AddScoped<IMenuItemRepository, MenuItemRepository>();
 
+            //Navigation for multilevel menus
+            services.AddScoped<INavigationNodeRepository, NavigationNodeRepository>();
+         
             //Registration services
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<IBankAccountRepository, BankAccountRepository>();

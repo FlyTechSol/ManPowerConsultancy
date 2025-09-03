@@ -1,6 +1,6 @@
-﻿using AutoMapper;
-using MC.Application.Contracts.Email;
+﻿using MC.Application.Contracts.Email;
 using MC.Application.Contracts.Identity;
+using MC.Application.Contracts.Navigation;
 using MC.Application.Contracts.Persistence.Registration;
 using MC.Application.Exceptions;
 using MC.Application.Helper;
@@ -11,10 +11,8 @@ using MC.Domain.Entity.Enum;
 using MC.Domain.Entity.Identity;
 using MC.Domain.Entity.Registration;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -31,13 +29,13 @@ namespace MC.Persistence.Services
         private readonly IEmailSenderRepository _emailSenderRepository;
         private readonly IConfiguration _configuration;
         private readonly IUserProfileRepository _userProfileRepository;
-        private readonly IMenuService _menuService;
+        private readonly INavigationNodeRepository _menuService;
         public AuthService(UserManager<ApplicationUser> userManager,
                            RoleManager<ApplicationRole> roleManager,
                            IOptions<JwtSettings> jwtSettings,
                            IEmailSenderRepository emailSenderRepository,
                            IUserProfileRepository userProfileRepository,
-                           IMenuService menuService,
+                           INavigationNodeRepository menuService,
                            IConfiguration configuration)
         {
             _userManager = userManager;
@@ -89,9 +87,12 @@ namespace MC.Persistence.Services
 
             var userProfile = await _userProfileRepository.GetUserProfileByApplicationUserIdAsync(user.Id, cancellationToken);
 
-            //Fetch menus based on roles
-            var menus = await _menuService.GetMenusForRolesAsync(roles.ToList(), cancellationToken);
+            //Fetch 2 level menus based on roles
+            //var menus = await _menuService.GetMenusForRolesAsync(roles.ToList(), cancellationToken);
 
+            //fetch multilevel menus
+            var menus = await _menuService.GetNavigationsForRolesAsync(roles.ToList(), cancellationToken);
+            
             return new AuthResponse
             {
                 Id = user.Id,

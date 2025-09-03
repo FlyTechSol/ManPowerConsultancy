@@ -34,6 +34,8 @@ using MC.Application.Features.Registration.UserAsset.Command.Create;
 using MC.Application.Features.Registration.UserAsset.Command.Update;
 using MC.Application.Features.Registration.UserGeneralDetail.Command.Create;
 using MC.Application.Features.Registration.UserGeneralDetail.Command.Update;
+using MC.Application.Features.Registration.UserProfile.Command.Create;
+using MC.Application.Features.Registration.UserProfile.Command.Update;
 using MC.Application.ModelDto.Master.Master;
 using MC.Application.ModelDto.Registration;
 using MC.Domain.Entity.Master;
@@ -122,9 +124,9 @@ namespace MC.Application.MappingProfiles
             CreateMap<CreateUserGeneralDetailCmd, UserGeneralDetail>();
             CreateMap<UpdateUserGeneralDetailCmd, UserGeneralDetail>();
 
-            //CreateMap<UserProfile, UserProfileDto>().ReverseMap();
-            //CreateMap<createuserpro, UserProfile>();
-            //CreateMap<UpdateUserGeneralDetailCmd, UserProfile>();
+            CreateMap<UserProfile, UserProfileDto>().ReverseMap();
+            CreateMap<CreateUserProfileCmd, UserProfile>();
+            CreateMap<UpdateUserProfileCmd, UserProfile>();
         }
     }
 }

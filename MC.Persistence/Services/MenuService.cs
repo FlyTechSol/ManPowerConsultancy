@@ -1,6 +1,8 @@
 ﻿using MC.Application.Contracts.Identity;
 using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Menu;
+using MC.Application.ModelDto.Navigation;
+using MC.Domain.Entity.Navigation;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +17,8 @@ namespace MC.Persistence.Services
         {
             _context = context;
         }
+       
+
         public async Task<List<MenuDto>> GetMenusForRolesAsync(IList<string> roles, CancellationToken cancellationToken)
         {
             var menus = await _context.Menus
@@ -55,7 +59,7 @@ namespace MC.Persistence.Services
             return result;
         }
 
-        public async Task<PaginatedResponse<MenuDto>> GetMenusForRolesAsync(QueryParams queryParams, IList<string> roles, CancellationToken cancellationToken)
+        public async Task<PaginatedResponse<MenuDto>> GetNavigationsForRolesAsync(QueryParams queryParams, IList<string> roles, CancellationToken cancellationToken)
         {
             // Filter menus that have at least one menu item with a matching role
             var query = _context.Menus
@@ -144,5 +148,7 @@ namespace MC.Persistence.Services
                 TotalPages = (int)Math.Ceiling(totalCount / (double)queryParams.Limit)
             };
         }
+
+        
     }
 }

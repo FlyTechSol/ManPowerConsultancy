@@ -5,6 +5,7 @@ using MC.Domain.Entity.Enum;
 using MC.Domain.Entity.Identity;
 using MC.Domain.Entity.Master;
 using MC.Domain.Entity.Menu;
+using MC.Domain.Entity.Navigation;
 using MC.Domain.Entity.Organization;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.Helper;
@@ -27,9 +28,13 @@ namespace MC.Persistence.DatabaseContext
         public DbSet<ApplicationRole> ApplicationRoles { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
-        //common configurations
+        //Menu configurations
         public DbSet<Menu> Menus { get; set; }
         public DbSet<MenuItem> MenuItems { get; set; }
+        public DbSet<NavigationNodeRole> NavigationNodeRoles { get; set; }
+        public DbSet<NavigationNode> NavigationNodes { get; set; }
+
+        //common configuration
         public DbSet<EmailTemplate> EmailTemplates { get; set; }
 
         //master
