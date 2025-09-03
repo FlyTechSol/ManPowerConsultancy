@@ -57,6 +57,20 @@ namespace MC.Persistence.Configurations.Identity
                     Name = "Administrator",
                     DisplayOrder = 6,
                     NormalizedName = "ADMINISTRATOR"
+                },
+                new ApplicationRole
+                {
+                    Id = Guid.Parse("{A03DF03E-0CA2-4C5A-808A-626BFC2B9AE8}"),
+                    Name = "HR",
+                    DisplayOrder = 6,
+                    NormalizedName = "HR"
+                },
+                new ApplicationRole
+                {
+                    Id = Guid.Parse("{88BD4B2E-BC97-4666-B032-AC61F5C00477}"),
+                    Name = "HR Head",
+                    DisplayOrder = 6,
+                    NormalizedName = "Hr Head"
                 }
             );
         }

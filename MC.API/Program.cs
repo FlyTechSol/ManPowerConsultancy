@@ -176,6 +176,8 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+
 // ---------- Middlewares ----------
 //if (app.Environment.IsDevelopment())
 //{

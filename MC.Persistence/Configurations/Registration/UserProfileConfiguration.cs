@@ -68,6 +68,7 @@ namespace MC.Persistence.Configurations.Registration
             builder.HasOne(e => e.User)
                  .WithOne(u => u.UserProfile)
                  .HasForeignKey<UserProfile>(e => e.UserId)
+                 .IsRequired(false)
                  .OnDelete(DeleteBehavior.Restrict); // or ClientSetNull
 
             builder.HasData(

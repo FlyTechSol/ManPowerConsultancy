@@ -1,4 +1,5 @@
 ﻿using MC.Application.ModelDto.Menu;
+using MC.Application.ModelDto.Navigation;
 
 namespace MC.Application.Model.Identity.Authorization
 {
@@ -16,7 +17,10 @@ namespace MC.Application.Model.Identity.Authorization
         public string CompanyName { get; set; } = string.Empty;
         public string ProfilePictureUrl { get; set; } = string.Empty;
         public List<RoleDetails> Roles { get; set; } = new();
-        public List<MenuDto> Menus { get; set; } = new();
+        //for two level Menu
+        //public List<MenuDto> Menus { get; set; } = new();
+        //for multi level menus
+        public List<NavigationNodeDto> Menus { get; set; } = new();
     }
     public class RoleDetails
     {

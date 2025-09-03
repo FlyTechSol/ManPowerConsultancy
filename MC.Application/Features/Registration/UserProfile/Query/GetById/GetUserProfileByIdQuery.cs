@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MC.Application.ModelDto.Registration;
+using MediatR;
 
 namespace MC.Application.Features.Registration.UserProfile.Query.GetById
 {
-    internal class GetUserProfileByIdQuery
-    {
-    }
+    public record GetUserProfileByIdQuery(Guid Id) : IRequest<UserProfileDto>;
 }

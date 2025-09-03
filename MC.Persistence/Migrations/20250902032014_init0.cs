@@ -681,12 +681,10 @@ namespace MC.Persistence.Migrations
                     MenuDisplayOrder = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsParent = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    NavigationURL = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
+                    NavigationURL = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IconUrl = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    RoleId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -701,12 +699,6 @@ namespace MC.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Menus", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Menus_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Menus_AspNetUsers_CreatedByUserId",
                         column: x => x.CreatedByUserId,
                         principalTable: "AspNetUsers",
@@ -716,6 +708,54 @@ namespace MC.Persistence.Migrations
                         name: "FK_Menus_AspNetUsers_ModifiedByUserId",
                         column: x => x.ModifiedByUserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "NavigationNodes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Title = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Url = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IconUrl = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DisplayOrder = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    ParentId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    CreatedByUserName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ModifiedByUserName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedByUserId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    ModifiedByUserId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NavigationNodes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_NavigationNodes_AspNetUsers_CreatedByUserId",
+                        column: x => x.CreatedByUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_NavigationNodes_AspNetUsers_ModifiedByUserId",
+                        column: x => x.ModifiedByUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_NavigationNodes_NavigationNodes_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "NavigationNodes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
@@ -962,6 +1002,7 @@ namespace MC.Persistence.Migrations
                     IconUrl = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     MenuId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    RoleId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -975,6 +1016,12 @@ namespace MC.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MenuItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MenuItems_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MenuItems_AspNetUsers_CreatedByUserId",
                         column: x => x.CreatedByUserId,
@@ -991,6 +1038,51 @@ namespace MC.Persistence.Migrations
                         name: "FK_MenuItems_Menus_MenuId",
                         column: x => x.MenuId,
                         principalTable: "Menus",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "NavigationNodeRoles",
+                columns: table => new
+                {
+                    NavigationNodeId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    RoleId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    CreatedByUserName = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ModifiedByUserName = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedByUserId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    ModifiedByUserId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NavigationNodeRoles", x => new { x.NavigationNodeId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_NavigationNodeRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_NavigationNodeRoles_AspNetUsers_CreatedByUserId",
+                        column: x => x.CreatedByUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_NavigationNodeRoles_AspNetUsers_ModifiedByUserId",
+                        column: x => x.ModifiedByUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_NavigationNodeRoles_NavigationNodes_NavigationNodeId",
+                        column: x => x.NavigationNodeId,
+                        principalTable: "NavigationNodes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -2150,7 +2242,9 @@ namespace MC.Persistence.Migrations
                     { new Guid("2cdf7283-eaf0-4f5a-b44a-4def5ed91da8"), null, 5, "GeneralManager", "GENERALMANAGER" },
                     { new Guid("2d149421-8f16-4a0a-869e-ea05653c89f3"), null, 3, "Director", "DIRECTOR" },
                     { new Guid("5e7d2008-e189-48ac-b7b2-b7291c697715"), null, 4, "Accountant", "ACCOUNTANT" },
+                    { new Guid("88bd4b2e-bc97-4666-b032-ac61f5c00477"), null, 6, "HR Head", "Hr Head" },
                     { new Guid("94231286-f784-4141-9087-08050f9c0acf"), null, 2, "Supervisor", "SUPERVISOR" },
+                    { new Guid("a03df03e-0ca2-4c5a-808a-626bfc2b9ae8"), null, 6, "HR", "HR" },
                     { new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), null, 6, "Administrator", "ADMINISTRATOR" }
                 });
 
@@ -3229,6 +3323,15 @@ namespace MC.Persistence.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "NavigationNodes",
+                columns: new[] { "Id", "CreatedByUserId", "CreatedByUserName", "DateCreated", "DateModified", "DisplayOrder", "IconUrl", "IsActive", "IsDeleted", "ModifiedByUserId", "ModifiedByUserName", "ParentId", "Title", "Url" },
+                values: new object[,]
+                {
+                    { new Guid("359b62b8-f29c-423d-bba2-78c164c7762c"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, "dashboard-icon", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", null, "Dashboard", "dashboard" },
+                    { new Guid("e591f87a-535e-430e-a38f-20c2228bab3f"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 2, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", null, "Master Data", "#" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "RecruitmentTypes",
                 columns: new[] { "Id", "Code", "CreatedByUserId", "CreatedByUserName", "DateCreated", "DateModified", "DisplayOrder", "IsDeleted", "ModifiedByUserId", "ModifiedByUserName", "Name" },
                 values: new object[,]
@@ -3276,6 +3379,24 @@ namespace MC.Persistence.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "NavigationNodeRoles",
+                columns: new[] { "NavigationNodeId", "RoleId", "CreatedByUserId", "CreatedByUserName", "DateCreated", "DateModified", "Id", "IsDeleted", "ModifiedByUserId", "ModifiedByUserName" },
+                values: new object[,]
+                {
+                    { new Guid("359b62b8-f29c-423d-bba2-78c164c7762c"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" },
+                    { new Guid("e591f87a-535e-430e-a38f-20c2228bab3f"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "NavigationNodes",
+                columns: new[] { "Id", "CreatedByUserId", "CreatedByUserName", "DateCreated", "DateModified", "DisplayOrder", "IconUrl", "IsActive", "IsDeleted", "ModifiedByUserId", "ModifiedByUserName", "ParentId", "Title", "Url" },
+                values: new object[,]
+                {
+                    { new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 2, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new Guid("e591f87a-535e-430e-a38f-20c2228bab3f"), "Company", "#" },
+                    { new Guid("a394a640-1c19-4949-9795-5321e7e55c90"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new Guid("e591f87a-535e-430e-a38f-20c2228bab3f"), "General", "#" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "RegistrationSequences",
                 columns: new[] { "CompanyId", "LastRegistrationId", "Prefix" },
                 values: new object[,]
@@ -3293,6 +3414,57 @@ namespace MC.Persistence.Migrations
                     { new Guid("61054527-d93f-4c43-ac91-d869a6428327"), new Guid("836bd5c1-c940-4900-9e49-fd6fee2c80fa"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), null, new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), true, false, 10, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), null, "Agra", "My 4th unit" },
                     { new Guid("b7ed692b-63fc-441f-8748-0f10672d9e8d"), new Guid("f6d29be9-277a-423e-8213-de2f866d5301"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), null, new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), true, false, 30, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), null, "Unnao", "My 3rd unit" },
                     { new Guid("f1a7c96c-d787-488d-8c04-22e3aaac0cee"), new Guid("8a4a5a20-7236-46e4-9739-8ab7a47f554e"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), null, new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), true, false, 0, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), null, "Lakhimpur", "My 2nd unit" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "NavigationNodeRoles",
+                columns: new[] { "NavigationNodeId", "RoleId", "CreatedByUserId", "CreatedByUserName", "DateCreated", "DateModified", "Id", "IsDeleted", "ModifiedByUserId", "ModifiedByUserName" },
+                values: new object[,]
+                {
+                    { new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" },
+                    { new Guid("a394a640-1c19-4949-9795-5321e7e55c90"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "NavigationNodes",
+                columns: new[] { "Id", "CreatedByUserId", "CreatedByUserName", "DateCreated", "DateModified", "DisplayOrder", "IconUrl", "IsActive", "IsDeleted", "ModifiedByUserId", "ModifiedByUserName", "ParentId", "Title", "Url" },
+                values: new object[,]
+                {
+                    { new Guid("028f48a9-a50d-495a-a27e-39c84da74b9a"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 6, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"), "Document Type", "admin/documenttypes" },
+                    { new Guid("12a135f3-d536-4250-acbf-a38aad2d802a"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 2, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"), "Bank", "admin/banks" },
+                    { new Guid("57ec63e1-52d5-44cc-a9d1-cded389f2014"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 7, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new Guid("a394a640-1c19-4949-9795-5321e7e55c90"), "Zip Code", "admin/zipcodes" },
+                    { new Guid("5a770876-0d03-4841-bfe0-7c56d4b561d2"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 3, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"), "Branch", "admin/branch" },
+                    { new Guid("734db850-8030-4f9e-8a14-20ae10ae8cb3"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 7, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"), "Recruitment Type", "admin/recruitmenttypes" },
+                    { new Guid("75d38d82-7f26-488e-8bd9-0eaea1b08633"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 5, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new Guid("a394a640-1c19-4949-9795-5321e7e55c90"), "Religion", "admin/religions" },
+                    { new Guid("83277279-1ae9-49e5-96f6-579e53918cca"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new Guid("a394a640-1c19-4949-9795-5321e7e55c90"), "Caste Category", "admin/caste-categories" },
+                    { new Guid("984fb724-f924-40c8-b667-753abd515a49"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 2, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new Guid("a394a640-1c19-4949-9795-5321e7e55c90"), "Country", "admin/countries" },
+                    { new Guid("a51aa7b3-cc4a-4191-a061-8cece9c11a75"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 3, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new Guid("a394a640-1c19-4949-9795-5321e7e55c90"), "Gender", "admin/genders" },
+                    { new Guid("b73a59f0-cdd5-4895-a0e7-feea45ff5511"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 6, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new Guid("a394a640-1c19-4949-9795-5321e7e55c90"), "Title", "admin/titles" },
+                    { new Guid("c5571635-29dc-4196-9091-a866c1da3bc4"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 4, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"), "Category", "admin/categories" },
+                    { new Guid("d7c6b998-c97e-4235-8e9e-e3661aa6753d"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"), "Asset", "admin/assets" },
+                    { new Guid("e49f315d-4ed0-4002-80ad-d81001fe0d1a"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 4, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new Guid("a394a640-1c19-4949-9795-5321e7e55c90"), "Highest Education", "admin/highesteducations" },
+                    { new Guid("fc58cb5d-d393-4d89-b0fe-7bcb1b013061"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), 5, "Dashboard", true, false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"), "Designation", "admin/designations" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "NavigationNodeRoles",
+                columns: new[] { "NavigationNodeId", "RoleId", "CreatedByUserId", "CreatedByUserName", "DateCreated", "DateModified", "Id", "IsDeleted", "ModifiedByUserId", "ModifiedByUserName" },
+                values: new object[,]
+                {
+                    { new Guid("028f48a9-a50d-495a-a27e-39c84da74b9a"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" },
+                    { new Guid("12a135f3-d536-4250-acbf-a38aad2d802a"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" },
+                    { new Guid("57ec63e1-52d5-44cc-a9d1-cded389f2014"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" },
+                    { new Guid("5a770876-0d03-4841-bfe0-7c56d4b561d2"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" },
+                    { new Guid("734db850-8030-4f9e-8a14-20ae10ae8cb3"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" },
+                    { new Guid("75d38d82-7f26-488e-8bd9-0eaea1b08633"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" },
+                    { new Guid("83277279-1ae9-49e5-96f6-579e53918cca"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" },
+                    { new Guid("984fb724-f924-40c8-b667-753abd515a49"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" },
+                    { new Guid("a51aa7b3-cc4a-4191-a061-8cece9c11a75"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" },
+                    { new Guid("b73a59f0-cdd5-4895-a0e7-feea45ff5511"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" },
+                    { new Guid("c5571635-29dc-4196-9091-a866c1da3bc4"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" },
+                    { new Guid("d7c6b998-c97e-4235-8e9e-e3661aa6753d"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" },
+                    { new Guid("e49f315d-4ed0-4002-80ad-d81001fe0d1a"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" },
+                    { new Guid("fc58cb5d-d393-4d89-b0fe-7bcb1b013061"), new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"), new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin", new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), new Guid("00000000-0000-0000-0000-000000000000"), false, new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"), "System Admin" }
                 });
 
             migrationBuilder.InsertData(
@@ -3719,6 +3891,11 @@ namespace MC.Persistence.Migrations
                 column: "ModifiedByUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MenuItems_RoleId",
+                table: "MenuItems",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Menus_CreatedByUserId",
                 table: "Menus",
                 column: "CreatedByUserId");
@@ -3729,9 +3906,34 @@ namespace MC.Persistence.Migrations
                 column: "ModifiedByUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Menus_RoleId",
-                table: "Menus",
+                name: "IX_NavigationNodeRoles_CreatedByUserId",
+                table: "NavigationNodeRoles",
+                column: "CreatedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NavigationNodeRoles_ModifiedByUserId",
+                table: "NavigationNodeRoles",
+                column: "ModifiedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NavigationNodeRoles_RoleId",
+                table: "NavigationNodeRoles",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NavigationNodes_CreatedByUserId",
+                table: "NavigationNodes",
+                column: "CreatedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NavigationNodes_ModifiedByUserId",
+                table: "NavigationNodes",
+                column: "ModifiedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NavigationNodes_ParentId",
+                table: "NavigationNodes",
+                column: "ParentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PoliceVerifications_CreatedByUserId",
@@ -4045,6 +4247,9 @@ namespace MC.Persistence.Migrations
                 name: "MenuItems");
 
             migrationBuilder.DropTable(
+                name: "NavigationNodeRoles");
+
+            migrationBuilder.DropTable(
                 name: "PoliceVerifications");
 
             migrationBuilder.DropTable(
@@ -4078,6 +4283,12 @@ namespace MC.Persistence.Migrations
                 name: "Menus");
 
             migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "NavigationNodes");
+
+            migrationBuilder.DropTable(
                 name: "Assets");
 
             migrationBuilder.DropTable(
@@ -4094,9 +4305,6 @@ namespace MC.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserProfiles");
-
-            migrationBuilder.DropTable(
-                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Branches");

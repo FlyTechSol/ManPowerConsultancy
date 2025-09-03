@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
 namespace MC.Application.Features.Registration.UserProfile.Command.Delete
 {
-    internal class DeleteUserProfileCmd
+    public class DeleteUserProfileCmd : IRequest<Unit>
     {
+        public Guid Id { get; set; }
     }
 }
