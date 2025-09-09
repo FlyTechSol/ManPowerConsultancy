@@ -56,6 +56,7 @@ namespace MC.Application.MappingProfiles
             CreateMap<BankAccount, BankAccountDetailDto>();
             CreateMap<CreateBankAccountCmd, BankAccount>();
             CreateMap<UpdateBankAccountCmd, BankAccount>();
+            CreateMap<BankAccountDetailDto, BankAccountDto>();
 
             CreateMap<BodyMeasurement, BodyMeasurementDetailDto>().ReverseMap();
             //CreateMap<BodyMeasurement, BodyMeasurementDto>();

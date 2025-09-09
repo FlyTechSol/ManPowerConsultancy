@@ -1,4 +1,5 @@
-﻿using MC.Application.Features.Registration.BodyMeasurement.Command.Create;
+﻿using MC.API.Resources;
+using MC.Application.Features.Registration.BodyMeasurement.Command.Create;
 using MC.Application.Features.Registration.BodyMeasurement.Command.Delete;
 using MC.Application.Features.Registration.BodyMeasurement.Command.Update;
 using MC.Application.Features.Registration.BodyMeasurement.Query.GetById;
@@ -51,7 +52,12 @@ namespace MC.API.Controllers.Registration
         public async Task<ActionResult> Post(CreateBodyMeasCmd request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
-            return CreatedAtAction(nameof(Get), new { id = response }, null);
+            //return CreatedAtAction(nameof(Get), new { id = response }, null);
+            return CreatedAtAction(
+                      nameof(Get),
+                      new { id = response },
+                      ApiResponseMessage<Guid>.SuccessResponse(response, ResponseMessages.Created)
+                      );
         }
 
         [HttpPut("{id}")]
@@ -63,7 +69,8 @@ namespace MC.API.Controllers.Registration
         public async Task<ActionResult> Put(UpdateBodyMeasCmd request, CancellationToken cancellationToken)
         {
             await _mediator.Send(request, cancellationToken);
-            return NoContent();
+            //return NoContent();
+            return Ok(ApiResponseMessage<object>.SuccessResponse(null, ResponseMessages.Updated));
         }
 
         [HttpDelete("{id}")]

@@ -66,8 +66,9 @@ namespace MC.Persistence.Services
                 .AsNoTracking()
                 .Include(m => m.MenuItems)
                     .ThenInclude(mi => mi.Role) // Assuming MenuItem has Role navigation
-                .Where(m => !m.IsDeleted && m.MenuItems.Any(mi =>
-                    !mi.IsDeleted &&
+                .Where(m => !m.IsDeleted &&
+                    m.MenuItems.All(mi => !mi.IsDeleted) &&
+                    m.MenuItems.Any(mi =>
                     mi.Role != null &&
                     roles.Contains(mi.Role.Name!)));
 

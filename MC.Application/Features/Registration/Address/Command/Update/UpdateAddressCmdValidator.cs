@@ -17,14 +17,17 @@ namespace MC.Application.Features.Registration.Address.Command.Update
             RuleFor(p => p.UserProfileId)
                 .NotEmpty().WithMessage("{PropertyName} is required");
 
-            RuleFor(p => p.C_AddressLine1)
+            RuleFor(p => p.AddressLine1)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
                 .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
-            RuleFor(p => p.C_AddressLine2)
+            RuleFor(p => p.AddressLine2)
                .NotEmpty().WithMessage("{PropertyName} is required")
                .NotNull()
                .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
+
+            RuleFor(p => p.AddressType)
+                .IsInEnum().WithMessage("A valid address type must be selected.");
         }
 
         private async Task<bool> AddressMustExist(Guid id, CancellationToken cancellationToken)

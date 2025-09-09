@@ -1,10 +1,11 @@
-﻿using MC.Application.Features.Registration.Training.Command.Create;
+﻿using MC.API.Resources;
+using MC.Application.Features.Registration.Training.Command.Create;
 using MC.Application.Features.Registration.Training.Command.Delete;
 using MC.Application.Features.Registration.Training.Command.Update;
-using MC.Application.Features.Registration.Training.Query.GetAllByRegistrationId;
+using MC.Application.Features.Registration.Training.Query.GetAll;
 using MC.Application.Features.Registration.Training.Query.GetById;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Registration;
-using MC.Application.Features.Registration.Training.Query.GetAllByUserProfileId;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,19 +28,25 @@ namespace MC.API.Controllers.Registration
             var response = await _mediator.Send(new GetTrainingByIdQuery(id), cancellationToken);
             return Ok(response);
         }
+        [HttpGet("get-all-by-user-profile-id/{userProfileId}")]
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<TrainingDetailDto>>>> GetAllByUserProfile(Guid userProfileId, [FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetAllTrainingQuery(userProfileId, queryParams), cancellationToken);
+            return Ok(response);
+        }
 
-        [HttpGet("get-all-training-by-registration-id/{registrationId}")]
-        public async Task<ActionResult<List<TrainingDetailDto>>> GetAll(string registrationId, CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(new GetAllTrainingByRegistrationIdQuery(registrationId), cancellationToken);
-            return Ok(response);
-        }
-        [HttpGet("get-all-training-by-user-profile-id/{userProfileId}")]
-        public async Task<ActionResult<List<TrainingDetailDto>>> GetAllNyUserProfile(Guid userProfileId, CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(new GetAllByUserProfileQuery(userProfileId), cancellationToken);
-            return Ok(response);
-        }
+        //[HttpGet("get-all-training-by-registration-id/{registrationId}")]
+        //public async Task<ActionResult<List<TrainingDetailDto>>> GetAll(string registrationId, CancellationToken cancellationToken)
+        //{
+        //    var response = await _mediator.Send(new GetAllTrainingByRegistrationIdQuery(registrationId), cancellationToken);
+        //    return Ok(response);
+        //}
+        //[HttpGet("get-all-training-by-user-profile-id/{userProfileId}")]
+        //public async Task<ActionResult<List<TrainingDetailDto>>> GetAllNyUserProfile(Guid userProfileId, CancellationToken cancellationToken)
+        //{
+        //    var response = await _mediator.Send(new GetAllByUserProfileQuery(userProfileId), cancellationToken);
+        //    return Ok(response);
+        //}
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ProducesResponseType(201)]
@@ -48,7 +55,12 @@ namespace MC.API.Controllers.Registration
         public async Task<ActionResult> Post(CreateTrainingCmd request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
-            return CreatedAtAction(nameof(Get), new { id = response }, null);
+            //return CreatedAtAction(nameof(Get), new { id = response }, null);
+            return CreatedAtAction(
+                      nameof(Get),
+                      new { id = response },
+                      ApiResponseMessage<Guid>.SuccessResponse(response, ResponseMessages.Created)
+                      );
         }
 
         [HttpPut("{id}")]
@@ -60,7 +72,8 @@ namespace MC.API.Controllers.Registration
         public async Task<ActionResult> Put(UpdateTrainingCmd request, CancellationToken cancellationToken)
         {
             await _mediator.Send(request, cancellationToken);
-            return NoContent();
+            //return NoContent();
+            return Ok(ApiResponseMessage<object>.SuccessResponse(null, ResponseMessages.Updated));
         }
 
         [HttpDelete("{id}")]

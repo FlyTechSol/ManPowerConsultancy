@@ -1,9 +1,11 @@
 ﻿using MC.Application.Contracts.Persistence.Registration;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Registration;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 
 namespace MC.Persistence.Repositories.Registration
 {
@@ -15,6 +17,59 @@ namespace MC.Persistence.Repositories.Registration
             _userProfileRepository = userProfileRepository;
         }
 
+        public async Task<PaginatedResponse<GunManDetailDto>?> GetAllDetailsAsync(Guid userProfileId, QueryParams queryParams, CancellationToken cancellationToken)
+        {
+            var query = _context.GunMen
+                .AsNoTracking()
+                .Where(addr => addr.UserProfileId == userProfileId && !addr.IsDeleted);
+
+            // Search filter
+            if (!string.IsNullOrWhiteSpace(queryParams.Query))
+            {
+                var search = queryParams.Query.ToLower();
+                query = query.Where(q =>
+                    !string.IsNullOrWhiteSpace(q.GunLicenceName) && q.GunLicenceName.ToLower().Contains(search) ||
+                    !string.IsNullOrWhiteSpace(q.GunLicenseNumber) && q.GunLicenseNumber.ToLower().Contains(search) ||
+                    !string.IsNullOrWhiteSpace(q.WeaponNumber) && q.WeaponNumber.ToLower().Contains(search) ||
+                    !string.IsNullOrWhiteSpace(q.MakeOfCompany) && q.MakeOfCompany.ToLower().Contains(search) ||
+                    !string.IsNullOrWhiteSpace(q.WeaponType.ToString()) && q.WeaponType.ToString().ToLower().Contains(search)
+                );
+            }
+
+            // Total count before pagination
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            // Sorting
+            if (!string.IsNullOrWhiteSpace(queryParams.Column))
+            {
+                string column = queryParams.Column;
+                string direction = queryParams.Dir?.ToLower() == "desc" ? "descending" : "";
+
+                query = query.OrderBy($"{column} {direction}");
+            }
+            else
+            {
+                //query = query.OrderBy(a => a.IsActive); // default sort
+                query = query.OrderByDescending(a => a.IsActive)
+                             .ThenBy(a => a.GunLicenceName); // optional secondary sort
+            }
+
+            // Pagination
+            var data = await query
+                .Skip((queryParams.Page - 1) * queryParams.Limit)
+                .Take(queryParams.Limit)
+                .ToListAsync(cancellationToken);
+
+            var dtos = data.Select(MapToDto).ToList();
+
+            return new PaginatedResponse<GunManDetailDto>
+            {
+                Data = dtos,
+                CurrentPage = queryParams.Page,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)queryParams.Limit)
+            };
+        }
         public async Task<List<GunManDetailDto>?> GetAllGunMenByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
         {
             var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
@@ -64,7 +119,7 @@ namespace MC.Persistence.Repositories.Registration
             {
                 Id = response.Id,
                 UserProfileId = response.UserProfileId,
-                UserProfileName = response.UserProfile != null ? response.UserProfile.FirstName + " " + response.UserProfile.LastName : string.Empty,
+                //UserProfileName = response.UserProfile != null ? response.UserProfile.FirstName + " " + response.UserProfile.LastName : string.Empty,
                 GunLicenceName = response.GunLicenceName,
                 GunLicenseNumber = response.GunLicenseNumber,
                 WeaponNumber = response.WeaponNumber,

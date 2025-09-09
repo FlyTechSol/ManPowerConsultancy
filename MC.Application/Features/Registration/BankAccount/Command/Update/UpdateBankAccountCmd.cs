@@ -7,7 +7,7 @@ namespace MC.Application.Features.Registration.BankAccount.Command.Update
     {
         public Guid Id { get; set; }
         public Guid UserProfileId { get; set; }
-        public string BankName { get; set; } = string.Empty;
+        public Guid BankId { get; set; }
         public string IFSCCode { get; set; } = string.Empty;
         public string AccountNo { get; set; } = string.Empty;
         public AccountType AccountType { get; set; }

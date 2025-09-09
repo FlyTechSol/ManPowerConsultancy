@@ -74,6 +74,11 @@ builder.Services.AddApplicationServices();
 builder.Services.AddPersistenceServices(configuration);
 builder.Services.AddInfrastructureServices(configuration);
 
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    options.TokenLifespan = TimeSpan.FromHours(24); // Link valid for 24h
+});
+
 // ---------- Controllers ----------
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

@@ -8,5 +8,6 @@ namespace MC.Domain.Entity.Enum
         StaffRejected,
         RegistrationDone,
         ForgotPassword,
+        PasswordChanged
     }
 }

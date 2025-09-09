@@ -8,21 +8,22 @@ namespace MC.Application.ModelDto.Registration
         public Guid Id { get; set; }
         public Guid? UserId { get; set; } // Nullable
         public string? User { get; set; } // Optional navigation
-        public Guid CompanyId { get; set; }
+        public Guid? CompanyId { get; set; }
         public string CompanyName { get; set; } = null!;
-        public Guid ClientMasterId { get; set; }
+        public Guid? ClientMasterId { get; set; }
         public string ClientMaster { get; set; } = null!;
-        public Guid ClientUnitId { get; set; }
+        public Guid? ClientUnitId { get; set; }
         public string ClientUnit { get; set; } = null!;
-        public Guid BranchId { get; set; }
+        public Guid? BranchId { get; set; }
         public string Branch { get; set; } = null!;
-        public Guid DesignationId { get; set; }
+        public Guid? DesignationId { get; set; }
         public string Designation { get; set; } = null!;
-        public Guid CategoryId { get; set; }
+        public Guid? CategoryId { get; set; }
         public string Category { get; set; } = null!;
         public string RegistrationId { get; set; } = null!; // Unique, non-null
         public Guid? TitleId { get; set; }
         public string? Salutation { get; set; }
+        public string FullName { get; set; } = string.Empty;
         public string FirstName { get; set; } = string.Empty;
         public string? MiddleName { get; set; }
         public string? LastName { get; set; }

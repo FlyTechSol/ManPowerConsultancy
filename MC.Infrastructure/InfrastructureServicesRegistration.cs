@@ -1,9 +1,12 @@
 ﻿using MC.Application.Contracts.Email;
+using MC.Application.Contracts.Identity;
 using MC.Application.Contracts.Logging;
 using MC.Infrastructure.Email;
+using MC.Infrastructure.Identity;
 using MC.Infrastructure.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;
 
 namespace MC.Infrastructure
 {
@@ -13,7 +16,13 @@ namespace MC.Infrastructure
         {
             services.AddTransient<IEmailSenderRepository, EmailSenderRepository>();
             services.AddScoped(typeof(IAppLogger<>), typeof(AppLogger<>));
-          
+
+            // Required for IHttpContextAccessor
+            services.AddHttpContextAccessor();
+
+            // User context
+            services.AddScoped<IUserContext, UserContext>();
+
             return services;
         }
     }

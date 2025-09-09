@@ -22,6 +22,444 @@ namespace MC.Persistence.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalAction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime>("ActionDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("ApproverId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CreatedByUserName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid?>("ModifiedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ModifiedByUserName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<Guid>("RequestStageId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApproverId");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("ModifiedByUserId");
+
+                    b.HasIndex("RequestStageId");
+
+                    b.ToTable("ApprovalActions");
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CreatedByUserName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid?>("ModifiedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ModifiedByUserName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<Guid>("RequestEntityId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("RequestType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<Guid>("RequestedBy")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<Guid>("WorkflowId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("ModifiedByUserId");
+
+                    b.HasIndex("RequestedBy");
+
+                    b.HasIndex("WorkflowId");
+
+                    b.ToTable("ApprovalRequests");
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalRequestStage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CreatedByUserName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid?>("ModifiedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ModifiedByUserName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<Guid>("RequestId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("StageId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("ModifiedByUserId");
+
+                    b.HasIndex("RequestId");
+
+                    b.HasIndex("StageId");
+
+                    b.ToTable("ApprovalRequestStages");
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalStage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ApprovalMode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CreatedByUserName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsFinalStage")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid?>("ModifiedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ModifiedByUserName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("WorkflowId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("ModifiedByUserId");
+
+                    b.HasIndex("WorkflowId");
+
+                    b.ToTable("ApprovalStages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("dbc65a3b-142a-4a90-a46c-168ab69ca695"),
+                            ApprovalMode = "Sequential",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            IsFinalStage = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Order = 1,
+                            WorkflowId = new Guid("b8517dd6-6c6d-4c2c-8db7-95cae11791a6")
+                        },
+                        new
+                        {
+                            Id = new Guid("b1ef1e9f-f327-4a47-8c2d-e94414872f77"),
+                            ApprovalMode = "Sequential",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            IsFinalStage = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Order = 2,
+                            WorkflowId = new Guid("b8517dd6-6c6d-4c2c-8db7-95cae11791a6")
+                        },
+                        new
+                        {
+                            Id = new Guid("b003080e-2752-4b5a-abf3-d2da565ee750"),
+                            ApprovalMode = "Sequential",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            IsFinalStage = true,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Order = 3,
+                            WorkflowId = new Guid("b8517dd6-6c6d-4c2c-8db7-95cae11791a6")
+                        });
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalStageApprover", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CreatedByUserName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid?>("DesignationId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsMandatory")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid?>("ModifiedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ModifiedByUserName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<Guid>("StageId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("DesignationId");
+
+                    b.HasIndex("ModifiedByUserId");
+
+                    b.HasIndex("StageId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ApprovalStageApprovers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("db1f43f1-77f1-40b5-93ac-10209f66a4f7"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            IsMandatory = true,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            StageId = new Guid("dbc65a3b-142a-4a90-a46c-168ab69ca695"),
+                            UserId = new Guid("08ddeecf-697f-4ac9-8c62-6bc3e7ed5640")
+                        },
+                        new
+                        {
+                            Id = new Guid("6a122142-5f03-4087-b533-2627bbdf7805"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DesignationId = new Guid("a2d980ac-3fb9-4eed-a5e1-918b64285f05"),
+                            IsDeleted = false,
+                            IsMandatory = true,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            StageId = new Guid("b1ef1e9f-f327-4a47-8c2d-e94414872f77")
+                        },
+                        new
+                        {
+                            Id = new Guid("4cec1bdc-a38c-480f-b227-38fcab69d949"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            IsMandatory = true,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            StageId = new Guid("b003080e-2752-4b5a-abf3-d2da565ee750"),
+                            UserId = new Guid("08dded4a-1f34-4190-86c3-bf1dc04eff50")
+                        });
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalWorkflow", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CreatedByUserName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid?>("ModifiedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ModifiedByUserName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("WorkflowType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("ModifiedByUserId");
+
+                    b.ToTable("ApprovalWorkflows");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b8517dd6-6c6d-4c2c-8db7-95cae11791a6"),
+                            CompanyId = new Guid("489d4544-5461-4132-aa29-688758627c98"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            WorkflowType = "StaffApproval"
+                        });
+                });
+
             modelBuilder.Entity("MC.Domain.Entity.Common.EmailTemplate", b =>
                 {
                     b.Property<Guid>("Id")
@@ -71,7 +509,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("EmailTemplates", (string)null);
+                    b.ToTable("EmailTemplates");
 
                     b.HasData(
                         new
@@ -87,6 +525,48 @@ namespace MC.Persistence.Migrations
                             ModifiedByUserName = "System Admin",
                             Subject = "Welcome to the Organization, {UserName}!",
                             TemplateName = "StaffCreated"
+                        },
+                        new
+                        {
+                            Id = new Guid("80aad593-6a40-44d5-abb3-aa25bea241b9"),
+                            Body = "<!DOCTYPE html><html><head><title>Welcome to <your compnay name></title></head><body><h1>Welcome, {FirstName} {LastName}!</h1><p>Dear {FirstName},</p><p>We&#39;re thrilled to have you join the <your compnay name>. Thank you for registering with us!</p><p>To get started, please confirm your email address by clicking the link below:</p><p><a href=\"{EmailVerificationLink}\">Verify Your Email</a></p><p>This will help us ensure we have the correct email address for your account. It only takes a few moments.</p><p>Once your email is verified, you&#39;ll be able to fully access your account.</p><p>If you have any questions or need assistance, feel free to reach out to our support team at <your compnay email>.</p><p>Welcome aboard, and we look forward to having you with us!</p><p>Best regards,</p><p>Administrator <your compnay name></p></body></html>",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Subject = "<your compnay name> Registration Successful for {FirstName} {LastName}",
+                            TemplateName = "RegistrationDone"
+                        },
+                        new
+                        {
+                            Id = new Guid("3d37d753-1fff-4cf0-840d-9298f99c72c2"),
+                            Body = "<!DOCTYPE html>\r\n                        <html>\r\n                        <head>\r\n                            <title>Password Reset</title>\r\n                        </head>\r\n                        <body style=\"font-family: Arial, sans-serif; line-height: 1.6;\">\r\n                            <p>Dear User,</p>\r\n                            <p>We received a request to reset your password. Please click the link below to proceed:</p>\r\n                            <p><a href=\"{ResetLink}\" style=\"color: #007bff; text-decoration: none;\">Reset Your Password</a></p>\r\n                            <p>If you did not request a password reset, please ignore this email or contact our support team immediately.</p>\r\n                            <p>If you have any questions or need assistance, feel free to reach out to us at <a href=\"mailto:support@yourcompany.com\">support@yourcompany.com</a>.</p>\r\n                            <p>Best regards,</p>\r\n                            <p><strong>Administrator</strong><br><your company name></p>\r\n                        </body>\r\n                        </html>",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Subject = "Reset Your Password - <your company name>",
+                            TemplateName = "ForgotPassword"
+                        },
+                        new
+                        {
+                            Id = new Guid("4d47e853-2eff-5cf1-940e-a398f01d83e1"),
+                            Body = "<!DOCTYPE html>\r\n                        <html>\r\n                        <head>\r\n                            <title>Password Changed</title>\r\n                        </head>\r\n                        <body style=\"font-family: Arial, sans-serif; line-height: 1.6;\">\r\n                            <p>Dear User,</p>\r\n                            <p>We wanted to let you know that your password was successfully changed. If you made this change, no further action is needed.</p>\r\n                            <p>If you did not make this change, please contact our support team immediately to secure your account:</p>\r\n                            <p><a href=\"mailto:support@yourcompany.com\">support@yourcompany.com</a></p>\r\n                            <p>For your security, we recommend choosing a strong password that you don't use for any other accounts.</p>\r\n                            <p>Best regards,</p>\r\n                            <p><strong>Administrator</strong><br><your company name></p>\r\n                        </body>\r\n                        </html>",
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Subject = "Your Password Has Been Changed - <your company name>",
+                            TemplateName = "PasswordChanged"
                         });
                 });
 
@@ -332,14 +812,11 @@ namespace MC.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
-
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("Assets", (string)null);
+                    b.ToTable("Assets");
 
                     b.HasData(
                         new
@@ -893,14 +1370,11 @@ namespace MC.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
-
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("Banks", (string)null);
+                    b.ToTable("Banks");
 
                     b.HasData(
                         new
@@ -4072,14 +4546,11 @@ namespace MC.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
-
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("Branches", (string)null);
+                    b.ToTable("Branches");
 
                     b.HasData(
                         new
@@ -4507,14 +4978,11 @@ namespace MC.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
-
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("CasteCategories", (string)null);
+                    b.ToTable("CasteCategories");
 
                     b.HasData(
                         new
@@ -4620,14 +5088,11 @@ namespace MC.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
-
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -4723,14 +5188,11 @@ namespace MC.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
-
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
 
                     b.HasData(
                         new
@@ -4810,14 +5272,11 @@ namespace MC.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
-
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("Designations", (string)null);
+                    b.ToTable("Designations");
 
                     b.HasData(
                         new
@@ -14193,7 +14652,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("DocumentTypes", (string)null);
+                    b.ToTable("DocumentTypes");
 
                     b.HasData(
                         new
@@ -14285,14 +14744,11 @@ namespace MC.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
-
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("Genders", (string)null);
+                    b.ToTable("Genders");
 
                     b.HasData(
                         new
@@ -14370,14 +14826,11 @@ namespace MC.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
-
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("HighestEducations", (string)null);
+                    b.ToTable("HighestEducations");
 
                     b.HasData(
                         new
@@ -14511,14 +14964,11 @@ namespace MC.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
-
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("RecruitmentTypes", (string)null);
+                    b.ToTable("RecruitmentTypes");
 
                     b.HasData(
                         new
@@ -14624,14 +15074,11 @@ namespace MC.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
-
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("Religions", (string)null);
+                    b.ToTable("Religions");
 
                     b.HasData(
                         new
@@ -14789,7 +15236,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("Titles", (string)null);
+                    b.ToTable("Titles");
 
                     b.HasData(
                         new
@@ -14934,7 +15381,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("ZipCodes", (string)null);
+                    b.ToTable("ZipCodes");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Menu.Menu", b =>
@@ -14989,7 +15436,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("Menus", (string)null);
+                    b.ToTable("Menus");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Menu.MenuItem", b =>
@@ -15055,7 +15502,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("MenuItems", (string)null);
+                    b.ToTable("MenuItems");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Navigation.NavigationNode", b =>
@@ -15119,7 +15566,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("NavigationNodes", (string)null);
+                    b.ToTable("NavigationNodes");
 
                     b.HasData(
                         new
@@ -15468,7 +15915,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("NavigationNodeRoles", (string)null);
+                    b.ToTable("NavigationNodeRoles");
 
                     b.HasData(
                         new
@@ -15770,7 +16217,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("ClientMasters", (string)null);
+                    b.ToTable("ClientMasters");
 
                     b.HasData(
                         new
@@ -15878,7 +16325,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("ClientUnits", (string)null);
+                    b.ToTable("ClientUnits");
 
                     b.HasData(
                         new
@@ -16030,7 +16477,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.ToTable("Companies", (string)null);
+                    b.ToTable("Companies");
 
                     b.HasData(
                         new
@@ -16087,37 +16534,27 @@ namespace MC.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("C_AddressLine1")
+                    b.Property<string>("AddressLine1")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("C_AddressLine2")
+                    b.Property<string>("AddressLine2")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("C_City")
+                    b.Property<string>("AddressType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)");
 
-                    b.Property<string>("C_Country")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("C_District")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("C_PinCode")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<string>("C_State")
+                    b.Property<string>("Country")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
@@ -16135,13 +16572,15 @@ namespace MC.Persistence.Migrations
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("District")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("IsPermanentAddressSame")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<Guid?>("ModifiedByUserId")
@@ -16151,37 +16590,12 @@ namespace MC.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("P_AddressLine1")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("P_AddressLine2")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("P_City")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("P_Country")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("P_District")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("P_PinCode")
+                    b.Property<string>("PinCode")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("varchar(10)");
 
-                    b.Property<string>("P_State")
+                    b.Property<string>("State")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
@@ -16198,7 +16612,7 @@ namespace MC.Persistence.Migrations
                     b.HasIndex("UserProfileId", "IsActive")
                         .HasDatabaseName("IX_Addresses_UserProfileId_IsActive");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.BankAccount", b =>
@@ -16271,7 +16685,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("BankAccounts", (string)null);
+                    b.ToTable("BankAccounts");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.BodyMeasurement", b =>
@@ -16346,7 +16760,7 @@ namespace MC.Persistence.Migrations
                     b.HasIndex("UserProfileId")
                         .IsUnique();
 
-                    b.ToTable("BodyMeasurements", (string)null);
+                    b.ToTable("BodyMeasurements");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.Communication", b =>
@@ -16423,7 +16837,7 @@ namespace MC.Persistence.Migrations
                     b.HasIndex("UserProfileId")
                         .IsUnique();
 
-                    b.ToTable("Communications", (string)null);
+                    b.ToTable("Communications");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.EmployeeReference", b =>
@@ -16504,7 +16918,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("EmployeeReferences", (string)null);
+                    b.ToTable("EmployeeReferences");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.ExArmy", b =>
@@ -16584,7 +16998,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("ExArmies", (string)null);
+                    b.ToTable("ExArmies");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.Family", b =>
@@ -16666,7 +17080,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("Famlies", (string)null);
+                    b.ToTable("Famlies");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.GunMan", b =>
@@ -16755,7 +17169,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("GunMen", (string)null);
+                    b.ToTable("GunMen");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.Insurance", b =>
@@ -16822,7 +17236,7 @@ namespace MC.Persistence.Migrations
                     b.HasIndex("UserProfileId")
                         .IsUnique();
 
-                    b.ToTable("Insurances", (string)null);
+                    b.ToTable("Insurances");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.InsuranceNominee", b =>
@@ -16927,7 +17341,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("InsuranceNominees", (string)null);
+                    b.ToTable("InsuranceNominees");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.PoliceVerification", b =>
@@ -16991,7 +17405,7 @@ namespace MC.Persistence.Migrations
                     b.HasIndex("UserProfileId")
                         .IsUnique();
 
-                    b.ToTable("PoliceVerifications", (string)null);
+                    b.ToTable("PoliceVerifications");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.PreviousExperience", b =>
@@ -17063,7 +17477,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("PreviousExperiences", (string)null);
+                    b.ToTable("PreviousExperiences");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.RegistrationSequence", b =>
@@ -17081,7 +17495,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasKey("CompanyId");
 
-                    b.ToTable("RegistrationSequences", (string)null);
+                    b.ToTable("RegistrationSequences");
 
                     b.HasData(
                         new
@@ -17147,7 +17561,7 @@ namespace MC.Persistence.Migrations
                     b.HasIndex("UserProfileId")
                         .IsUnique();
 
-                    b.ToTable("Resignations", (string)null);
+                    b.ToTable("Resignations");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.SecurityDeposit", b =>
@@ -17218,7 +17632,7 @@ namespace MC.Persistence.Migrations
                     b.HasIndex("UserProfileId")
                         .IsUnique();
 
-                    b.ToTable("SecurityDeposits", (string)null);
+                    b.ToTable("SecurityDeposits");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.Training", b =>
@@ -17287,7 +17701,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("Trainings", (string)null);
+                    b.ToTable("Trainings");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.UserAsset", b =>
@@ -17373,7 +17787,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("UserAssets", (string)null);
+                    b.ToTable("UserAssets");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.UserGeneralDetail", b =>
@@ -17464,7 +17878,7 @@ namespace MC.Persistence.Migrations
                     b.HasIndex("UserProfileId")
                         .IsUnique();
 
-                    b.ToTable("UserGeneralDetails", (string)null);
+                    b.ToTable("UserGeneralDetails");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.UserProfile", b =>
@@ -17474,7 +17888,6 @@ namespace MC.Persistence.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("AadhaarNumber")
-                        .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("varchar(12)");
 
@@ -17482,19 +17895,19 @@ namespace MC.Persistence.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("varchar(15)");
 
-                    b.Property<Guid>("BranchId")
+                    b.Property<Guid?>("BranchId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("ClientMasterId")
+                    b.Property<Guid?>("ClientMasterId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("ClientUnitId")
+                    b.Property<Guid?>("ClientUnitId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("CompanyId")
+                    b.Property<Guid?>("CompanyId")
                         .HasColumnType("char(36)");
 
                     b.Property<Guid?>("CreatedByUserId")
@@ -17513,13 +17926,13 @@ namespace MC.Persistence.Migrations
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DateOfJoining")
+                    b.Property<DateTime?>("DateOfJoining")
                         .HasColumnType("date");
 
                     b.Property<DateTime?>("DateOfRegistration")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("DesignationId")
+                    b.Property<Guid?>("DesignationId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Email")
@@ -17583,7 +17996,6 @@ namespace MC.Persistence.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("RegistrationId")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
@@ -17627,7 +18039,7 @@ namespace MC.Persistence.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("UserProfiles", (string)null);
+                    b.ToTable("UserProfiles");
 
                     b.HasData(
                         new
@@ -17642,7 +18054,6 @@ namespace MC.Persistence.Migrations
                             CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateOfJoining = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DesignationId = new Guid("f0a87667-1bc3-4688-85fb-bc656da4bf9f"),
                             FirstName = "System",
                             IsActive = true,
@@ -17666,7 +18077,6 @@ namespace MC.Persistence.Migrations
                             CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateOfJoining = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DesignationId = new Guid("f0a87667-1bc3-4688-85fb-bc656da4bf9f"),
                             FirstName = "System",
                             IsActive = true,
@@ -17793,6 +18203,194 @@ namespace MC.Persistence.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalAction", b =>
+                {
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "Approver")
+                        .WithMany()
+                        .HasForeignKey("ApproverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "ModifiedByUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MC.Domain.Entity.Approval.ApprovalRequestStage", "RequestStage")
+                        .WithMany("Actions")
+                        .HasForeignKey("RequestStageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Approver");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("ModifiedByUser");
+
+                    b.Navigation("RequestStage");
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalRequest", b =>
+                {
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "ModifiedByUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "RequestedUser")
+                        .WithMany()
+                        .HasForeignKey("RequestedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MC.Domain.Entity.Approval.ApprovalWorkflow", "Workflow")
+                        .WithMany("Requests")
+                        .HasForeignKey("WorkflowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("ModifiedByUser");
+
+                    b.Navigation("RequestedUser");
+
+                    b.Navigation("Workflow");
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalRequestStage", b =>
+                {
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "ModifiedByUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MC.Domain.Entity.Approval.ApprovalRequest", "Request")
+                        .WithMany("Stages")
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MC.Domain.Entity.Approval.ApprovalStage", "Stage")
+                        .WithMany()
+                        .HasForeignKey("StageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("ModifiedByUser");
+
+                    b.Navigation("Request");
+
+                    b.Navigation("Stage");
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalStage", b =>
+                {
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "ModifiedByUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MC.Domain.Entity.Approval.ApprovalWorkflow", "Workflow")
+                        .WithMany("Stages")
+                        .HasForeignKey("WorkflowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("ModifiedByUser");
+
+                    b.Navigation("Workflow");
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalStageApprover", b =>
+                {
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MC.Domain.Entity.Master.Designation", "Designation")
+                        .WithMany()
+                        .HasForeignKey("DesignationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "ModifiedByUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MC.Domain.Entity.Approval.ApprovalStage", "Stage")
+                        .WithMany("Approvers")
+                        .HasForeignKey("StageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("Designation");
+
+                    b.Navigation("ModifiedByUser");
+
+                    b.Navigation("Stage");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalWorkflow", b =>
+                {
+                    b.HasOne("MC.Domain.Entity.Organization.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "ModifiedByUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Company");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("ModifiedByUser");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Common.EmailTemplate", b =>
@@ -18706,33 +19304,26 @@ namespace MC.Persistence.Migrations
                 {
                     b.HasOne("MC.Domain.Entity.Master.Branch", "Branch")
                         .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BranchId");
 
                     b.HasOne("MC.Domain.Entity.Master.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("MC.Domain.Entity.Organization.ClientMaster", "ClientMaster")
                         .WithMany("UserProfiles")
                         .HasForeignKey("ClientMasterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("MC.Domain.Entity.Organization.ClientUnit", "ClientUnit")
                         .WithMany("UserProfiles")
                         .HasForeignKey("ClientUnitId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("MC.Domain.Entity.Organization.Company", "Company")
                         .WithMany("UserProfiles")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
                         .WithMany()
@@ -18741,9 +19332,7 @@ namespace MC.Persistence.Migrations
 
                     b.HasOne("MC.Domain.Entity.Master.Designation", "Designation")
                         .WithMany()
-                        .HasForeignKey("DesignationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DesignationId");
 
                     b.HasOne("MC.Domain.Entity.Master.Gender", "Gender")
                         .WithMany()
@@ -18844,6 +19433,28 @@ namespace MC.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalRequest", b =>
+                {
+                    b.Navigation("Stages");
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalRequestStage", b =>
+                {
+                    b.Navigation("Actions");
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalStage", b =>
+                {
+                    b.Navigation("Approvers");
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalWorkflow", b =>
+                {
+                    b.Navigation("Requests");
+
+                    b.Navigation("Stages");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Identity.ApplicationUser", b =>

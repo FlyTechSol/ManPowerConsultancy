@@ -64,7 +64,7 @@ namespace MC.Persistence.Repositories.Registration
             {
                 Id = response.Id,
                 UserProfileId = response.UserProfileId,
-                UserProfileName = response.UserProfile.FirstName + " " + response.UserProfile.LastName,
+                //UserProfileName = response.UserProfile.FirstName + " " + response.UserProfile.LastName,
                 InsuranceCompanyName = response.InsuranceCompanyName,
                 PolicyNumber = response.PolicyNumber,
                 PolicyStartDate = response.PolicyStartDate,

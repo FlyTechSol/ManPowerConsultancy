@@ -13,6 +13,11 @@ namespace MC.Application.ModelDto.Navigation
         public Guid? ParentId { get; set; }
         public bool IsActive { get; set; }
         public List<NavigationNodeDto> Children { get; set; } = new();
-        public List<Guid> RoleIds { get; set; } = new();
+        public List<RoleBindingDto> Roles { get; set; } = new();
+    }
+    public class RoleBindingDto
+    {
+        public Guid RoleId { get; set; } = default!;
+        public string RoleName { get; set; } = default!;
     }
 }

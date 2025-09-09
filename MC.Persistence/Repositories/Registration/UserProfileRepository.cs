@@ -1,16 +1,20 @@
 ﻿using MC.Application.Contracts.Email;
+using MC.Application.Contracts.Identity;
+using MC.Application.Contracts.Persistence.Approval;
 using MC.Application.Contracts.Persistence.FileHandling.Upload;
 using MC.Application.Contracts.Persistence.Registration;
 using MC.Application.Exceptions;
 using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Registration;
 using MC.Domain.Entity.Enum;
-using System.Linq.Dynamic.Core;
+using MC.Domain.Entity.Enum.Approval;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
+using System.Threading;
 
 namespace MC.Persistence.Repositories.Registration
 {
@@ -19,15 +23,18 @@ namespace MC.Persistence.Repositories.Registration
         private readonly IEmailSenderRepository _emailSenderRepository;
         private readonly IRegistrationIdGeneratorRepository _registrationIdGeneratorRepository;
         private readonly IFileUploadRepository _fileUploadRepository;
+        private readonly IApprovalRequestRepository _approvalRequestRepository;
         public UserProfileRepository(
-            IEmailSenderRepository emailSenderRepository,
-            IRegistrationIdGeneratorRepository registrationIdGeneratorRepository,
-            IFileUploadRepository fileUploadRepository,
-            ApplicationDatabaseContext context) : base(context)
+           IEmailSenderRepository emailSenderRepository,
+           IRegistrationIdGeneratorRepository registrationIdGeneratorRepository,
+           IFileUploadRepository fileUploadRepository,
+           IApprovalRequestRepository approvalRequestRepository,
+           ApplicationDatabaseContext context) : base(context)
         {
             _emailSenderRepository = emailSenderRepository;
             _registrationIdGeneratorRepository = registrationIdGeneratorRepository;
             _fileUploadRepository = fileUploadRepository;
+            _approvalRequestRepository = approvalRequestRepository;
         }
 
         public async Task<UserProfileDto?> GetUserProfileByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
@@ -35,8 +42,9 @@ namespace MC.Persistence.Repositories.Registration
             var response = await _context.UserProfiles
                 .AsNoTracking()
                 .Include(x => x.Company)
-                    .ThenInclude(x => x.ClientMasters)
-                        .ThenInclude(x => x.Units)
+                .Include(x => x.ClientMaster)
+                .Include(x => x.ClientUnit)
+                .Include(x => x.Category)
                 .Include(x => x.Branch)
                 .Include(x => x.Designation)
                 .Include(x => x.RecruitmentType)
@@ -53,10 +61,11 @@ namespace MC.Persistence.Repositories.Registration
         public async Task<UserProfileDto?> GetUserProfileByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var response = await _context.UserProfiles
-                 .AsNoTracking()
+                .AsNoTracking()
                 .Include(x => x.Company)
-                    .ThenInclude(x => x.ClientMasters)
-                        .ThenInclude(x => x.Units)
+                .Include(x => x.ClientMaster)
+                .Include(x => x.ClientUnit)
+                .Include(x => x.Category)
                 .Include(x => x.Branch)
                 .Include(x => x.Designation)
                 .Include(x => x.RecruitmentType)
@@ -95,9 +104,10 @@ namespace MC.Persistence.Repositories.Registration
         {
             var query = _context.UserProfiles
                 .AsNoTracking()
-                 .Include(x => x.Company)
-                    .ThenInclude(x => x.ClientMasters)
-                        .ThenInclude(x => x.Units)
+                .Include(x => x.Company)
+                .Include(x => x.ClientMaster)
+                .Include(x => x.ClientUnit)
+                .Include(x => x.Category)
                 .Include(x => x.Branch)
                 .Include(x => x.Designation)
                 .Include(x => x.RecruitmentType)
@@ -110,8 +120,8 @@ namespace MC.Persistence.Repositories.Registration
             {
                 var search = queryParams.Query.ToLower();
                 query = query.Where(q =>
-                    q.RegistrationId.ToLower().Contains(search) ||
                     q.FirstName.ToLower().Contains(search) ||
+                    !string.IsNullOrWhiteSpace(q.RegistrationId) && q.RegistrationId.ToLower().Contains(search) ||
                     !string.IsNullOrWhiteSpace(q.MiddleName) && q.MiddleName.ToLower().Contains(search) ||
                     !string.IsNullOrWhiteSpace(q.LastName) && q.LastName.ToLower().Contains(search) ||
                     !string.IsNullOrWhiteSpace(q.AadhaarNumber) && q.AadhaarNumber.ToLower().Contains(search) ||
@@ -119,7 +129,7 @@ namespace MC.Persistence.Repositories.Registration
                     !string.IsNullOrWhiteSpace(q.EsicNumber) && q.EsicNumber.ToLower().Contains(search) ||
                     !string.IsNullOrWhiteSpace(q.UanNumber) && q.UanNumber.ToLower().Contains(search) ||
                     !string.IsNullOrWhiteSpace(q.Email) && q.Email.ToLower().Contains(search) ||
-                    !string.IsNullOrWhiteSpace(q.MobileNumber) && q.MobileNumber.ToLower().Contains(search) 
+                    !string.IsNullOrWhiteSpace(q.MobileNumber) && q.MobileNumber.ToLower().Contains(search)
                 );
             }
 
@@ -156,11 +166,19 @@ namespace MC.Persistence.Repositories.Registration
             };
         }
 
-        public async Task<Guid> CreateUserProfileAsync(UserProfile userProfile, IFormFile? profilePicture, CancellationToken cancellationToken)
+        public async Task<Guid> CreateUserProfileAsync(UserProfile userProfile, Guid loggedInUserId, IFormFile? profilePicture, CancellationToken cancellationToken)
         {
-            var RegId = await _registrationIdGeneratorRepository.GetNextRegistrationIdAsync(userProfile.CompanyId);
+            if (userProfile.CompanyId.HasValue)
+            {
+                var regId = await _registrationIdGeneratorRepository
+                    .GetNextRegistrationIdAsync(userProfile.CompanyId.Value);
+                userProfile.RegistrationId = regId;
+            }
+            else
+            {
+                userProfile.RegistrationId = null;
+            }
 
-            userProfile.RegistrationId = RegId;
             if (userProfile.DateOfJoining == default(DateTime))
             {
                 userProfile.DateOfJoining = DateTime.UtcNow.Date;
@@ -181,17 +199,45 @@ namespace MC.Persistence.Repositories.Registration
                 await _context.SaveChangesAsync(cancellationToken);
             }
 
+            //create approval step
+            // 4. Create Approval Request
+            if (userProfile.CompanyId.HasValue)
+            {
+                var workflow = await _context.ApprovalWorkflows
+                    .Include(w => w.Stages)
+                    .ThenInclude(s => s.Approvers)
+                    .FirstOrDefaultAsync(w => w.WorkflowType == WorkflowType.StaffApproval &&
+                                              w.CompanyId == userProfile.CompanyId.Value,
+                                           cancellationToken);
+
+                if (workflow != null)
+                {
+                    var approvalRequest = await _approvalRequestRepository.CreateApprovalRequestAsync(
+                        workflow.Id,
+                        loggedInUserId,
+                        RequestType.ProfileApproval,
+                        userProfile.Id,
+                        cancellationToken);
+
+                    var stages = workflow.Stages.OrderBy(s => s.Order).ToList();
+                    await _approvalRequestRepository.AddApprovalRequestStagesAsync(approvalRequest, stages, cancellationToken);
+                }
+            }
+
             // Send email
             if (!string.IsNullOrWhiteSpace(userProfile.Email))
             {
                 var replacements = new Dictionary<string, string>
                 {
                     { "UserName", $"{userProfile.FirstName} {(userProfile.LastName ?? "")}".Trim() },
-                    { "DateOfJoining", userProfile.DateOfJoining.ToString("dd MMM yyyy") }
+                     { "DateOfJoining", userProfile.DateOfJoining.HasValue
+                                    ? userProfile.DateOfJoining.Value.ToString("dd MMM yyyy")
+            :                       "Not Assigned" }
                 };
                 var emailsend = await _emailSenderRepository.SendEmailUsingTemplateAsync(userProfile.Email, EmailTemplateType.StaffCreated, replacements, cancellationToken);
             }
             return userProfile.Id;
+
         }
 
         public async Task<Guid> UpdateUserProfileAsync(UserProfile userProfile, IFormFile? profilePicture, CancellationToken cancellationToken)
@@ -202,7 +248,8 @@ namespace MC.Persistence.Repositories.Registration
             if (existing == null)
                 throw new NotFoundException($"UserProfile with Id {userProfile.Id} not found", userProfile.Id);
 
-            existing.UserId = userProfile.UserId;
+            //existing.UserId = userProfile.UserId;
+            existing.TitleId = userProfile.TitleId;
             existing.CompanyId = userProfile.CompanyId;
             existing.ClientMasterId = userProfile.ClientMasterId;
             existing.ClientUnitId = userProfile.ClientUnitId;
@@ -296,9 +343,9 @@ namespace MC.Persistence.Repositories.Registration
             return new UserProfileDto
             {
                 Id = response.Id,
-                RegistrationId = response.RegistrationId,
+                RegistrationId = response.RegistrationId ?? string.Empty,
                 CompanyId = response.CompanyId,
-                CompanyName = response.Company.CompanyName ?? string.Empty,
+                CompanyName = response.Company?.CompanyName ?? string.Empty,
                 ClientMasterId = response.ClientMasterId,
                 ClientMaster = response.ClientMaster?.ClientName ?? string.Empty,
                 ClientUnitId = response.ClientUnitId,
@@ -311,6 +358,10 @@ namespace MC.Persistence.Repositories.Registration
                 Category = response.Category?.Name ?? string.Empty,
                 TitleId = response.TitleId,
                 Salutation = response.Salutation != null ? response.Salutation.Name : string.Empty,
+                FullName = Helper.UserHelper.GetFullName(response.Salutation != null ? response.Salutation.Name : string.Empty,
+                                                            response.FirstName,
+                                                            response.MiddleName ?? string.Empty,
+                                                            response.LastName ?? string.Empty),
                 FirstName = response.FirstName,
                 MiddleName = response.MiddleName,
                 LastName = response.LastName,

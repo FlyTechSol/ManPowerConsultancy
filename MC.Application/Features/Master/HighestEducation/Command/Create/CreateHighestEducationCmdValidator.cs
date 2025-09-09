@@ -14,21 +14,18 @@ namespace MC.Application.Features.Master.HighestEducation.Command.Create
             RuleFor(p => p.Code)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
-                .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters");
+                .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters")
+                .MustAsync(CodeMustBeUnique).WithMessage("Code must be unique");
 
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
                 .MaximumLength(50).WithMessage("{PropertyName} must be fewer than 50 characters");
-
-            RuleFor(q => q)
-                .MustAsync(CodeMustUnique)
-                .WithMessage("Highest education record already exists");
         }
 
-        private Task<bool> CodeMustUnique(CreateHighestEducationCmd command, CancellationToken token)
+        private Task<bool> CodeMustBeUnique(string code, CancellationToken token)
         {
-            return _highestEducationRepository.IsUnique(command.Code, token);
+            return _highestEducationRepository.IsUnique(code, token);
         }
     }
 }

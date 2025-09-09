@@ -13,7 +13,7 @@ namespace MC.Persistence.Configurations.Master
             builder.Property(z => z.Code).IsRequired().HasMaxLength(50);
             builder.Property(z => z.Name).IsRequired().HasMaxLength(50);
             builder.Property(z => z.DisplayOrder).IsRequired();
-            builder.HasIndex(z => z.Code).IsUnique();
+            //builder.HasIndex(z => z.Code).IsUnique();
 
             Guid UserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9");
             DateTime DateCreatedUtc = new DateTime(2025, 8, 1, 0, 0, 0, DateTimeKind.Utc);

@@ -21,9 +21,9 @@ namespace MC.Persistence.Repositories.Master
                 .Where(q => !q.IsDeleted);
 
             if (isMale.HasValue && isMale == true)
-                query = query.Where(t => t.IsMale == true);
+                query = query.Where(t => t.IsMale == true && isMale != null);
 
-            else if (isMale.HasValue && isMale == false || isMale == null)
+            else if (isMale.HasValue && isMale == false && isMale != null)
                 query = query.Where(t => t.IsFemale == true);
 
             // Search filter

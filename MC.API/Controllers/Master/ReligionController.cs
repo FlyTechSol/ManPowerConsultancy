@@ -1,4 +1,5 @@
-﻿using MC.Application.Features.Master.Religion.Command.Create;
+﻿using MC.API.Resources;
+using MC.Application.Features.Master.Religion.Command.Create;
 using MC.Application.Features.Master.Religion.Command.Delete;
 using MC.Application.Features.Master.Religion.Command.Update;
 using MC.Application.Features.Master.Religion.Query.GetAll;
@@ -44,7 +45,12 @@ namespace MC.API.Controllers.Master
         public async Task<ActionResult> Post(CreateReligionCmd request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
-            return CreatedAtAction(nameof(Get), new { id = response }, null);
+            //return CreatedAtAction(nameof(Get), new { id = response }, null);
+            return CreatedAtAction(
+                      nameof(Get),
+                      new { id = response },
+                      ApiResponseMessage<Guid>.SuccessResponse(response, ResponseMessages.Created)
+                      );
         }
 
         [HttpPut("{id}")]
@@ -56,7 +62,8 @@ namespace MC.API.Controllers.Master
         public async Task<ActionResult> Put(UpdateReligionCmd request, CancellationToken cancellationToken)
         {
             await _mediator.Send(request, cancellationToken);
-            return NoContent();
+            //return NoContent();
+            return Ok(ApiResponseMessage<object>.SuccessResponse(null, ResponseMessages.Updated));
         }
 
         [HttpDelete("{id}")]

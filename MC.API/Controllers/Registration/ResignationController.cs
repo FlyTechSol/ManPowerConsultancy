@@ -1,4 +1,5 @@
-﻿using MC.Application.Features.Registration.PreviousExperience.Query.GetById;
+﻿using MC.API.Resources;
+using MC.Application.Features.Registration.PreviousExperience.Query.GetById;
 using MC.Application.Features.Registration.Resignation.Command.Create;
 using MC.Application.Features.Registration.Resignation.Command.Delete;
 using MC.Application.Features.Registration.Resignation.Command.Update;
@@ -29,13 +30,13 @@ namespace MC.API.Controllers.Registration
             return Ok(response);
         }
 
-        [HttpGet("get-resignation-by-registration-id/{registrationId}")]
-        public async Task<ActionResult<ResignationDetailDto>> Get(string registrationId, CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(new GetByResignationIdQuery(registrationId), cancellationToken);
-            return response;
-        }
-        [HttpGet("get-resignation-by-user-profile-id/{userProfileId}")]
+        //[HttpGet("get-resignation-by-registration-id/{registrationId}")]
+        //public async Task<ActionResult<ResignationDetailDto>> Get(string registrationId, CancellationToken cancellationToken)
+        //{
+        //    var response = await _mediator.Send(new GetByResignationIdQuery(registrationId), cancellationToken);
+        //    return response;
+        //}
+        [HttpGet("get-all-by-user-profile-id/{userProfileId}")]
         public async Task<ActionResult<ResignationDetailDto>> GetResignationByUserProfile(Guid userProfileId, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new GetByUserProfileQuery(userProfileId), cancellationToken);
@@ -49,7 +50,12 @@ namespace MC.API.Controllers.Registration
         public async Task<ActionResult> Post(CreateResignationCmd request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
-            return CreatedAtAction(nameof(Get), new { id = response }, null);
+            //return CreatedAtAction(nameof(Get), new { id = response }, null);
+            return CreatedAtAction(
+                      nameof(Get),
+                      new { id = response },
+                      ApiResponseMessage<Guid>.SuccessResponse(response, ResponseMessages.Created)
+                      );
         }
 
         [HttpPut("{id}")]
@@ -61,7 +67,8 @@ namespace MC.API.Controllers.Registration
         public async Task<ActionResult> Put(UpdateResignationCmd request, CancellationToken cancellationToken)
         {
             await _mediator.Send(request, cancellationToken);
-            return NoContent();
+            //return NoContent();
+            return Ok(ApiResponseMessage<object>.SuccessResponse(null, ResponseMessages.Updated));
         }
 
         [HttpDelete("{id}")]

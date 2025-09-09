@@ -24,7 +24,7 @@ namespace MC.Application.Features.Registration.BankAccount.Query.GetById
 
             // verify that record exists
             if (bankDetail == null)
-                throw new NotFoundException(nameof(bankDetail), request.Id);
+                throw new NotFoundException(nameof(BankAccount), request.Id);
 
             // convert data object to DTO object
             var data = _mapper.Map<BankAccountDto>(bankDetail);

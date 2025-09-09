@@ -1,29 +1,37 @@
 ﻿using MC.Application.Contracts.Identity;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.JsonWebTokens;
+using System.Security.Claims;
 
 namespace MC.Infrastructure.Identity
 {
     public class UserContext : IUserContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+
         public UserContext(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
         }
+
         public string UserId
         {
             get
             {
-                // Prefer claims, fallback to header if needed
-                var claimValue = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (!string.IsNullOrEmpty(claimValue))
-                    return claimValue;
+                var user = _httpContextAccessor.HttpContext?.User;
 
-                // Only use header if absolutely needed
+                // Prefer claims (NameIdentifier or sub)
+                var claimValue = user?.FindFirstValue(ClaimTypes.NameIdentifier)
+                                ?? user?.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
+                if (!string.IsNullOrWhiteSpace(claimValue))
+                    return claimValue.Trim();
+
+                // Fallback to header if absolutely necessary
                 return _httpContextAccessor.HttpContext?.Request.Headers["UserId"].FirstOrDefault();
             }
         }
+
         public Guid UserGuidId
         {
             get
@@ -33,6 +41,7 @@ namespace MC.Infrastructure.Identity
                 return Guid.Empty;
             }
         }
+
         public string UserName =>
             _httpContextAccessor.HttpContext?.User?.Identity?.Name ?? string.Empty;
 
@@ -40,11 +49,14 @@ namespace MC.Infrastructure.Identity
             _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
 
         public string[] Roles =>
-            _httpContextAccessor.HttpContext?.User?.FindAll(ClaimTypes.Role)?.Select(r => r.Value).ToArray()
+            _httpContextAccessor.HttpContext?.User?.FindAll(ClaimTypes.Role)
+                ?.Select(r => r.Value)
+                .Where(r => !string.IsNullOrWhiteSpace(r))
+                .ToArray()
             ?? Array.Empty<string>();
 
         public bool IsAuthenticated =>
             _httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
-
     }
+
 }

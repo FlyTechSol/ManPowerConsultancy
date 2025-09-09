@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MC.Domain.Entity.Enum.Registration
+{
+    public enum AddressType
+    {
+        Current,
+        Permanent,
+    }
+}

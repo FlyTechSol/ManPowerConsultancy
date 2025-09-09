@@ -14,21 +14,18 @@ namespace MC.Application.Features.Master.Asset.Command.Create
             RuleFor(p => p.Code)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
-                .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters");
+                .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters")
+                .MustAsync(CodeMustBeUnique).WithMessage("Code must be unique");
 
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
                 .MaximumLength(70).WithMessage("{PropertyName} must be fewer than 70 characters");
-
-            RuleFor(q => q)
-                .MustAsync(RecordMustUnique)
-                .WithMessage("Asset record already exists");
         }
 
-        private Task<bool> RecordMustUnique(CreateAssetCmd command, CancellationToken token)
+        private Task<bool> CodeMustBeUnique(string code, CancellationToken token)
         {
-            return _assetRepository.IsUnique(command.Code, token);
+            return _assetRepository.IsUnique(code, token);
         }
     }
 }

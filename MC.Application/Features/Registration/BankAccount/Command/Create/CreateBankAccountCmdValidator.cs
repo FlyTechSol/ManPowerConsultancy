@@ -16,11 +16,9 @@ namespace MC.Application.Features.Registration.BankAccount.Command.Create
                 .NotNull()
                 .MaximumLength(15).WithMessage("{PropertyName} must be fewer than 15 characters");
 
-            RuleFor(p => p.BankName)
-                .NotEmpty().WithMessage("{PropertyName} is required")
-                .NotNull()
-                .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
-
+            RuleFor(p => p.BankId)
+                .NotEmpty().WithMessage("{PropertyName} is required");
+           
             RuleFor(p => p.AccountNo)
                .NotEmpty().WithMessage("{PropertyName} is required")
                .NotNull()

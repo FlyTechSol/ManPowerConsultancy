@@ -1,5 +1,6 @@
 ﻿using MC.Application.Contracts.Identity;
 using MC.Domain.Base;
+using MC.Domain.Entity.Approval;
 using MC.Domain.Entity.Common;
 using MC.Domain.Entity.Enum;
 using MC.Domain.Entity.Identity;
@@ -36,6 +37,15 @@ namespace MC.Persistence.DatabaseContext
 
         //common configuration
         public DbSet<EmailTemplate> EmailTemplates { get; set; }
+
+        //approval
+        public DbSet<ApprovalAction> ApprovalActions { get; set; }
+        public DbSet<ApprovalRequest> ApprovalRequests { get; set; }
+        public DbSet<ApprovalRequestStage> ApprovalRequestStages { get; set; }
+        public DbSet<ApprovalStage> ApprovalStages { get; set; }
+        public DbSet<ApprovalStageApprover> ApprovalStageApprovers { get; set; }
+        public DbSet<ApprovalWorkflow> ApprovalWorkflows { get; set; }
+       
 
         //master
         public DbSet<Asset> Assets { get; set; }
@@ -121,7 +131,7 @@ namespace MC.Persistence.DatabaseContext
                     entry.Entity.ModifiedByUserId = Guid.Parse(_userContext.UserId);
                     entry.Entity.ModifiedByUserName = _userContext.UserName ?? Defaults.Users.Unknown;
                 }
-                    
+
                 if (entry.State == EntityState.Added)
                 {
                     entry.Entity.DateCreated = DateTime.UtcNow;
@@ -130,7 +140,7 @@ namespace MC.Persistence.DatabaseContext
                         entry.Entity.CreatedByUserId = Guid.Parse(_userContext.UserId);
                         entry.Entity.CreatedByUserName = _userContext.UserName ?? Defaults.Users.Unknown;
                     }
-                        
+
                 }
             }
             return base.SaveChangesAsync(cancellationToken);

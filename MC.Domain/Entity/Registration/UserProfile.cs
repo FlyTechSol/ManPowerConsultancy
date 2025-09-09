@@ -9,26 +9,26 @@ namespace MC.Domain.Entity.Registration
     {
         public Guid? UserId { get; set; } // Nullable
         public virtual ApplicationUser? User { get; set; } // Optional navigation
-        public Guid CompanyId { get; set; }
-        public Company Company { get; set; } = null!;
-        public Guid ClientMasterId { get; set; }
-        public ClientMaster ClientMaster { get; set; } = null!;
-        public Guid ClientUnitId { get; set; }
-        public ClientUnit ClientUnit { get; set; } = null!;
-        public Guid BranchId { get; set; }
-        public Branch Branch { get; set; } = null!;
-        public Guid DesignationId { get; set; }
-        public Designation Designation { get; set; } = null!;
-        public Guid CategoryId { get; set; }
-        public Category Category { get; set; } = null!;
-        public string RegistrationId { get; set; } = null!; // Unique, non-null
+        public Guid? CompanyId { get; set; }
+        public virtual Company? Company { get; set; } 
+        public Guid? ClientMasterId { get; set; }
+        public virtual ClientMaster? ClientMaster { get; set; } 
+        public Guid? ClientUnitId { get; set; }
+        public virtual ClientUnit? ClientUnit { get; set; } 
+        public Guid? BranchId { get; set; }
+        public virtual Branch? Branch { get; set; } 
+        public Guid? DesignationId { get; set; }
+        public virtual Designation? Designation { get; set; } 
+        public Guid? CategoryId { get; set; }
+        public virtual Category? Category { get; set; } 
+        public string? RegistrationId { get; set; } 
         public Guid? TitleId { get; set; }
-        public Title? Salutation { get; set; }
+        public virtual Title? Salutation { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string? MiddleName { get; set; }
         public string? LastName { get; set; }
         public Guid? RecruitmentTypeId { get; set; }
-        public RecruitmentType? RecruitmentType { get; set; }
+        public virtual RecruitmentType? RecruitmentType { get; set; }
         public string? AadhaarNumber { get; set; }
         public string? PanNumber { get; set; }
         public string? UanNumber { get; set; }
@@ -39,9 +39,9 @@ namespace MC.Domain.Entity.Registration
         public DateTime? DateOfRegistration { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public string? PlaceOfBirth { get; set; }
-        public DateTime DateOfJoining { get; set; }
+        public DateTime? DateOfJoining { get; set; }
         public Guid? GenderId { get; set; }
-        public Gender? Gender { get; set; }
+        public virtual Gender? Gender { get; set; }
         public string? IdentityMarks { get; set; }
         public bool IsActive { get; set; } = true;
         public string? ProfilePictureUrl { get; set; } // persisted URL

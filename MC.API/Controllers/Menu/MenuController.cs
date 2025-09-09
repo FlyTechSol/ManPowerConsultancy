@@ -1,4 +1,5 @@
-﻿using MC.Application.Features.Menu.Menu.Command.Create;
+﻿using MC.API.Resources;
+using MC.Application.Features.Menu.Menu.Command.Create;
 using MC.Application.Features.Menu.Menu.Command.Delete;
 using MC.Application.Features.Menu.Menu.Command.Update;
 using MC.Application.Features.Menu.Menu.Query.GetAll;
@@ -46,7 +47,12 @@ namespace MC.API.Controllers.Menu
         public async Task<ActionResult> Post([FromBody] CreateMenuCmd request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
-            return CreatedAtAction(nameof(Get), new { id = response });
+            //return CreatedAtAction(nameof(Get), new { id = response });
+            return CreatedAtAction(
+                      nameof(Get),
+                      new { id = response },
+                      ApiResponseMessage<Guid>.SuccessResponse(response, ResponseMessages.Created)
+                      );
         }
 
         [HttpPut("{id}")]
@@ -58,7 +64,8 @@ namespace MC.API.Controllers.Menu
         public async Task<ActionResult> Put([FromBody] UpdateMenuCmd request, CancellationToken cancellationToken)
         {
             await _mediator.Send(request, cancellationToken);
-            return NoContent();
+            //return NoContent();
+            return Ok(ApiResponseMessage<object>.SuccessResponse(null, ResponseMessages.Updated));
         }
 
         [HttpDelete("{id}")]

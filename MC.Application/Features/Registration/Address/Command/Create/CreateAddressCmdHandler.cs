@@ -25,14 +25,14 @@ namespace MC.Application.Features.Registration.Address.Command.Create
             if (validationResult.Errors.Any())
                 throw new BadRequestException("Invalid address record", validationResult);
 
-            // 2. Deactivate all existing addresses for this user
-            var existingAddresses = await _addressRepository
-                .GetAllByUserIdAsync(request.UserProfileId, cancellationToken);
+            //// 2. Deactivate all existing addresses for this user
+            //var existingAddresses = await _addressRepository
+            //    .GetAllByUserIdAsync(request.UserProfileId, cancellationToken);
 
-            foreach (var addr in existingAddresses.Where(a => a.IsActive))
-            {
-                addr.IsActive = false;
-            }
+            //foreach (var addr in existingAddresses.Where(a => a.IsActive))
+            //{
+            //    addr.IsActive = false;
+            //}
 
             // 3. Map new address and set IsActive = true
             var recordToCreate = _mapper.Map<Domain.Entity.Registration.Address>(request);
@@ -41,10 +41,10 @@ namespace MC.Application.Features.Registration.Address.Command.Create
             // 4. Save all changes (update + create)
             await _addressRepository.CreateAsync(recordToCreate, cancellationToken);
 
-            if (existingAddresses.Any())
-            {
-                await _addressRepository.UpdateRangeAsync(existingAddresses, cancellationToken);
-            }
+            //if (existingAddresses.Any())
+            //{
+            //    await _addressRepository.UpdateRangeAsync(existingAddresses, cancellationToken);
+            //}
 
             // 5. Return the new address Id
             return recordToCreate.Id;

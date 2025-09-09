@@ -1,9 +1,11 @@
 ﻿using MC.Application.Contracts.Persistence.Registration;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Registration;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 
 namespace MC.Persistence.Repositories.Registration
 {
@@ -15,64 +17,118 @@ namespace MC.Persistence.Repositories.Registration
             _userProfileRepository = userProfileRepository;
         }
 
-        public async Task<BankAccountDetailDto?> GetActiveRecordByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
+        public async Task<PaginatedResponse<BankAccountDetailDto>?> GetAllDetailsAsync(Guid userProfileId, QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
-
-            if (userProfile == null)
-                return null;
-
-            var bankAccounts = await _context.BankAccounts
+            var query = _context.BankAccounts
                 .AsNoTracking()
-                .Where(addr => addr.UserProfileId == userProfile.Id && addr.IsActive && !addr.IsDeleted)
-                .FirstOrDefaultAsync(cancellationToken);
+                .Include(x => x.Bank)
+                .Where(addr => addr.UserProfileId == userProfileId && !addr.IsDeleted);
 
-            return bankAccounts == null ? null : MapToDto(bankAccounts);
-        }
+            // Search filter
+            if (!string.IsNullOrWhiteSpace(queryParams.Query))
+            {
+                var search = queryParams.Query.ToLower();
+                query = query.Where(q =>
+                    q.Bank.Name.ToLower().Contains(search) ||
+                    q.IFSCCode.ToLower().Contains(search) ||
+                    q.AccountNo.ToLower().Contains(search) ||
+                    !string.IsNullOrWhiteSpace(q.AccountType.ToString()) && q.AccountType.ToString().ToLower().Contains(search) 
+                );
+            }
 
-        public async Task<List<BankAccountDetailDto>?> GetInactiveRecordByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
-        {
-            var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
+            // Total count before pagination
+            var totalCount = await query.CountAsync(cancellationToken);
 
-            if (userProfile == null)
-                return null;
+            // Sorting
+            if (!string.IsNullOrWhiteSpace(queryParams.Column))
+            {
+                string column = queryParams.Column;
+                string direction = queryParams.Dir?.ToLower() == "desc" ? "descending" : "";
 
-            // Step 2: Get all INACTIVE record for that user
-            var bankAccounts = await _context.BankAccounts
-                .AsNoTracking()
-                .Where(bank => bank.UserProfileId == userProfile.Id && !bank.IsActive && !bank.IsDeleted)
+                query = query.OrderBy($"{column} {direction}");
+            }
+            else
+            {
+                //query = query.OrderBy(a => a.IsActive); // default sort
+                query = query.OrderByDescending(a => a.IsActive)
+                             .ThenBy(a => a.Bank.Name); // optional secondary sort
+            }
+
+            // Pagination
+            var data = await query
+                .Skip((queryParams.Page - 1) * queryParams.Limit)
+                .Take(queryParams.Limit)
                 .ToListAsync(cancellationToken);
 
-            if (bankAccounts == null || bankAccounts.Count == 0)
-                return new List<BankAccountDetailDto>();
+            var dtos = data.Select(MapToDto).ToList();
 
-            var dtos = bankAccounts.Select(MapToDto).ToList();
-            return dtos;
+            return new PaginatedResponse<BankAccountDetailDto>
+            {
+                Data = dtos,
+                CurrentPage = queryParams.Page,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)queryParams.Limit)
+            };
         }
 
-        public async Task<BankAccountDetailDto?> GetActiveRecordByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken)
-        {
-            var bankAccount = await _context.BankAccounts
-                .AsNoTracking()
-                .Where(addr => addr.UserProfileId == userProfileId && addr.IsActive && !addr.IsDeleted)
-                .FirstOrDefaultAsync(cancellationToken);
+        //public async Task<BankAccountDetailDto?> GetActiveRecordByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
+        //{
+        //    var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
 
-            return bankAccount == null ? null : MapToDto(bankAccount);
+        //    if (userProfile == null)
+        //        return null;
 
-        }
-        public async Task<List<BankAccountDetailDto>?> GetInactiveRecordByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken)
-        {
-            var bankAccounts = await _context.BankAccounts
-                .AsNoTracking()
-                .Where(bank => bank.UserProfileId == userProfileId && !bank.IsActive && !bank.IsDeleted)
-                .ToListAsync(cancellationToken);
+        //    var bankAccounts = await _context.BankAccounts
+        //        .AsNoTracking()
+        //        .Where(addr => addr.UserProfileId == userProfile.Id && addr.IsActive && !addr.IsDeleted)
+        //        .FirstOrDefaultAsync(cancellationToken);
 
-            if (bankAccounts == null || bankAccounts.Count == 0)
-                return new List<BankAccountDetailDto>();
+        //    return bankAccounts == null ? null : MapToDto(bankAccounts);
+        //}
 
-            var dtos = bankAccounts.Select(MapToDto).ToList();
-            return dtos;
-        }
+        //public async Task<List<BankAccountDetailDto>?> GetInactiveRecordByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
+        //{
+        //    var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
+
+        //    if (userProfile == null)
+        //        return null;
+
+        //    // Step 2: Get all INACTIVE record for that user
+        //    var bankAccounts = await _context.BankAccounts
+        //        .AsNoTracking()
+        //        .Where(bank => bank.UserProfileId == userProfile.Id && !bank.IsActive && !bank.IsDeleted)
+        //        .ToListAsync(cancellationToken);
+
+        //    if (bankAccounts == null || bankAccounts.Count == 0)
+        //        return new List<BankAccountDetailDto>();
+
+        //    var dtos = bankAccounts.Select(MapToDto).ToList();
+        //    return dtos;
+        //}
+
+        //public async Task<BankAccountDetailDto?> GetActiveRecordByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken)
+        //{
+        //    var bankAccount = await _context.BankAccounts
+        //        .AsNoTracking()
+        //        .Where(addr => addr.UserProfileId == userProfileId && addr.IsActive && !addr.IsDeleted)
+        //        .FirstOrDefaultAsync(cancellationToken);
+
+        //    return bankAccount == null ? null : MapToDto(bankAccount);
+
+        //}
+        //public async Task<List<BankAccountDetailDto>?> GetInactiveRecordByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken)
+        //{
+        //    var bankAccounts = await _context.BankAccounts
+        //        .AsNoTracking()
+        //        .Where(bank => bank.UserProfileId == userProfileId && !bank.IsActive && !bank.IsDeleted)
+        //        .ToListAsync(cancellationToken);
+
+        //    if (bankAccounts == null || bankAccounts.Count == 0)
+        //        return new List<BankAccountDetailDto>();
+
+        //    var dtos = bankAccounts.Select(MapToDto).ToList();
+        //    return dtos;
+        //}
         public async Task<List<BankAccount>> GetAllByUserProfileIdAsync(Guid userProfileId, CancellationToken cancellationToken)
         {
             return await _context.BankAccounts
@@ -90,6 +146,7 @@ namespace MC.Persistence.Repositories.Registration
         {
             var response = await _context.BankAccounts
                 .AsNoTracking()
+                .Include(ba => ba.Bank)
                 .FirstOrDefaultAsync(a => a.Id == id && !a.IsDeleted, cancellationToken);
 
             if (response == null)
@@ -114,7 +171,7 @@ namespace MC.Persistence.Repositories.Registration
             {
                 Id = response.Id,
                 UserProfileId = response.UserProfileId,
-                UserProfileName = response.UserProfile != null ? response.UserProfile.FirstName + " " + response.UserProfile.LastName : string.Empty,
+                //UserProfileName = response.UserProfile != null ? response.UserProfile.FirstName + " " + response.UserProfile.LastName : string.Empty,
                 BankId = response.BankId,
                 BankName = response.Bank.Name,
                 IFSCCode = response.IFSCCode,
