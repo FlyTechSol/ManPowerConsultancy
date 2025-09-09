@@ -35,7 +35,8 @@ namespace MC.Persistence.Services
             if (!string.IsNullOrWhiteSpace(queryParams.Column))
             {
                 var direction = queryParams.Dir?.ToLower() == "desc" ? "descending" : "ascending";
-                query = query.OrderBy($"{queryParams.Column} {direction}");
+                //uery = query.OrderBy($"{queryParams.Column} {direction}");
+                query = query.OrderBy(r => r.Name); // Default sort
             }
             else
             {

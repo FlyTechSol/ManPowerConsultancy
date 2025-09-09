@@ -12,7 +12,7 @@ namespace MC.Application.Contracts.Persistence.Registration
         Task<UserProfileDto?> GetUserProfileByIdAsync(Guid id, CancellationToken cancellationToken);
         Task<UserProfileShortDto?> GetUserProfileByApplicationUserIdAsync(Guid userId, CancellationToken cancellationToken);
         Task<PaginatedResponse<UserProfileDto>> GetAllDetailsAsync(QueryParams queryParams, CancellationToken cancellationToken);
-        Task<Guid> CreateUserProfileAsync(UserProfile request, IFormFile? profilePicture, CancellationToken cancellationToken);
+        Task<Guid> CreateUserProfileAsync(UserProfile request, Guid loggedInUserId, IFormFile? profilePicture, CancellationToken cancellationToken);
         Task<Guid> UpdateUserProfileAsync(UserProfile userProfile, IFormFile? profilePicture, CancellationToken cancellationToken);
         Task<bool> IsAadhaarUnique(string aadhaar, CancellationToken cancellationToken);
         Task<bool> IsPanUnique(string panCard, CancellationToken cancellationToken);

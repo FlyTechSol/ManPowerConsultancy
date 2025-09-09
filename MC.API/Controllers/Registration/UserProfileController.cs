@@ -1,10 +1,8 @@
-﻿using MC.Application.Features.Master.Gender.Query.GetAll;
-using MC.Application.Features.Master.Gender.Query.GetById;
-using MC.Application.Features.Registration.UserGeneralDetail.Command.Create;
-using MC.Application.Features.Registration.UserGeneralDetail.Command.Delete;
-using MC.Application.Features.Registration.UserGeneralDetail.Command.Update;
+﻿using MC.API.Resources;
+using MC.Application.Contracts.Identity;
 using MC.Application.Features.Registration.UserProfile.Command.Create;
 using MC.Application.Features.Registration.UserProfile.Command.Delete;
+using MC.Application.Features.Registration.UserProfile.Command.Update;
 using MC.Application.Features.Registration.UserProfile.Query.GetAll;
 using MC.Application.Features.Registration.UserProfile.Query.GetById;
 using MC.Application.Features.Registration.UserProfile.Query.GetByRegistrationId;
@@ -23,9 +21,11 @@ namespace MC.API.Controllers.Registration
     public class UserProfileController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public UserProfileController(IMediator mediator)
+        private readonly IUserContext _userContext;
+        public UserProfileController(IMediator mediator, IUserContext userContext)
         {
             _mediator = mediator;
+            _userContext = userContext;
         }
         [HttpGet]
         public async Task<ActionResult<ApiResponse<PaginatedResponse<UserProfileDto>>>> GetAll([FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
@@ -57,8 +57,19 @@ namespace MC.API.Controllers.Registration
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Post(CreateUserProfileCmd request, CancellationToken cancellationToken)
         {
+            var userId = _userContext.UserGuidId;
+            if (userId == Guid.Empty)
+                throw new UnauthorizedAccessException("User not found.");
+
+            request.LoggedInUser = userId;
+
             var response = await _mediator.Send(request, cancellationToken);
-            return CreatedAtAction(nameof(Get), new { registrationId = response });
+            //return CreatedAtAction(nameof(Get), new { registrationId = response });
+            return CreatedAtAction(
+                    nameof(GetById),
+                    new { id = response },
+                    ApiResponseMessage<Guid>.SuccessResponse(response, ResponseMessages.Created)
+                    );
         }
 
         [HttpPut("{id}")]
@@ -67,10 +78,12 @@ namespace MC.API.Controllers.Registration
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Put(UpdateUserGeneralDetailCmd request, CancellationToken cancellationToken)
+        public async Task<ActionResult> Put(Guid id, UpdateUserProfileCmd request, CancellationToken cancellationToken)
         {
+            request.Id = id;
             await _mediator.Send(request, cancellationToken);
-            return NoContent();
+            //return NoContent();
+            return Ok(ApiResponseMessage<object>.SuccessResponse(null, ResponseMessages.Updated));
         }
 
         [HttpDelete("{id}")]

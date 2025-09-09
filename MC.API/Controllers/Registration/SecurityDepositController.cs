@@ -1,4 +1,5 @@
-﻿using MC.Application.Features.Registration.Resignation.Query.GetById;
+﻿using MC.API.Resources;
+using MC.Application.Features.Registration.Resignation.Query.GetById;
 using MC.Application.Features.Registration.SecurityDeposit.Command.Create;
 using MC.Application.Features.Registration.SecurityDeposit.Command.Delete;
 using MC.Application.Features.Registration.SecurityDeposit.Command.Update;
@@ -29,14 +30,14 @@ namespace MC.API.Controllers.Registration
             return Ok(response);
         }
 
-        [HttpGet("get-security-deposit-by-registaration-id/{registrationId}")]
-        public async Task<ActionResult<SecurityDepositDetailDto>> Get(string registrationId, CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(new GetSecurityDepositByRegistrationIdQuery(registrationId), cancellationToken);
-            return response;
-        }
+        //[HttpGet("get-security-deposit-by-registaration-id/{registrationId}")]
+        //public async Task<ActionResult<SecurityDepositDetailDto>> Get(string registrationId, CancellationToken cancellationToken)
+        //{
+        //    var response = await _mediator.Send(new GetSecurityDepositByRegistrationIdQuery(registrationId), cancellationToken);
+        //    return response;
+        //}
 
-        [HttpGet("get-security-deposit-by-user-profile-id/{userProfileId}")]
+        [HttpGet("get-all-by-user-profile-id/{userProfileId}")]
         public async Task<ActionResult<SecurityDepositDetailDto>> GetSecurityDepositByUserProfile(Guid userProfileId, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new GetByUserProfileQuery(userProfileId), cancellationToken);
@@ -50,7 +51,12 @@ namespace MC.API.Controllers.Registration
         public async Task<ActionResult> Post(CreateSecurityDepositCmd request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
-            return CreatedAtAction(nameof(Get), new { id = response }, null);
+            //return CreatedAtAction(nameof(Get), new { id = response }, null);
+            return CreatedAtAction(
+                      nameof(Get),
+                      new { id = response },
+                      ApiResponseMessage<Guid>.SuccessResponse(response, ResponseMessages.Created)
+                      );
         }
 
         [HttpPut("{id}")]
@@ -62,7 +68,8 @@ namespace MC.API.Controllers.Registration
         public async Task<ActionResult> Put(UpdateSecurityDepositCmd request, CancellationToken cancellationToken)
         {
             await _mediator.Send(request, cancellationToken);
-            return NoContent();
+            //return NoContent();
+            return Ok(ApiResponseMessage<object>.SuccessResponse(null, ResponseMessages.Updated));
         }
 
         [HttpDelete("{id}")]

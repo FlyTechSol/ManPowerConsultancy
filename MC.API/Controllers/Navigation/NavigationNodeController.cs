@@ -1,4 +1,5 @@
-﻿using MC.Application.Features.Navigation.NavigationNode.Command.Create;
+﻿using MC.API.Resources;
+using MC.Application.Features.Navigation.NavigationNode.Command.Create;
 using MC.Application.Features.Navigation.NavigationNode.Command.Delete;
 using MC.Application.Features.Navigation.NavigationNode.Command.Update;
 using MC.Application.Features.Navigation.NavigationNode.Query.GetAll;
@@ -76,8 +77,13 @@ namespace MC.API.Controllers.Navigation
             CreateNavigationNodeCmd command,
             CancellationToken cancellationToken)
         {
-            var id = await _mediator.Send(command, cancellationToken);
-            return CreatedAtAction(nameof(GetNavigationById), new { id }, id);
+            var response = await _mediator.Send(command, cancellationToken);
+            //return CreatedAtAction(nameof(GetNavigationById), new { id }, id);
+            return CreatedAtAction(
+                      nameof(GetNavigationById),
+                      new { id = response },
+                      ApiResponseMessage<Guid>.SuccessResponse(response, ResponseMessages.Created)
+                      );
         }
 
         [HttpPut("{id}")]
@@ -93,7 +99,8 @@ namespace MC.API.Controllers.Navigation
         {
             if (id != command.Id) return BadRequest("ID mismatch");
             await _mediator.Send(command, cancellationToken);
-            return NoContent();
+            //return NoContent();
+            return Ok(ApiResponseMessage<object>.SuccessResponse(null, ResponseMessages.Updated));
         }
         [HttpDelete("{id}")]
         [Authorize(Roles = "Administrator")]

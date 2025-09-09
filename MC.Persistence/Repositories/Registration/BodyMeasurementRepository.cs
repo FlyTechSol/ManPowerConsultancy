@@ -63,7 +63,7 @@ namespace MC.Persistence.Repositories.Registration
             {
                 Id = body.Id,
                 UserProfileId = body.UserProfileId,
-                UserProfileName = body.UserProfile.FirstName + " " + body.UserProfile.LastName,
+                //UserProfileName = body.UserProfile.FirstName + " " + body.UserProfile.LastName,
                 HeightCm = body.HeightCm,
                 WeightKg = body.WeightKg,
                 ChestCm = body.ChestCm,

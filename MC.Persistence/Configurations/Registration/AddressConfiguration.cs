@@ -8,22 +8,19 @@ namespace MC.Persistence.Configurations.Registration
     {
         public void Configure(EntityTypeBuilder<Address> builder)
         {
-            builder.Property(z => z.C_AddressLine1).HasMaxLength(100);
-            builder.Property(z => z.C_AddressLine2).HasMaxLength(100);
-            builder.Property(z => z.C_PinCode).HasMaxLength(10);
-            builder.Property(z => z.C_City).HasMaxLength(150);
-            builder.Property(z => z.C_District).HasMaxLength(150);
-            builder.Property(z => z.C_State).HasMaxLength(100);
-            builder.Property(z => z.C_Country).HasMaxLength(100);
-            builder.Property(z => z.P_AddressLine1).HasMaxLength(100);
-            builder.Property(z => z.P_AddressLine2).HasMaxLength(100);
-            builder.Property(z => z.P_PinCode).HasMaxLength(10);
-            builder.Property(z => z.P_City).HasMaxLength(150);
-            builder.Property(z => z.P_District).HasMaxLength(150);
-            builder.Property(z => z.P_State).HasMaxLength(100);
-            builder.Property(z => z.P_Country).HasMaxLength(100);
-
+            builder.Property(z => z.AddressLine1).HasMaxLength(100);
+            builder.Property(z => z.AddressLine2).HasMaxLength(100);
+            builder.Property(z => z.PinCode).HasMaxLength(10);
+            builder.Property(z => z.City).HasMaxLength(150);
+            builder.Property(z => z.District).HasMaxLength(150);
+            builder.Property(z => z.State).HasMaxLength(100);
+            builder.Property(z => z.Country).HasMaxLength(100);
+           
             builder.ConfigureAuditFields();
+
+            builder.Property(b => b.AddressType)
+                  .HasConversion<string>()
+                  .HasMaxLength(50);
 
             builder.HasOne(a => a.CreatedByUser)
                 .WithMany()

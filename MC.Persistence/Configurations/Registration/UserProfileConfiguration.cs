@@ -11,7 +11,7 @@ namespace MC.Persistence.Configurations.Registration
             builder.ConfigureAuditFields();
 
             builder.Property(p => p.RegistrationId)
-                .IsRequired()
+                //.IsRequired()
                 .HasMaxLength(20); // Adjust as needed
 
             builder.HasIndex(p => p.RegistrationId)
@@ -20,25 +20,25 @@ namespace MC.Persistence.Configurations.Registration
             builder.HasOne(p => p.Company)
                 .WithMany(c => c.UserProfiles)
                 .HasForeignKey(p => p.CompanyId)
-                .IsRequired()
+                //.IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(p => p.ClientMaster)
                .WithMany(c => c.UserProfiles)
                .HasForeignKey(p => p.ClientMasterId)
-               .IsRequired()
+               //.IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(p => p.ClientUnit)
                .WithMany(c => c.UserProfiles)
                .HasForeignKey(p => p.ClientUnitId)
-               .IsRequired()
+               //.IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(p => p.FirstName).IsRequired().HasMaxLength(100);
             builder.Property(p => p.MiddleName).HasMaxLength(100);
             builder.Property(p => p.LastName).HasMaxLength(100);
-            builder.Property(p => p.AadhaarNumber).IsRequired().HasMaxLength(12); // Assuming Aadhar is 12 digits
+            builder.Property(p => p.AadhaarNumber).HasMaxLength(12); // Assuming Aadhar is 12 digits
             builder.Property(p => p.PanNumber).HasMaxLength(10);
             builder.Property(p => p.UanNumber).HasMaxLength(12);
             builder.Property(p => p.EsicNumber).HasMaxLength(30);
@@ -48,7 +48,7 @@ namespace MC.Persistence.Configurations.Registration
             builder.Property(p => p.PlaceOfBirth).HasMaxLength(100);
             builder.Property(p => p.IdentityMarks).HasMaxLength(200);
             builder.Property(p => p.ProfilePictureUrl).HasMaxLength(200);
-            builder.Property(p => p.DateOfJoining).IsRequired().HasColumnType("date");
+            builder.Property(p => p.DateOfJoining).HasColumnType("date");
             // Relationships (all optional)
             builder.HasOne(p => p.Salutation)
                 .WithMany()

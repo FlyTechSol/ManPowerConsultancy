@@ -23,15 +23,15 @@ public class UpdateGenderCmdValidator : AbstractValidator<UpdateGenderCmd>
                 DecodeMustBeUniqueForUpdate(command.Id, code, cancellationToken))
             .WithMessage("{PropertyName} must be unique.");
 
-        RuleFor(p => p.Decode)
+        RuleFor(p => p.Name)
             .NotEmpty().WithMessage("{PropertyName} is required")
             .NotNull()
             .MaximumLength(50).WithMessage("{PropertyName} must be fewer than 50 characters");
     }
 
-    private async Task<bool> DecodeMustBeUniqueForUpdate(Guid id, string decode, CancellationToken cancellationToken)
+    private async Task<bool> DecodeMustBeUniqueForUpdate(Guid id, string name, CancellationToken cancellationToken)
     {
-        var isUnique = await _genderRepository.IsUniqueForUpdate(id, decode, cancellationToken);
+        var isUnique = await _genderRepository.IsUniqueForUpdate(id, name, cancellationToken);
         return isUnique;
     }
 

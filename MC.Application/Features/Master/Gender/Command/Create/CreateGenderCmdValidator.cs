@@ -19,20 +19,17 @@ public class CreateGenderCmdValidator : AbstractValidator<CreateGenderCmd>
         RuleFor(p => p.Code)
             .NotEmpty().WithMessage("{PropertyName} is required")
             .NotNull()
-            .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters");
+            .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters")
+            .MustAsync(CodeMustBeUnique).WithMessage("Code must be unique");
 
-        RuleFor(p => p.Decode)
+        RuleFor(p => p.Name)
             .NotEmpty().WithMessage("{PropertyName} is required")
             .NotNull()
             .MaximumLength(50).WithMessage("{PropertyName} must be fewer than 50 characters");
-
-        RuleFor(q => q)
-            .MustAsync(CodeMustUnique)
-            .WithMessage("Gender already exists");
     }
 
-    private Task<bool> CodeMustUnique(CreateGenderCmd command, CancellationToken token)
+    private Task<bool> CodeMustBeUnique(string code, CancellationToken token)
     {
-        return _genderRepository.IsUnique(command.Code, token);
+        return _genderRepository.IsUnique(code, token);
     }
 }

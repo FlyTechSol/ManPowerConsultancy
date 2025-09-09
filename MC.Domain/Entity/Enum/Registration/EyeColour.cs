@@ -2,7 +2,7 @@
 {
     public enum EyeColour
     {
-        Balck,
+        Black,
         Brown,
         Blue,
         Other

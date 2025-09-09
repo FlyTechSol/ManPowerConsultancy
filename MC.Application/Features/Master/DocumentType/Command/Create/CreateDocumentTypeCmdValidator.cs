@@ -15,7 +15,8 @@ namespace MC.Application.Features.Master.DocumentType.Command.Create
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
-                .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
+                .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters")
+                .MustAsync(CodeMustBeUnique).WithMessage("Code must be unique"); ;
 
             RuleFor(p => p.Description)
                 .MaximumLength(200).WithMessage("{PropertyName} must be fewer than 200 characters");
@@ -23,14 +24,11 @@ namespace MC.Application.Features.Master.DocumentType.Command.Create
             RuleFor(p => p.Purpose)
                 .Must(BeAValidPurpose).WithMessage("At least one valid document purpose is required");
 
-            RuleFor(q => q)
-                .MustAsync(CodeMustUnique)
-                .WithMessage("Document record already exists");
         }
 
-        private Task<bool> CodeMustUnique(CreateDocumentTypeCmd command, CancellationToken token)
+        private Task<bool> CodeMustBeUnique(string code, CancellationToken token)
         {
-            return _documentTypeRepository.IsUnique(command.Name, token);
+            return _documentTypeRepository.IsUnique(code, token);
         }
         private bool BeAValidPurpose(DocumentPurpose purpose)
         {

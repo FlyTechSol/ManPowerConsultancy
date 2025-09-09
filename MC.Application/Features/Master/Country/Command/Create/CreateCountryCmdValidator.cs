@@ -17,21 +17,22 @@ namespace MC.Application.Features.Master.Country.Command.Create
             RuleFor(p => p.Code)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
-                .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters");
+                .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters")
+                .MustAsync(CodeMustBeUnique).WithMessage("Code must be unique");
 
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
                 .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
 
-            RuleFor(q => q)
-                .MustAsync(CodeMustUnique)
-                .WithMessage("Country already exists");
+            //RuleFor(q => q)
+            //    .MustAsync(CodeMustUnique)
+            //    .WithMessage("Country already exists");
         }
 
-        private Task<bool> CodeMustUnique(CreateCountryCmd command, CancellationToken token)
+        private Task<bool> CodeMustBeUnique(string code, CancellationToken token)
         {
-            return _countryRepository.IsUnique(command.Code, token);
+            return _countryRepository.IsUnique(code, token);
         }
     }
 }

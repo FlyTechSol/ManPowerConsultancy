@@ -3,6 +3,7 @@ using MC.Application.Contracts.Identity;
 using MC.Application.Contracts.Logging;
 using MC.Application.Contracts.Navigation;
 using MC.Application.Contracts.Persistence;
+using MC.Application.Contracts.Persistence.Approval;
 using MC.Application.Contracts.Persistence.FileHandling.Upload;
 using MC.Application.Contracts.Persistence.Master;
 using MC.Application.Contracts.Persistence.Menu;
@@ -11,6 +12,7 @@ using MC.Application.Contracts.Persistence.Registration;
 using MC.Application.Settings;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Repositories;
+using MC.Persistence.Repositories.Approval;
 using MC.Persistence.Repositories.Common;
 using MC.Persistence.Repositories.FileHandling;
 using MC.Persistence.Repositories.Master;
@@ -22,11 +24,6 @@ using MC.Persistence.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MC.Persistence
 {
@@ -65,6 +62,14 @@ namespace MC.Persistence
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IMenuService, MenuService>();
+
+            //approval
+            services.AddScoped<IApprovalActionRepository, ApprovalActionRepository>();
+            services.AddScoped<IApprovalRequestRepository, ApprovalRequestRepository>();
+            services.AddScoped<IApprovalStageRepository, ApprovalStageRepository>();
+            services.AddScoped<IApprovalRequestStageRepository, ApprovalRequestStageRepository>();
+            services.AddScoped<IApprovalStageApproverRepository, ApprovalStageApproverRepository>();
+            services.AddScoped<IApprovalWorkflowRepository, ApprovalWorkflowRepository>();
 
             //organization
             services.AddScoped<ICompanyRepository, CompanyRepository>();

@@ -14,21 +14,19 @@ namespace MC.Application.Features.Master.Title.Command.Create
             RuleFor(p => p.Code)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
-                .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters");
+                .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters")
+                .MustAsync(CodeMustBeUnique).WithMessage("Code must be unique");
 
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
                 .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters");
 
-            RuleFor(q => q)
-                .MustAsync(TitleCodeUnique)
-                .WithMessage("Title already exists");
         }
 
-        private Task<bool> TitleCodeUnique(CreateTitleCmd command, CancellationToken token)
+        private Task<bool> CodeMustBeUnique(string code, CancellationToken token)
         {
-            return _titleRepository.IsUnique(command.Code, token);
+            return _titleRepository.IsUnique(code, token);
         }
     }
 }

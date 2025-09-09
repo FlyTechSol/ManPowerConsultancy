@@ -51,9 +51,9 @@ namespace MC.Infrastructure.Email
             return await SendEmail(emailMessage, cancellationToken);
         }
 
-        public async Task<bool> SendResetPasswordEmailAsync(string email, string resetLink, CancellationToken cancellationToken)
+        public async Task<bool> SendLinkEmailAsync(string email, string resetLink, EmailTemplateType emailTemplate, CancellationToken cancellationToken)
         {
-            var template = await _emailTemplateRepository.GetEmailTemplateByEmailTemplateAsync(EmailTemplateType.ForgotPassword, cancellationToken);
+            var template = await _emailTemplateRepository.GetEmailTemplateByEmailTemplateAsync(emailTemplate, cancellationToken);
 
             if (template == null)
                 return false;
@@ -70,6 +70,7 @@ namespace MC.Infrastructure.Email
 
             return await SendEmail(emailMessage, cancellationToken);
         }
+       
         private async Task<bool> SendEmailViaSmtp(EmailMessage email)
         {
             var mailMessage = new MailMessage

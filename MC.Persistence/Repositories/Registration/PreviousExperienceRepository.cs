@@ -1,9 +1,11 @@
 ﻿using MC.Application.Contracts.Persistence.Registration;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Registration;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 
 namespace MC.Persistence.Repositories.Registration
 {
@@ -13,6 +15,57 @@ namespace MC.Persistence.Repositories.Registration
         public PreviousExperienceRepository(IUserProfileRepository userProfileRepository, ApplicationDatabaseContext context) : base(context)
         {
             _userProfileRepository = userProfileRepository;
+        }
+
+        public async Task<PaginatedResponse<PreviousExperienceDetailDto>?> GetAllDetailsAsync(Guid userProfileId, QueryParams queryParams, CancellationToken cancellationToken)
+        {
+            var query = _context.PreviousExperiences
+                .AsNoTracking()
+                .Where(addr => addr.UserProfileId == userProfileId && !addr.IsDeleted);
+
+            // Search filter
+            if (!string.IsNullOrWhiteSpace(queryParams.Query))
+            {
+                var search = queryParams.Query.ToLower();
+                query = query.Where(q =>
+                    !string.IsNullOrWhiteSpace(q.CompanyWorked) && q.CompanyWorked.ToLower().Contains(search) ||
+                    !string.IsNullOrWhiteSpace(q.Place) && q.Place.ToLower().Contains(search) 
+                );
+            }
+
+            // Total count before pagination
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            // Sorting
+            if (!string.IsNullOrWhiteSpace(queryParams.Column))
+            {
+                string column = queryParams.Column;
+                string direction = queryParams.Dir?.ToLower() == "desc" ? "descending" : "";
+
+                query = query.OrderBy($"{column} {direction}");
+            }
+            else
+            {
+                //query = query.OrderBy(a => a.IsActive); // default sort
+                query = query.OrderByDescending(a => a.IsActive)
+                             .ThenBy(a => a.CompanyWorked); // optional secondary sort
+            }
+
+            // Pagination
+            var data = await query
+                .Skip((queryParams.Page - 1) * queryParams.Limit)
+                .Take(queryParams.Limit)
+                .ToListAsync(cancellationToken);
+
+            var dtos = data.Select(MapToDto).ToList();
+
+            return new PaginatedResponse<PreviousExperienceDetailDto>
+            {
+                Data = dtos,
+                CurrentPage = queryParams.Page,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)queryParams.Limit)
+            };
         }
 
         public async Task<List<PreviousExperienceDetailDto>?> GetAllPreviousExperienceByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
@@ -63,7 +116,7 @@ namespace MC.Persistence.Repositories.Registration
             {
                 Id = response.Id,
                 UserProfileId = response.UserProfileId,
-                UserProfileName = response.UserProfile != null ? response.UserProfile.FirstName + " " + response.UserProfile.LastName : string.Empty,
+                //UserProfileName = response.UserProfile != null ? response.UserProfile.FirstName + " " + response.UserProfile.LastName : string.Empty,
                 CompanyWorked = response.CompanyWorked,
                 Place = response.Place,
                 Duration = response.Duration,

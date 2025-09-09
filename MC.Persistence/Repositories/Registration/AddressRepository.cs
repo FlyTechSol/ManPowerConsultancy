@@ -1,10 +1,12 @@
 ﻿using MC.Application.Contracts.Persistence.Registration;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Master.Master;
 using MC.Application.ModelDto.Registration;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 
 namespace MC.Persistence.Repositories.Registration
 {
@@ -14,6 +16,62 @@ namespace MC.Persistence.Repositories.Registration
         public AddressRepository(IUserProfileRepository userProfileRepository, ApplicationDatabaseContext context) : base(context)
         {
             _userProfileRepository = userProfileRepository;
+        }
+
+        public async Task<PaginatedResponse<AddressDetailDto>?> GetAllDetailsAsync(Guid userProfileId, QueryParams queryParams, CancellationToken cancellationToken)
+        {
+            var query = _context.Addresses
+                .AsNoTracking()
+                .Where(addr => addr.UserProfileId == userProfileId && !addr.IsDeleted);
+
+            // Search filter
+            if (!string.IsNullOrWhiteSpace(queryParams.Query))
+            {
+                var search = queryParams.Query.ToLower();
+                query = query.Where(q =>
+                    q.AddressLine1.ToLower().Contains(search) ||
+                    !string.IsNullOrWhiteSpace(q.AddressLine2) && q.AddressLine2.ToLower().Contains(search) ||
+                    !string.IsNullOrWhiteSpace(q.PinCode) && q.PinCode.ToLower().Contains(search) ||
+                    !string.IsNullOrWhiteSpace(q.City) && q.City.ToLower().Contains(search) ||
+                    !string.IsNullOrWhiteSpace(q.District) && q.District.ToLower().Contains(search) ||
+                    !string.IsNullOrWhiteSpace(q.State) && q.State.ToLower().Contains(search) ||
+                    !string.IsNullOrWhiteSpace(q.Country) && q.Country.ToLower().Contains(search) 
+                );
+            }
+
+            // Total count before pagination
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            // Sorting
+            if (!string.IsNullOrWhiteSpace(queryParams.Column))
+            {
+                string column = queryParams.Column;
+                string direction = queryParams.Dir?.ToLower() == "desc" ? "descending" : "";
+
+                query = query.OrderBy($"{column} {direction}");
+            }
+            else
+            {
+                //query = query.OrderBy(a => a.IsActive); // default sort
+                query = query.OrderByDescending(a => a.IsActive)
+                             .ThenBy(a => a.AddressLine1); // optional secondary sort
+            }
+
+            // Pagination
+            var data = await query
+                .Skip((queryParams.Page - 1) * queryParams.Limit)
+                .Take(queryParams.Limit)
+                .ToListAsync(cancellationToken);
+
+            var dtos = data.Select(MapToDto).ToList();
+
+            return new PaginatedResponse<AddressDetailDto>
+            {
+                Data = dtos,
+                CurrentPage = queryParams.Page,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)queryParams.Limit)
+            };
         }
 
         public async Task<AddressDetailDto?> GetActiveAddressByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
@@ -96,6 +154,7 @@ namespace MC.Persistence.Repositories.Registration
         public async Task<List<Address>> GetAllByUserIdAsync(Guid userProfileId, CancellationToken cancellationToken)
         {
             return await _context.Addresses
+                .AsNoTracking()
                 .Where(a => a.UserProfileId == userProfileId)
                 .ToListAsync(cancellationToken);
         }
@@ -106,22 +165,15 @@ namespace MC.Persistence.Repositories.Registration
             {
                 Id = response.Id,
                 UserProfileId = response.UserProfileId,
-                UserProfileName = response.UserProfile.FirstName + " " + response.UserProfile.LastName,
-                C_AddressLine1 = response.C_AddressLine1,
-                C_AddressLine2 = response.C_AddressLine2,
-                C_PinCode = response.C_PinCode,
-                C_City = response.C_City,
-                C_District = response.C_District,
-                C_State = response.C_State,
-                C_Country = response.C_Country,
-                IsPermanentAddressSame = response.IsPermanentAddressSame,
-                P_AddressLine1 = response.P_AddressLine1,
-                P_AddressLine2 = response.P_AddressLine2,
-                P_PinCode = response.P_PinCode,
-                P_City = response.P_City,
-                P_District = response.P_District,
-                P_State = response.P_State,
-                P_Country = response.P_Country,
+                //UserProfileName = response.UserProfile.FirstName + " " + response.UserProfile.LastName,
+                AddressLine1 = response.AddressLine1,
+                AddressLine2 = response.AddressLine2,
+                PinCode = response.PinCode,
+                City = response.City,
+                District = response.District,
+                State = response.State,
+                Country = response.Country,
+                AddressType = response.AddressType,
                 IsActive = response.IsActive,
                 DateCreated = Helper.DateHelper.FormatDate(response.DateCreated),
                 DateModified = Helper.DateHelper.FormatDate(response.DateModified),

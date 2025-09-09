@@ -14,21 +14,18 @@ namespace MC.Application.Features.Master.Category.Command.Create
             RuleFor(p => p.Code)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
-                .MaximumLength(50).WithMessage("{PropertyName} must be fewer than 50 characters");
+                .MaximumLength(50).WithMessage("{PropertyName} must be fewer than 50 characters")
+                .MustAsync(CodeMustBeUnique).WithMessage("Code must be unique"); 
 
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
                 .MaximumLength(50).WithMessage("{PropertyName} must be fewer than 50 characters");
-
-            RuleFor(q => q)
-                .MustAsync(RecordMustUnique)
-                .WithMessage("Category record already exists");
         }
 
-        private Task<bool> RecordMustUnique(CreateCategoryCmd command, CancellationToken token)
+        private Task<bool> CodeMustBeUnique(string code, CancellationToken token)
         {
-            return _categoryRepository.IsUnique(command.Code, token);
+            return _categoryRepository.IsUnique(code, token);
         }
     }
 }

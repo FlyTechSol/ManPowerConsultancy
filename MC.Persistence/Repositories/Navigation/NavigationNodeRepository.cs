@@ -28,10 +28,11 @@ namespace MC.Persistence.Repositories.Navigation
         {
             var allNodes = await _context.NavigationNodes
                 .AsNoTracking()
-                .Include(n => n.Children)
+                .Include(n => n.Children.Where(c => !c.IsDeleted))
                 .Include(n => n.NavigationNodeRoles)
                     .ThenInclude(nr => nr.Role)
                 .Where(n => n.IsActive &&
+                            !n.IsDeleted &&
                             n.NavigationNodeRoles.Any(nr => roles.Contains(nr.Role.Name!)))
                 .OrderBy(n => n.DisplayOrder)
                 .ToListAsync(cancellationToken);
@@ -82,7 +83,13 @@ namespace MC.Persistence.Repositories.Navigation
                         DisplayOrder = n.DisplayOrder,
                         ParentId = n.ParentId,
                         IsActive = n.IsActive,
-                        RoleIds = n.NavigationNodeRoles.Select(r => r.RoleId).ToList(),
+                        //RoleIds = n.NavigationNodeRoles.Select(r => r.RoleId).ToList(),
+                        Roles = n.NavigationNodeRoles
+                        .Select(r => new RoleBindingDto
+                        {
+                            RoleId = r.RoleId,
+                            RoleName = r.Role.Name ?? string.Empty // assuming NavigationNodeRole → Role navigation exists
+                        }).ToList(),
                         Children = BuildTree(n.Id)
                     })
                     .ToList();
@@ -221,7 +228,13 @@ namespace MC.Persistence.Repositories.Navigation
                     IconUrl = n.IconUrl,
                     DisplayOrder = n.DisplayOrder,
                     ParentId = n.ParentId,
-                    RoleIds = n.NavigationNodeRoles.Select(r => r.RoleId).ToList()
+                    //RoleIds = n.NavigationNodeRoles.Select(r => r.RoleId).ToList()
+                    Roles = n.NavigationNodeRoles
+                        .Select(r => new RoleBindingDto
+                        {
+                            RoleId = r.RoleId,
+                            RoleName = r.Role.Name ?? string.Empty // assuming NavigationNodeRole → Role navigation exists
+                        }).ToList(),
                 }).FirstOrDefaultAsync(cancellationToken);
         }
 
@@ -271,7 +284,13 @@ namespace MC.Persistence.Repositories.Navigation
                     DisplayOrder = n.DisplayOrder,
                     ParentId = n.ParentId,
                     IsActive = n.IsActive,
-                    RoleIds = n.NavigationNodeRoles.Select(r => r.RoleId).ToList(),
+                    //RoleIds = n.NavigationNodeRoles.Select(r => r.RoleId).ToList(),
+                    Roles = n.NavigationNodeRoles
+                        .Select(r => new RoleBindingDto
+                        {
+                            RoleId = r.RoleId,
+                            RoleName = r.Role.Name ?? string.Empty // assuming NavigationNodeRole → Role navigation exists
+                        }).ToList(),
                     DateCreated = Helper.DateHelper.FormatDate(n.DateCreated),
                     DateModified = Helper.DateHelper.FormatDate(n.DateModified),
                     CreatedByName = n.CreatedByUserName ?? Defaults.Users.Unknown,

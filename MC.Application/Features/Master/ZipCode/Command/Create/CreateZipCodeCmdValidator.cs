@@ -13,7 +13,8 @@ namespace MC.Application.Features.Master.ZipCode.Command.Create
             RuleFor(p => p.Zipcode)
                 .NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
-                .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters");
+                .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters")
+                .MustAsync(CodeMustBeUnique).WithMessage("Code must be unique");
 
             RuleFor(p => p.City)
                 .NotEmpty().WithMessage("{PropertyName} is required")
@@ -30,15 +31,11 @@ namespace MC.Application.Features.Master.ZipCode.Command.Create
 
             RuleFor(p => p.Country)
                 .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
-
-            RuleFor(q => q)
-                .MustAsync(ZipCodeUnique)
-                .WithMessage("zip code already exists");
         }
 
-        private Task<bool> ZipCodeUnique(CreateZipCodeCmd command, CancellationToken token)
+        private Task<bool> CodeMustBeUnique(string code, CancellationToken token)
         {
-            return _zipCodeRepository.IsUnique(command.Zipcode, token);
+            return _zipCodeRepository.IsUnique(code, token);
         }
     }
 }

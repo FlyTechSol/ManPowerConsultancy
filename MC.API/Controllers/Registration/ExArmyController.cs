@@ -1,13 +1,15 @@
-﻿using MC.Application.Features.Registration.ExArmy.Command.Create;
+﻿using MC.API.Resources;
+using MC.Application.Features.Registration.ExArmy.Command.Create;
 using MC.Application.Features.Registration.ExArmy.Command.Delete;
 using MC.Application.Features.Registration.ExArmy.Command.Update;
 using MC.Application.Features.Registration.ExArmy.Query.GetAllByRegistrationId;
+using MC.Application.Features.Registration.ExArmy.Query.GetAllByUserProfileId;
 using MC.Application.Features.Registration.ExArmy.Query.GetById;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Registration;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MC.Application.Features.Registration.ExArmy.Query.GetAllByUserProfileId;
 
 namespace MC.API.Controllers.Registration
 {
@@ -28,16 +30,16 @@ namespace MC.API.Controllers.Registration
             return Ok(response);
         }
 
-        [HttpGet("get-all-ex-army-by-registration-id/{registrationId}")]
+        [HttpGet("get-all-by-registration-id/{registrationId}")]
         public async Task<ActionResult<ExArmyDetailDto>> GetAll(string registrationId, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new GetAllByRegistrationIdQuery(registrationId), cancellationToken);
             return Ok(response);
         }
-        [HttpGet("get-all-ex-army-by-user-profile-id/{userProfileId}")]
-        public async Task<ActionResult<ExArmyDetailDto>> GetAllexArmyByUserProfile(Guid userProfileId, CancellationToken cancellationToken)
+        [HttpGet("get-all-by-user-profile-id/{userProfileId}")]
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<ExArmyDetailDto>>>> GetAllexArmyByUserProfile(Guid userProfileId, [FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllByUserProfileIdQuery(userProfileId), cancellationToken);
+            var response = await _mediator.Send(new GetAllByUserProfileIdQuery(userProfileId, queryParams), cancellationToken);
             return Ok(response);
         }
         [HttpPost]
@@ -48,7 +50,12 @@ namespace MC.API.Controllers.Registration
         public async Task<ActionResult> Post(CreateExArmyCmd request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
-            return CreatedAtAction(nameof(Get), new { id = response }, null);
+            //return CreatedAtAction(nameof(Get), new { id = response }, null);
+            return CreatedAtAction(
+                      nameof(Get),
+                      new { id = response },
+                      ApiResponseMessage<Guid>.SuccessResponse(response, ResponseMessages.Created)
+                      );
         }
 
         [HttpPut("{id}")]
@@ -60,7 +67,8 @@ namespace MC.API.Controllers.Registration
         public async Task<ActionResult> Put(UpdateExArmyCmd request, CancellationToken cancellationToken)
         {
             await _mediator.Send(request, cancellationToken);
-            return NoContent();
+            //return NoContent();
+            return Ok(ApiResponseMessage<object>.SuccessResponse(null, ResponseMessages.Updated));
         }
 
         [HttpDelete("{id}")]

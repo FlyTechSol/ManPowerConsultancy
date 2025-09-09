@@ -7,5 +7,7 @@ namespace MC.Application.Contracts.Identity
     {
         Task<AuthResponse> LoginAsync(AuthRequest request, CancellationToken cancellationToken);
         Task<RegistrationResponse> RegisterAsync(RegistrationRequest request, CancellationToken cancellationToken);
+        Task<bool> IsEmailUnique(string email, CancellationToken cancellationToken);
+        Task<bool> IsUserNameUnique(string userName, CancellationToken cancellationToken);
     }
 }

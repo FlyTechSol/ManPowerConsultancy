@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MC.Application.Model.Identity.Authorization
+﻿namespace MC.Application.Model.Identity.Authorization
 {
     public class AuthRequest
     {

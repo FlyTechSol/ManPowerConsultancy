@@ -1,4 +1,5 @@
-﻿using MC.Application.Features.Master.Asset.Command.Create;
+﻿using MC.API.Resources;
+using MC.Application.Features.Master.Asset.Command.Create;
 using MC.Application.Features.Master.Asset.Command.Delete;
 using MC.Application.Features.Master.Asset.Command.Update;
 using MC.Application.Features.Master.Asset.Query.GetAll;
@@ -44,7 +45,12 @@ namespace MC.API.Controllers.Master
         public async Task<ActionResult> Post(CreateAssetCmd request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
-            return CreatedAtAction(nameof(GetById), new { id = response }, null);
+            //return CreatedAtAction(nameof(GetById), new { id = response }, null);
+            return CreatedAtAction(
+                        nameof(GetById),
+                        new { id = response },
+                        ApiResponseMessage<Guid>.SuccessResponse(response, ResponseMessages.Created)
+                        );
         }
 
         [HttpPut("{id}")]
@@ -56,7 +62,8 @@ namespace MC.API.Controllers.Master
         public async Task<ActionResult> Put(UpdateAssetCmd request, CancellationToken cancellationToken)
         {
             await _mediator.Send(request, cancellationToken);
-            return NoContent();
+            //return NoContent();
+            return Ok(ApiResponseMessage<object>.SuccessResponse(null, ResponseMessages.Updated));
         }
 
         [HttpDelete("{id}")]

@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using MC.Application.Contracts.Persistence.Registration;
-using MC.Application.Exceptions;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Registration;
 using MediatR;
 
 namespace MC.Application.Features.Registration.ExArmy.Query.GetAllByUserProfileId
 {
-    public class GetAllByUserProfileIdQueryHandler : IRequestHandler<GetAllByUserProfileIdQuery, ExArmyDetailDto>
+    public class GetAllByUserProfileIdQueryHandler : IRequestHandler<GetAllByUserProfileIdQuery, ApiResponse<PaginatedResponse<ExArmyDetailDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IExArmyRepository _exArmyRepository;
@@ -17,20 +17,17 @@ namespace MC.Application.Features.Registration.ExArmy.Query.GetAllByUserProfileI
             _exArmyRepository = exArmyRepository;
         }
 
-        public async Task<ExArmyDetailDto> Handle(GetAllByUserProfileIdQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PaginatedResponse<ExArmyDetailDto>>> Handle(GetAllByUserProfileIdQuery request, CancellationToken cancellationToken)
         {
             // Query the database
-            var response = await _exArmyRepository.GetAllExArmyByUserProfileIdAsync(request.UserProfileId, cancellationToken);
+            var record = await _exArmyRepository.GetExArmyByUserProfileIdAsync(request.UserProfileId, request.QueryParams, cancellationToken);
 
-            // verify that record exists
-            if (response == null)
-                throw new NotFoundException(nameof(Domain.Entity.Registration.ExArmy), request.UserProfileId);
-
-            // convert data object to DTO object
-            var data = _mapper.Map<ExArmyDetailDto>(response);
-
-            // return DTO object
-            return data;
+            return new ApiResponse<PaginatedResponse<ExArmyDetailDto>>
+            {
+                Status = 200,
+                Message = "Success",
+                ResData = record
+            };
         }
     }
 }

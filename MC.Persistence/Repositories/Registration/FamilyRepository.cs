@@ -1,9 +1,11 @@
 ﻿using MC.Application.Contracts.Persistence.Registration;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Registration;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Helper;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 
 namespace MC.Persistence.Repositories.Registration
 {
@@ -14,7 +16,56 @@ namespace MC.Persistence.Repositories.Registration
         {
             _userProfileRepository = userProfileRepository;
         }
+        public async Task<PaginatedResponse<FamilyDetailDto>?> GetAllFamilyDetailsAsync(Guid userProfileId, QueryParams queryParams, CancellationToken cancellationToken)
+        {
+            var query = _context.Famlies
+                .AsNoTracking()
+                .Where(a => a.UserProfileId == userProfileId && !a.IsDeleted);
 
+            // Search filter
+            if (!string.IsNullOrWhiteSpace(queryParams.Query))
+            {
+                var search = queryParams.Query.ToLower();
+                query = query.Where(q =>
+                    q.Name.ToLower().Contains(search) ||
+                    !string.IsNullOrWhiteSpace(q.Relationship.ToString()) && q.Relationship.ToString().ToLower().Contains(search) 
+                );
+            }
+
+            // Total count before pagination
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            // Sorting
+            if (!string.IsNullOrWhiteSpace(queryParams.Column))
+            {
+                string column = queryParams.Column;
+                string direction = queryParams.Dir?.ToLower() == "desc" ? "descending" : "";
+
+                query = query.OrderBy($"{column} {direction}");
+            }
+            else
+            {
+                //query = query.OrderBy(a => a.IsActive); // default sort
+                query = query.OrderByDescending(a => a.IsActive)
+                             .ThenBy(a => a.Name); // optional secondary sort
+            }
+
+            // Pagination
+            var data = await query
+                .Skip((queryParams.Page - 1) * queryParams.Limit)
+                .Take(queryParams.Limit)
+                .ToListAsync(cancellationToken);
+
+            var dtos = data.Select(MapToDto).ToList();
+
+            return new PaginatedResponse<FamilyDetailDto>
+            {
+                Data = dtos,
+                CurrentPage = queryParams.Page,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)queryParams.Limit)
+            };
+        }
         public async Task<List<FamilyDetailDto>?> GetAllFamilyByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
         {
             var userProfile = await _userProfileRepository.GetUserProfileByRegistrationIdAsync(registrationId, cancellationToken);
@@ -63,7 +114,7 @@ namespace MC.Persistence.Repositories.Registration
             {
                 Id = response.Id,
                 UserProfileId = response.UserProfileId,
-                UserProfileName = response.UserProfile != null ? response.UserProfile.FirstName + " " + response.UserProfile.LastName : string.Empty,
+                //UserProfileName = response.UserProfile != null ? response.UserProfile.FirstName + " " + response.UserProfile.LastName : string.Empty,
                 Name = response.Name,
                 Relationship = response.Relationship,
                 IsPFNominee = response.IsPFNominee,

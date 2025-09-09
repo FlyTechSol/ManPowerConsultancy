@@ -1,9 +1,10 @@
-﻿using MC.Application.Features.Registration.Family.Query.GetAllByUserProfileId;
+﻿using MC.API.Resources;
 using MC.Application.Features.Registration.InsuranceNominee.Command.Create;
 using MC.Application.Features.Registration.InsuranceNominee.Command.Delete;
 using MC.Application.Features.Registration.InsuranceNominee.Command.Update;
-using MC.Application.Features.Registration.InsuranceNominee.Query.GetAllByRegistrationId;
+using MC.Application.Features.Registration.InsuranceNominee.Query.GetAll;
 using MC.Application.Features.Registration.InsuranceNominee.Query.GetById;
+using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Registration;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -28,18 +29,25 @@ namespace MC.API.Controllers.Registration
             return Ok(response);
         }
 
-        [HttpGet("get-all-nominee-by-registration-id/{registrationId}")]
-        public async Task<ActionResult<List<InsuranceNomineeDetailDto>>> GetAll(string registrationId, CancellationToken cancellationToken)
+        [HttpGet("get-all-by-user-profile-id/{userProfileId}")]
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<InsuranceNomineeDetailDto>>>> GetAllByUserProfile(Guid userProfileId, [FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllInsNomineeByRegIdQuery(registrationId), cancellationToken);
+            var response = await _mediator.Send(new GetAllInsNomineeQuery(userProfileId, queryParams), cancellationToken);
             return Ok(response);
         }
-        [HttpGet("get-all-nominee-by-user-profile-id/{userProfileId}")]
-        public async Task<ActionResult<List<InsuranceNomineeDetailDto>>> GetAllByUserProfile(Guid userProfileId, CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(new GetAllByUserProfileQuery(userProfileId), cancellationToken);
-            return Ok(response);
-        }
+
+        //[HttpGet("get-all-nominee-by-registration-id/{registrationId}")]
+        //public async Task<ActionResult<List<InsuranceNomineeDetailDto>>> GetAll(string registrationId, CancellationToken cancellationToken)
+        //{
+        //    var response = await _mediator.Send(new GetAllInsNomineeByRegIdQuery(registrationId), cancellationToken);
+        //    return Ok(response);
+        //}
+        //[HttpGet("get-all-nominee-by-user-profile-id/{userProfileId}")]
+        //public async Task<ActionResult<List<InsuranceNomineeDetailDto>>> GetAllByUserProfile(Guid userProfileId, CancellationToken cancellationToken)
+        //{
+        //    var response = await _mediator.Send(new GetAllByUserProfileQuery(userProfileId), cancellationToken);
+        //    return Ok(response);
+        //}
 
         [HttpPost]
         [Authorize(Roles = "Administrator")]
@@ -49,7 +57,12 @@ namespace MC.API.Controllers.Registration
         public async Task<ActionResult> Post(CreateInsNomineeCmd request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
-            return CreatedAtAction(nameof(Get), new { id = response }, null);
+            //return CreatedAtAction(nameof(Get), new { id = response }, null);
+            return CreatedAtAction(
+                      nameof(Get),
+                      new { id = response },
+                      ApiResponseMessage<Guid>.SuccessResponse(response, ResponseMessages.Created)
+                      );
         }
 
         [HttpPut("{id}")]
@@ -61,7 +74,8 @@ namespace MC.API.Controllers.Registration
         public async Task<ActionResult> Put(UpdateInsNomineeCmd request, CancellationToken cancellationToken)
         {
             await _mediator.Send(request, cancellationToken);
-            return NoContent();
+            //return NoContent();
+            return Ok(ApiResponseMessage<object>.SuccessResponse(null, ResponseMessages.Updated));
         }
 
         [HttpDelete("{id}")]

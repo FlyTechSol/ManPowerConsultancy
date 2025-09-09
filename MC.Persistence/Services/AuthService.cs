@@ -11,6 +11,7 @@ using MC.Domain.Entity.Enum;
 using MC.Domain.Entity.Identity;
 using MC.Domain.Entity.Registration;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -58,10 +59,24 @@ namespace MC.Persistence.Services
             var isValid = await _userManager.CheckPasswordAsync(user, request.Password);
             if (!isValid)
             {
+                // Increase failed attempts
                 await _userManager.AccessFailedAsync(user);
+                // Check if lockout should now apply
+                if (await _userManager.IsLockedOutAsync(user))
+                {
+                    throw new UnauthorizedAccessException("Account locked due to multiple failed login attempts. Try again later.");
+                }
                 throw new UnauthorizedAccessException("Invalid credentials.");
             }
-
+            if (!user.IsActive)  // Or user.IsActive == false based on your implementation
+            {
+                throw new UnauthorizedAccessException("This user is no longer active.");
+            }
+            // Check if the user's email is confirmed
+            if (!user.EmailConfirmed)
+            {
+                throw new BadRequestException($"Email for '{request.Email}' is not verified. Kindly verifiy the email before login. Make sure verification link is active for 24 hrs only.");
+            }
             await _userManager.ResetAccessFailedCountAsync(user);
 
             JwtSecurityToken jwtSecurityToken = await GenerateJwtTokenAsync(user);
@@ -92,7 +107,7 @@ namespace MC.Persistence.Services
 
             //fetch multilevel menus
             var menus = await _menuService.GetNavigationsForRolesAsync(roles.ToList(), cancellationToken);
-            
+
             return new AuthResponse
             {
                 Id = user.Id,
@@ -102,9 +117,9 @@ namespace MC.Persistence.Services
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 Email = user.Email ?? string.Empty,
                 UserName = user.UserName ?? string.Empty,
-                RegistrationId = userProfile !=null ? userProfile.RegistrationId : string.Empty,
+                RegistrationId = userProfile != null ? userProfile.RegistrationId : string.Empty,
                 Roles = roleDetails,
-                CompanyName = userProfile !=null ? userProfile.CompanyName ?? string.Empty : string.Empty,
+                CompanyName = userProfile != null ? userProfile.CompanyName ?? string.Empty : string.Empty,
                 ProfilePictureUrl = userProfile != null ? userProfile.ProfilePictureUrl ?? string.Empty : string.Empty,
                 IsActive = user.IsActive,
                 Menus = menus,
@@ -117,6 +132,9 @@ namespace MC.Persistence.Services
                 FirstName = StringHelper.ToTitleCase(request.FirstName),
                 MiddleName = StringHelper.ToTitleCase(request.MiddleName),
                 LastName = StringHelper.ToTitleCase(request.LastName),
+                Email = request.Email,
+                MobileNumber = request.Mobile,
+                IsActive = true,
             };
             var user = new ApplicationUser
             {
@@ -135,25 +153,11 @@ namespace MC.Persistence.Services
             {
                 try
                 {
-                    if (string.IsNullOrWhiteSpace(request.RoleId))
-                    {
-                        var roleExists = await _roleManager.RoleExistsAsync("Employee");
-                        if (roleExists)
-                            await _userManager.AddToRoleAsync(user, "Student");
-                        else
-                            throw new BadRequestException($"The role 'employee' does not exist.{request.RoleId}");
-                    }
+                    var role = await _roleManager.FindByIdAsync(request.RoleId.ToString());
+                    if (role != null && !string.IsNullOrEmpty(role.Name))
+                        await _userManager.AddToRoleAsync(user, role.Name);
                     else
-                    {
-                        var role = await _roleManager.FindByIdAsync(request.RoleId.ToString());
-                        if (role != null)
-                            if (role != null && !string.IsNullOrEmpty(role.Name))
-                                await _userManager.AddToRoleAsync(user, role.Name);
-                            else
-                                throw new BadRequestException($"The role with ID '{request.RoleId}' does not exist or has no name.");
-                        else
-                            throw new BadRequestException($"The role with ID '{request.RoleId}' does not exist.");
-                    }
+                        throw new BadRequestException($"The role with ID '{request.RoleId}' does not exist or has no name.");
 
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var verificationLink = GenerateEmailVerificationLink(user.Id.ToString(), token);
@@ -184,7 +188,7 @@ namespace MC.Persistence.Services
                 StringBuilder str = new StringBuilder();
                 foreach (var err in result.Errors)
                 {
-                    str.AppendFormat("•{0}\n", err.Description);
+                    str.AppendFormat("• {0}\n", err.Description);
                 }
                 throw new BadRequestException($"{str}");
             }
@@ -193,10 +197,15 @@ namespace MC.Persistence.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
-                new Claim("username", user.UserName ?? string.Empty)
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()), // Standard JWT "subject"
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),   // ASP.NET standard
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
+                    new Claim("username", user.UserName ?? string.Empty)
+                //new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                //new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                //new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
+                //new Claim("username", user.UserName ?? string.Empty)
             };
 
             var userClaims = await _userManager.GetClaimsAsync(user);
@@ -225,6 +234,16 @@ namespace MC.Persistence.Services
             var encodedToken = HttpUtility.UrlEncode(token);
             var verificationLink = $"{baseUrl}verify-email?userId={userId}&token={encodedToken}";
             return verificationLink;
+        }
+        public async Task<bool> IsEmailUnique(string email, CancellationToken cancellationToken)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            return user == null;
+        }
+        public async Task<bool> IsUserNameUnique(string userName, CancellationToken cancellationToken)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            return user == null;
         }
     }
 }

@@ -63,7 +63,7 @@ namespace MC.Persistence.Repositories.Registration
             {
                 Id = response.Id,
                 UserProfileId = response.UserProfileId,
-                UserProfileName = response.UserProfile.FirstName + " " + response.UserProfile.LastName,
+                //UserProfileName = response.UserProfile.FirstName + " " + response.UserProfile.LastName,
                 PoliceStationName = response.PoliceStationName,
                 VerificationStatus = response.VerificationStatus,
                 VerificationDate = response.VerificationDate,

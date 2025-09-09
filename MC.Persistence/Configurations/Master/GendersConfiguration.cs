@@ -13,7 +13,7 @@ namespace MC.Persistence.Configurations.Master
             builder.Property(z => z.Code).IsRequired().HasMaxLength(10);
             builder.Property(z => z.Name).IsRequired().HasMaxLength(50);
             builder.Property(z => z.DisplayOrder).IsRequired();
-            builder.HasIndex(z => z.Code).IsUnique();
+            //builder.HasIndex(z => z.Code).IsUnique();
 
             builder.HasData(
                 new Gender

@@ -62,7 +62,7 @@ namespace MC.Persistence.Repositories.Registration
             {
                 Id = response.Id,
                 UserProfileId = response.UserProfileId,
-                UserProfileName = response.UserProfile.FirstName + " " + response.UserProfile.LastName,
+                //UserProfileName = response.UserProfile.FirstName + " " + response.UserProfile.LastName,
                 ResignationDate = response.ResignationDate,
                 Reason = response.Reason,
                 DateCreated = Helper.DateHelper.FormatDate(response.DateCreated),

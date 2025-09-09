@@ -5,6 +5,7 @@ namespace MC.Application.Features.Registration.UserProfile.Command.Create
 {
     public class CreateUserProfileCmd : IRequest<Guid>
     {
+        public Guid LoggedInUser { get; set; } 
         public Guid? UserId { get; set; }
         public Guid CompanyId { get; set; }
         public Guid ClientMasterId { get; set; }

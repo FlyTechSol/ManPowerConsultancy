@@ -29,7 +29,7 @@ namespace MC.Application.Features.Registration.UserProfile.Command.Create
             // convert to domain entity object
             var recordToCreate = _mapper.Map<MC.Domain.Entity.Registration.UserProfile>(request);
 
-            await _userProfileRepository.CreateUserProfileAsync(recordToCreate, request.ProfilePicture, cancellationToken);
+            await _userProfileRepository.CreateUserProfileAsync(recordToCreate, request.LoggedInUser, request.ProfilePicture, cancellationToken);
 
             // retun record id
             return recordToCreate.Id;

@@ -36,28 +36,30 @@ namespace MC.Application.Features.Registration.Address.Command.Update
                 throw new BadRequestException("Invalid address detail", validationResult);
             }
 
-            if (request.IsActive)
-            {
-                var existingAddresses = await _addressRepository
-                    .GetAllByUserIdAsync(request.UserProfileId, cancellationToken);
+            //if (request.IsActive)
+            //{
+            //    var existingAddresses = await _addressRepository
+            //        .GetAllByUserIdAsync(request.UserProfileId, cancellationToken);
 
-                var addressesToDeactivate = existingAddresses
-                    .Where(a => a.Id != request.Id && a.IsActive)
-                    .ToList();
+            //    var addressesToDeactivate = existingAddresses
+            //        .Where(a => a.Id != request.Id && a.IsActive)
+            //        .ToList();
 
-                foreach (var address in addressesToDeactivate)
-                {
-                    address.IsActive = false;
-                }
+            //    foreach (var address in addressesToDeactivate)
+            //    {
+            //        address.IsActive = false;
+            //    }
 
-                if (addressesToDeactivate.Any())
-                    await _addressRepository.UpdateRangeAsync(addressesToDeactivate, cancellationToken);
-            }
+            //    if (addressesToDeactivate.Any())
+            //        await _addressRepository.UpdateRangeAsync(addressesToDeactivate, cancellationToken);
+            //}
+            _mapper.Map(request, recordUpdateRequest);
+            await _addressRepository.UpdateAsync(recordUpdateRequest, cancellationToken);
             // convert to domain entity object
-            var recordToUpdate = _mapper.Map(request, recordUpdateRequest);
+            //var recordToUpdate = _mapper.Map(request, recordUpdateRequest);
 
-            // add to database
-            await _addressRepository.UpdateAsync(recordToUpdate, cancellationToken);
+            //// add to database
+            //await _addressRepository.UpdateAsync(recordToUpdate, cancellationToken);
 
             // return Unit value
             return Unit.Value;

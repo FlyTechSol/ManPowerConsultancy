@@ -12,7 +12,7 @@ namespace MC.Application.Contracts.Navigation
         Task<bool> ExistsAsync(Guid nodeId, CancellationToken cancellationToken);
         Task<List<NavigationNodeDropdownDto>> GetParentNodesAsync(Guid? excludeId, CancellationToken cancellationToken);
         Task<NavigationNodeDto?> GetNavigationByIdAsync(Guid id, CancellationToken cancellationToken);
-        Task<PaginatedResponse<NavigationNodeDto>> GetAllAsync(QueryParams queryParams, CancellationToken cancellationToken);
+        Task<PaginatedResponse<NavigationNodeDto>?> GetAllAsync(QueryParams queryParams, CancellationToken cancellationToken);
         Task<List<NavigationNodeDto>> GetNavigationsForRolesAsync(IList<string> roles, CancellationToken cancellationToken);
         Task<List<NavigationNodeDto>> GetTreeAsync(CancellationToken cancellationToken);
         Task<NavigationNode?> GetWithChildrenAsync(Guid id, CancellationToken cancellationToken);

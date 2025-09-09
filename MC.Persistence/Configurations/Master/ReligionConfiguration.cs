@@ -13,7 +13,7 @@ namespace MC.Persistence.Configurations.Master
             builder.Property(z => z.Code).HasMaxLength(10);
             builder.Property(z => z.Name).HasMaxLength(50);
             builder.Property(z => z.DisplayOrder).IsRequired();
-            builder.HasIndex(z => z.Code).IsUnique();
+            //builder.HasIndex(z => z.Code).IsUnique();
 
             builder.HasData(
                 new Religion

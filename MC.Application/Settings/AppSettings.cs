@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace MC.Application.Settings
 {
     public class AppSettings
     {
+        public string BaseUrl { get; set; } = string.Empty;
         public string TimeZone { get; set; } = string.Empty;
         public DateTimeFormats DateTimeFormats { get; set; } = new DateTimeFormats();
     }
