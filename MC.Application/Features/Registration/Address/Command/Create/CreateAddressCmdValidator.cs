@@ -25,6 +25,7 @@ namespace MC.Application.Features.Registration.Address.Command.Create
                  .MaximumLength(100).WithMessage("{PropertyName} must be fewer than 100 characters");
 
             RuleFor(p => p.AddressType)
+                .NotNull().WithMessage("{PropertyName} is required.")
                 .IsInEnum().WithMessage("A valid address type must be selected.");
         }
     }

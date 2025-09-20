@@ -2,8 +2,8 @@
 {
     public enum PoliceVerificationStatus
     {
-        Active,
-        Inactive,
         Pending,
+        Send,
+        Verified
     }
 }

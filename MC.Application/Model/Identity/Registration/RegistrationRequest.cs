@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MC.Application.Model.Identity.Registration
+﻿namespace MC.Application.Model.Identity.Registration
 {
     public class RegistrationRequest
     {
@@ -17,5 +10,6 @@ namespace MC.Application.Model.Identity.Registration
         public string UserName { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string RoleId { get; set; } = string.Empty;
+        public Guid? CompanyId { get; set; } 
     }
 }

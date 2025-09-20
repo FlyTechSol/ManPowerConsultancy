@@ -11,12 +11,12 @@ namespace MC.Persistence.Repositories.Approval
         public ApprovalRequestRepository(ApplicationDatabaseContext context) : base(context)
         {
         }
-        public async Task<ApprovalRequest> CreateApprovalRequestAsync(Guid workflowId, Guid requestedBy, RequestType requestType, Guid requestEntityId, CancellationToken cancellationToken)
+        public async Task<ApprovalRequest> CreateApprovalRequestAsync(Guid approvalWorkflowId, Guid requestedBy, RequestType requestType, Guid requestEntityId, CancellationToken cancellationToken)
         {
             var request = new ApprovalRequest
             {
                 Id = Guid.NewGuid(),
-                WorkflowId = workflowId,
+                ApprovalWorkflowId = approvalWorkflowId,
                 RequestedBy = requestedBy,
                 RequestType = requestType,
                 RequestEntityId = requestEntityId,
@@ -27,22 +27,6 @@ namespace MC.Persistence.Repositories.Approval
             await _context.SaveChangesAsync(cancellationToken);
 
             return request;
-        }
-
-        public async Task AddApprovalRequestStagesAsync(ApprovalRequest request, IEnumerable<ApprovalStage> stages, CancellationToken cancellationToken)
-        {
-            var requestStages = stages.Select(s => new ApprovalRequestStage
-            {
-                Id = Guid.NewGuid(),
-                RequestId = request.Id,
-                StageId = s.Id,
-                Status = StageStatus.Pending,
-                DateCreated = DateTime.UtcNow,
-                DateModified = DateTime.UtcNow
-            });
-
-            _context.ApprovalRequestStages.AddRange(requestStages);
-            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

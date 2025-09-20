@@ -40,7 +40,7 @@ namespace MC.Application.Features.Registration.ExArmy.Command.Update
             var recordToUpdate = _mapper.Map(request, recordUpdateRequest);
 
             // add to database
-            await _exArmyRepository.UpdateAsync(recordToUpdate, cancellationToken);
+            await _exArmyRepository.UpdateExArmyAsync(recordToUpdate, request.DischargeCertificateUrl, cancellationToken);
 
             // return Unit value
             return Unit.Value;

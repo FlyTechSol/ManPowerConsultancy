@@ -8,7 +8,6 @@ namespace MC.Domain.Entity.Registration
     {
         public Guid UserProfileId { get; set; }
         public required UserProfile UserProfile { get; set; } // Navigation property to AspNetUsers
-
         public Guid AssetId { get; set; }
         public required Asset Asset { get; set; } // Navigation property to Asset
         public DateTime DateOfIssue { get; set; }
@@ -19,7 +18,8 @@ namespace MC.Domain.Entity.Registration
         public bool IsReturnable { get; set; } = true;
         public bool IsReturned { get; set; } = false;
         public DateTime? ReturnDate { get; set; }
-        public ReturnAssetStatus ReturnStatus { get; set; }  // e.g., "Good", "Fair", "Bad"
+        public ReturnAssetStatus? ReturnStatus { get; set; }  // e.g., "Good", "Fair", "Bad"
+        public string ReturnRemarks { get; set; } = string.Empty;
         public bool IsActive { get; set; } = true; // Indicates if the reference is active
     }
 }

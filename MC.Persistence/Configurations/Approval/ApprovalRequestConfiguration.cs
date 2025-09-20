@@ -10,7 +10,7 @@ namespace MC.Persistence.Configurations.Approval
         {
             builder.ConfigureAuditFields();
 
-            builder.Property(z => z.WorkflowId).IsRequired();
+            builder.Property(z => z.ApprovalWorkflowId).IsRequired();
             builder.Property(z => z.RequestedBy).IsRequired();
             builder.Property(z => z.RequestEntityId).IsRequired();
 
@@ -26,7 +26,7 @@ namespace MC.Persistence.Configurations.Approval
 
             builder.HasOne(r => r.Workflow)
                 .WithMany(w => w.Requests)   
-                .HasForeignKey(r => r.WorkflowId)
+                .HasForeignKey(r => r.ApprovalWorkflowId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(r => r.RequestedUser)
@@ -36,7 +36,7 @@ namespace MC.Persistence.Configurations.Approval
 
             builder.HasMany(r => r.Stages)
                 .WithOne(s => s.Request)
-                .HasForeignKey(s => s.RequestId)
+                .HasForeignKey(s => s.ApprovalRequestId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

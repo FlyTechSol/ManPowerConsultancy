@@ -74,6 +74,7 @@ namespace MC.Persistence.DatabaseContext
         public DbSet<BodyMeasurement> BodyMeasurements { get; set; }
         public DbSet<Communication> Communications { get; set; }
         public DbSet<EmployeeReference> EmployeeReferences { get; set; }
+        public DbSet<EmployeeVerification> EmployeeVerifications { get; set; }
         public DbSet<ExArmy> ExArmies { get; set; }
         public DbSet<Family> Famlies { get; set; }
         public DbSet<GunMan> GunMen { get; set; }
@@ -86,6 +87,7 @@ namespace MC.Persistence.DatabaseContext
         public DbSet<SecurityDeposit> SecurityDeposits { get; set; }
         public DbSet<Training> Trainings { get; set; }
         public DbSet<UserAsset> UserAssets { get; set; }
+        public DbSet<UserDocument> UserDocuments { get; set; }
         public DbSet<UserGeneralDetail> UserGeneralDetails { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
 

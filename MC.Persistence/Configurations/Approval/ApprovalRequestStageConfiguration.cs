@@ -10,8 +10,8 @@ namespace MC.Persistence.Configurations.Approval
         {
             builder.ConfigureAuditFields();
 
-            builder.Property(z => z.RequestId).IsRequired();
-            builder.Property(z => z.StageId).IsRequired();
+            builder.Property(z => z.ApprovalRequestId).IsRequired();
+            builder.Property(z => z.ApprovalStageId).IsRequired();
          
             builder.Property(b => b.Status)
                  .HasConversion<string>()
@@ -20,12 +20,12 @@ namespace MC.Persistence.Configurations.Approval
 
             builder.HasOne(rs => rs.Request)
                    .WithMany(r => r.Stages)
-                   .HasForeignKey(rs => rs.RequestId)
+                   .HasForeignKey(rs => rs.ApprovalRequestId)
                    .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(rs => rs.Stage)
                    .WithMany()  // usually we don’t need back navigation from Stage → RequestStages
-                   .HasForeignKey(rs => rs.StageId)
+                   .HasForeignKey(rs => rs.ApprovalStageId)
                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(rs => rs.Actions)

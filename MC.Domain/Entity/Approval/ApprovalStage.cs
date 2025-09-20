@@ -5,7 +5,7 @@ namespace MC.Domain.Entity.Approval
 {
     public class ApprovalStage : BaseEntity
     {
-        public Guid WorkflowId { get; set; }
+        public Guid ApprovalWorkflowId { get; set; }
         public virtual ApprovalWorkflow Workflow { get; set; } = null!;
 
         public int Order { get; set; } // e.g., 1, 2, 3

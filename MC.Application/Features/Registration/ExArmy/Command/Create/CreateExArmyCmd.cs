@@ -1,5 +1,6 @@
 ﻿using MC.Domain.Entity.Enum.Registration;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace MC.Application.Features.Registration.ExArmy.Command.Create
 {
@@ -14,6 +15,6 @@ namespace MC.Application.Features.Registration.ExArmy.Command.Create
         public DateTime? EnlistmentDate { get; set; } // Date of enlistment
         public DateTime? DischargeDate { get; set; } // Date of discharge
         public string? ReasonForDischarge { get; set; } // Reason for discharge from the army
-        public string? DischargeCertificateUrl { get; set; } // URL to the discharge certificate document
+        public IFormFile? DischargeCertificateUrl { get; set; } // URL to the discharge certificate document
     }
 }

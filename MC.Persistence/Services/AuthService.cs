@@ -6,10 +6,14 @@ using MC.Application.Exceptions;
 using MC.Application.Helper;
 using MC.Application.Model.Identity.Authorization;
 using MC.Application.Model.Identity.Registration;
+using MC.Application.ModelDto.Common.Pagination;
+using MC.Application.ModelDto.Registration;
 using MC.Application.Settings;
 using MC.Domain.Entity.Enum;
+using MC.Domain.Entity.Enum.Registration;
 using MC.Domain.Entity.Identity;
 using MC.Domain.Entity.Registration;
+using MC.Persistence.DatabaseContext;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +23,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Web;
+using System.Linq.Dynamic.Core;
 
 namespace MC.Persistence.Services
 {
@@ -31,13 +36,15 @@ namespace MC.Persistence.Services
         private readonly IConfiguration _configuration;
         private readonly IUserProfileRepository _userProfileRepository;
         private readonly INavigationNodeRepository _menuService;
+        private readonly ApplicationDatabaseContext _context;
         public AuthService(UserManager<ApplicationUser> userManager,
                            RoleManager<ApplicationRole> roleManager,
                            IOptions<JwtSettings> jwtSettings,
                            IEmailSenderRepository emailSenderRepository,
                            IUserProfileRepository userProfileRepository,
                            INavigationNodeRepository menuService,
-                           IConfiguration configuration)
+                           IConfiguration configuration,
+                           ApplicationDatabaseContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -46,6 +53,7 @@ namespace MC.Persistence.Services
             _configuration = configuration;
             _userProfileRepository = userProfileRepository;
             _menuService = menuService;
+            _context = context;
         }
 
         public async Task<AuthResponse> LoginAsync(AuthRequest request, CancellationToken cancellationToken)
@@ -127,15 +135,6 @@ namespace MC.Persistence.Services
         }
         public async Task<RegistrationResponse> RegisterAsync(RegistrationRequest request, CancellationToken cancellationToken)
         {
-            var profile = new UserProfile
-            {
-                FirstName = StringHelper.ToTitleCase(request.FirstName),
-                MiddleName = StringHelper.ToTitleCase(request.MiddleName),
-                LastName = StringHelper.ToTitleCase(request.LastName),
-                Email = request.Email,
-                MobileNumber = request.Mobile,
-                IsActive = true,
-            };
             var user = new ApplicationUser
             {
                 Email = request.Email,
@@ -143,55 +142,127 @@ namespace MC.Persistence.Services
                 UserName = request.UserName,
                 IsActive = true,
                 EmailConfirmed = false,
-                PhoneNumberConfirmed = false,
-                UserProfile = profile,
+                PhoneNumberConfirmed = false
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                try
+                var str = new StringBuilder();
+                foreach (var err in result.Errors)
+                    str.AppendLine($"• {err.Description}");
+                throw new BadRequestException(str.ToString());
+            }
+
+            try
+            {
+                // create profile separately
+                var profile = new UserProfile
                 {
-                    var role = await _roleManager.FindByIdAsync(request.RoleId.ToString());
-                    if (role != null && !string.IsNullOrEmpty(role.Name))
-                        await _userManager.AddToRoleAsync(user, role.Name);
-                    else
-                        throw new BadRequestException($"The role with ID '{request.RoleId}' does not exist or has no name.");
+                    FirstName = StringHelper.ToTitleCase(request.FirstName),
+                    MiddleName = StringHelper.ToTitleCase(request.MiddleName),
+                    LastName = StringHelper.ToTitleCase(request.LastName),
+                    Email = request.Email,
+                    MobileNumber = request.Mobile,
+                    IsActive = true,
+                    UserProfileStatus = Domain.Entity.Enum.Registration.UserProfileStatus.Draft,
+                    CompanyId = request.CompanyId,
+                    UserId = user.Id // very important
+                };
 
-                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var verificationLink = GenerateEmailVerificationLink(user.Id.ToString(), token);
+                await _userProfileRepository.CreateUserProfileAsync(profile, user.Id, null, cancellationToken);
+                //await _userProfileRepository.SaveChangesAsync();
 
-                    var placeholders = new Dictionary<string, string>
-                        {
-                            { "FirstName", user.UserProfile.FirstName },
-                            { "LastName", user.UserProfile.LastName },
-                            { "EmailVerificationLink", verificationLink }
-                        };
+                // assign role
+                var role = await _roleManager.FindByIdAsync(request.RoleId.ToString());
+                if (role == null || string.IsNullOrEmpty(role.Name))
+                    throw new BadRequestException($"The role with ID '{request.RoleId}' does not exist or has no name.");
 
-                    var emailSent = await _emailSenderRepository.SendEmailUsingTemplateAsync(user.Email, EmailTemplateType.RegistrationDone, placeholders, cancellationToken);
+                await _userManager.AddToRoleAsync(user, role.Name);
 
-                    if (!emailSent)
+                // email
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var verificationLink = GenerateEmailVerificationLink(user.Id.ToString(), token);
+
+                var placeholders = new Dictionary<string, string>
                     {
-                        throw new BadRequestException("Registration done but failed to send the welcome email.");
-                    }
+                        { "FirstName", profile.FirstName }, // use profile directly
+                        { "LastName", profile.LastName },
+                        { "EmailVerificationLink", verificationLink }
+                    };
 
-                    return new RegistrationResponse() { UserId = user.Id };
-                }
-                catch (Exception ex)
+                var emailSent = await _emailSenderRepository
+                    .SendEmailUsingTemplateAsync(user.Email, EmailTemplateType.RegistrationDone, placeholders, cancellationToken);
+
+                if (!emailSent)
+                    throw new BadRequestException("Registration done but failed to send the welcome email.");
+
+                return new RegistrationResponse { UserId = user.Id };
+            }
+            catch (Exception ex)
+            {
+                throw new BadRequestException($"An error occurred while assigning roles: {ex.Message}");
+            }
+        }
+
+        public async Task<PaginatedResponse<RegsiteredApprovedUserDto>> GetAllRegisteredApprovedUsersAsync(QueryParams queryParams, CancellationToken cancellationToken)
+        {
+            var query = _context.ApplicationUsers
+                .AsNoTracking()
+                .Include(u => u.UserProfile)
+                    .ThenInclude(up => up.Company)
+                .Include(u => u.UserProfile)
+                    .ThenInclude(up => up.Salutation)
+                .Where(u =>
+                    u.UserProfile != null &&
+                    u.UserProfile.UserProfileStatus == UserProfileStatus.Approved &&
+                    u.UserProfile.IsActive); // adjust to your "approved" definition
+
+            // Search
+            if (!string.IsNullOrWhiteSpace(queryParams.Query))
+            {
+                var search = queryParams.Query.ToLower();
+                query = query.Where(q =>
+                    (q.UserProfile != null && q.UserProfile.FirstName != null && q.UserProfile.FirstName.ToLower().Contains(search)) ||
+                    (q.UserProfile != null && q.UserProfile.LastName != null && q.UserProfile.LastName.ToLower().Contains(search)) ||
+                    (q.UserName != null && q.UserName.ToLower().Contains(search))
+                );
+            }
+
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            // Sorting
+            if (!string.IsNullOrWhiteSpace(queryParams.Column))
+            {
+                if (queryParams.Column == "DateCreated")
                 {
-                    throw new BadRequestException($"An error occurred while assigning roles: {ex.Message}");
+                    queryParams.Column = "UserName";
                 }
+                string column = queryParams.Column;
+                string direction = queryParams.Dir?.ToLower() == "desc" ? "descending" : "";
+                query = query.OrderBy($"{column} {direction}");
             }
             else
             {
-                StringBuilder str = new StringBuilder();
-                foreach (var err in result.Errors)
-                {
-                    str.AppendFormat("• {0}\n", err.Description);
-                }
-                throw new BadRequestException($"{str}");
+                query = query.OrderBy(u => u.UserProfile.FirstName); // default sort
             }
+
+            // Pagination
+            var data = await query
+                .Skip((queryParams.Page - 1) * queryParams.Limit)
+                .Take(queryParams.Limit)
+                .ToListAsync(cancellationToken);
+
+            var dtos = data.Select(MapToDto).ToList();
+
+            return new PaginatedResponse<RegsiteredApprovedUserDto>
+            {
+                Data = dtos,
+                CurrentPage = queryParams.Page,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)queryParams.Limit)
+            };
         }
         public async Task<JwtSecurityToken> GenerateJwtTokenAsync(ApplicationUser user)
         {
@@ -201,12 +272,9 @@ namespace MC.Persistence.Services
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),   // ASP.NET standard
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
-                    new Claim("username", user.UserName ?? string.Empty)
-                //new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                //new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                //new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
-                //new Claim("username", user.UserName ?? string.Empty)
-            };
+                    new Claim("username", user.UserName ?? string.Empty),
+                    new Claim("uid", user.Id.ToString())
+               };
 
             var userClaims = await _userManager.GetClaimsAsync(user);
             claims.AddRange(userClaims);
@@ -228,6 +296,7 @@ namespace MC.Persistence.Services
 
             return token;
         }
+
         public string GenerateEmailVerificationLink(string userId, string token)
         {
             var baseUrl = _configuration["AppSettings:BaseUrl"];
@@ -245,5 +314,27 @@ namespace MC.Persistence.Services
             var user = await _userManager.FindByNameAsync(userName);
             return user == null;
         }
+
+        private RegsiteredApprovedUserDto MapToDto(ApplicationUser u)
+        {
+            return new RegsiteredApprovedUserDto
+            {
+                Id = u.Id,
+                TitleId = u.UserProfile?.TitleId,
+                Title = u.UserProfile?.Salutation?.Name,
+                FirstName = u.UserProfile?.FirstName ?? string.Empty,
+                MiddleName = u.UserProfile?.MiddleName ?? string.Empty,
+                LastName = u.UserProfile?.LastName ?? string.Empty,
+                FullName = $"{u.UserProfile?.FirstName} {u.UserProfile?.LastName}".Trim() + " (" + u.UserProfile?.Designation?.Name + ")",
+                EmailAddress = u.UserProfile?.Email ?? string.Empty,
+                PhoneNumber = u.UserProfile?.MobileNumber ?? string.Empty,
+                UserName = u.UserName ?? string.Empty,
+                DesignationId = u.UserProfile?.DesignationId,
+                Designation = u.UserProfile?.Designation?.Name,
+                CompanyId = u.UserProfile?.CompanyId,
+                Company = u.UserProfile?.Company?.CompanyName
+            };
+        }
+
     }
 }

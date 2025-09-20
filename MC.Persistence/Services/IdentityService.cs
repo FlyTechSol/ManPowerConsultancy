@@ -166,5 +166,14 @@ namespace MC.Persistence.Services
             var result = await _userManager.RemoveFromRoleAsync(user, roleName);
             return result.Succeeded;
         }
+
+        public async Task<Guid?> GetUserCompanyIdAsync(Guid userId)
+        {
+            var user = await _userManager.Users
+                .Include(u => u.UserProfile)
+                .FirstOrDefaultAsync(u => u.Id == userId && (u.UserProfile !=null && !u.UserProfile.IsDeleted && u.UserProfile.IsActive));
+
+            return user?.UserProfile?.CompanyId;
+        }
     }
 }

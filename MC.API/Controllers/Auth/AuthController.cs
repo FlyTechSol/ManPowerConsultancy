@@ -1,6 +1,7 @@
 ﻿using MC.Application.Contracts.Identity;
 using MC.Application.Features.Common.Identity.ChangePassword.Command;
 using MC.Application.Features.Common.Identity.ForgotPassword.Command;
+using MC.Application.Features.Common.Identity.GetRegsiteredUser.Query;
 using MC.Application.Features.Common.Identity.Login.Command;
 using MC.Application.Features.Common.Identity.Registration.Command;
 using MC.Application.Features.Common.Identity.ResetPassword.Command;
@@ -8,6 +9,7 @@ using MC.Application.Features.Common.Identity.UnlockAccount.Command;
 using MC.Application.Model.Identity.Authorization;
 using MC.Application.Model.Identity.Identity;
 using MC.Application.Model.Identity.Registration;
+using MC.Application.ModelDto.Common.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +29,14 @@ namespace MC.API.Controllers.Auth
             this._mediator = mediator;
             _identityService = identityService;
             _userContext = userContext;
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpGet("approved")]
+        public async Task<ActionResult<ApiResponse<PaginatedResponse<RegsiteredApprovedUserDto>>>> GetAll([FromQuery] QueryParams queryParams, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetAllRegisteredApprovedUsersQuery(queryParams), cancellationToken);
+            return Ok(response);
         }
 
         [HttpPost("login")]
@@ -54,6 +64,7 @@ namespace MC.API.Controllers.Auth
                 UserName = request.UserName,
                 Password = request.Password,
                 RoleId = request.RoleId,
+                CompanyId = request.CompanyId,
             };
             var result = await _mediator.Send(command, cancellationToken);
             return Ok("Registration completed successfully. Please check your email to activate your account.");

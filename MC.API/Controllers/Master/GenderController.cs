@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MC.API.Controllers.Master
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/Gender")]
     [ApiController]
     public class GenderController : ControllerBase
     {

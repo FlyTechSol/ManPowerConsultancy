@@ -57,8 +57,7 @@ namespace MC.Application.Features.Registration.BankAccount.Command.Update
             var recordToUpdate = _mapper.Map(request, recordUpdateRequest);
 
             // add to database
-            await _bankAccountRepository.UpdateAsync(recordToUpdate, cancellationToken);
-
+            await _bankAccountRepository.UpdateBankAccountAsync(recordToUpdate, request.PassbookUrl, cancellationToken);
             // return Unit value
             return Unit.Value;
         }

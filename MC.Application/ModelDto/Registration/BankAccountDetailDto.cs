@@ -1,6 +1,5 @@
 ﻿using MC.Application.ModelDto.Base;
 using MC.Domain.Entity.Enum.Registration;
-using MC.Domain.Entity.Master;
 
 namespace MC.Application.ModelDto.Registration
 {

@@ -17,7 +17,8 @@ namespace MC.Persistence.Repositories.Organization
         {
             var response = await _context.ClientUnits
                 .AsNoTracking()
-                .FirstOrDefaultAsync(g => !g.IsDeleted && g.Id == id, cancellationToken);
+                .Include(g => g.ClientMaster)
+                .FirstOrDefaultAsync(g => !g.IsDeleted && g.Id == id && !g.ClientMaster.IsDeleted, cancellationToken);
 
             if (response == null)
                 return null;
@@ -28,7 +29,7 @@ namespace MC.Persistence.Repositories.Organization
         {
             var query = _context.ClientUnits
                 .AsNoTracking()
-                .Where(q => !q.IsDeleted);
+                .Where(q => !q.IsDeleted && !q.ClientMaster.IsDeleted);
 
             if (!string.IsNullOrWhiteSpace(queryParams.Query))
             {
@@ -119,12 +120,12 @@ namespace MC.Persistence.Repositories.Organization
             };
         }
 
-        
+
         public async Task<PaginatedResponse<UnitDetailDto>> GetUnitByClientMasterIdAsync(QueryParams queryParams, Guid clientMasterId, CancellationToken cancellationToken)
         {
             var query = _context.ClientUnits
                           .AsNoTracking()
-                          .Where(q => !q.IsDeleted && q.ClientMasterId == clientMasterId);
+                          .Where(q => !q.IsDeleted && q.ClientMasterId == clientMasterId && !q.ClientMaster.IsDeleted);
 
             if (!string.IsNullOrWhiteSpace(queryParams.Query))
             {

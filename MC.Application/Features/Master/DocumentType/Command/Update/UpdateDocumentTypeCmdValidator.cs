@@ -44,7 +44,8 @@ namespace MC.Application.Features.Master.DocumentType.Command.Update
         }
         private bool BeAValidPurpose(DocumentPurpose purpose)
         {
-            return purpose != 0 && Enum.IsDefined(typeof(DocumentPurpose), purpose);
+            //return purpose != 0 && Enum.IsDefined(typeof(DocumentPurpose), purpose);
+            return purpose != DocumentPurpose.None;
         }
     }
 }

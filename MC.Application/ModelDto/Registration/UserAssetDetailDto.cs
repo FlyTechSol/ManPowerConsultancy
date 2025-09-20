@@ -18,7 +18,8 @@ namespace MC.Application.ModelDto.Registration
         public bool IsReturnable { get; set; } = true;
         public bool IsReturned { get; set; } = false;
         public DateTime? ReturnDate { get; set; }
-        public ReturnAssetStatus ReturnStatus { get; set; }  // e.g., "Good", "Fair", "Bad"
+        public ReturnAssetStatus? ReturnStatus { get; set; }  // e.g., "Good", "Fair", "Bad"
+        public string ReturnRemarks { get; set; } = string.Empty;
         public bool IsActive { get; set; }
     }
 }

@@ -1,9 +1,12 @@
-﻿using MC.Application.Contracts.Persistence.Registration;
+﻿using MC.Application.Contracts.Persistence.FileHandling.Upload;
+using MC.Application.Contracts.Persistence.Registration;
+using MC.Application.Exceptions;
 using MC.Application.ModelDto.Common.Pagination;
 using MC.Application.ModelDto.Registration;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Helper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 
@@ -12,9 +15,11 @@ namespace MC.Persistence.Repositories.Registration
     public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccountRepository
     {
         private readonly IUserProfileRepository _userProfileRepository;
-        public BankAccountRepository(IUserProfileRepository userProfileRepository, ApplicationDatabaseContext context) : base(context)
+        private readonly IFileUploadRepository _fileUploadRepository;
+        public BankAccountRepository(IUserProfileRepository userProfileRepository, IFileUploadRepository fileUploadRepository, ApplicationDatabaseContext context) : base(context)
         {
             _userProfileRepository = userProfileRepository;
+            _fileUploadRepository = fileUploadRepository;
         }
 
         public async Task<PaginatedResponse<BankAccountDetailDto>?> GetAllDetailsAsync(Guid userProfileId, QueryParams queryParams, CancellationToken cancellationToken)
@@ -32,7 +37,7 @@ namespace MC.Persistence.Repositories.Registration
                     q.Bank.Name.ToLower().Contains(search) ||
                     q.IFSCCode.ToLower().Contains(search) ||
                     q.AccountNo.ToLower().Contains(search) ||
-                    !string.IsNullOrWhiteSpace(q.AccountType.ToString()) && q.AccountType.ToString().ToLower().Contains(search) 
+                    !string.IsNullOrWhiteSpace(q.AccountType.ToString()) && q.AccountType.ToString().ToLower().Contains(search)
                 );
             }
 
@@ -163,6 +168,79 @@ namespace MC.Persistence.Repositories.Registration
             return !await _context.BankAccounts.AsNoTracking()
                .AnyAsync(q => q.AccountNo == accountNo && q.IFSCCode == ifscCode && !q.IsDeleted
                            && q.Id != id, cancellationToken);
+        }
+
+        public async Task<Guid> CreateBankAccountAsync(BankAccount request, IFormFile? passbookUrl, CancellationToken cancellationToken)
+        {
+            // start a transaction on your existing context
+            await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+            try
+            {
+                request.IsActive = true;
+
+                // first save to generate Id
+                _context.BankAccounts.Add(request);
+                await _context.SaveChangesAsync(cancellationToken);
+
+                if (passbookUrl != null)
+                {
+                    // upload file first (to disk)
+                    var url = await _fileUploadRepository
+                        .UploadFileAsync(passbookUrl, "Passbook", false, cancellationToken);
+
+                    // update DB with file path
+                    request.PassbookUrl = url;
+                    _context.BankAccounts.Update(request);
+                    await _context.SaveChangesAsync(cancellationToken);
+                }
+                // commit DB transaction
+                await transaction.CommitAsync(cancellationToken);
+
+                return request.Id;
+            }
+            catch
+            {
+                // roll back DB changes
+                await transaction.RollbackAsync(cancellationToken);
+                // optional: delete file if uploaded to avoid orphan files
+                throw;
+            }
+        }
+
+        public async Task<Guid> UpdateBankAccountAsync(BankAccount request, IFormFile? passbookUrl, CancellationToken cancellationToken)
+        {
+            var existing = await _context.BankAccounts
+                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+
+            if (existing == null)
+                throw new NotFoundException($"Bank account with Id {request.Id} not found", request.Id);
+
+            //existing.UserId = userProfile.UserId;
+            existing.BankId = request.BankId;
+            existing.IFSCCode = request.IFSCCode;
+            existing.AccountNo = request.AccountNo;
+            existing.AccountType = request.AccountType;
+            existing.IsPassbookAvailable = request.IsPassbookAvailable;
+            existing.PassbookUrl = request.PassbookUrl;
+            existing.IsActive = request.IsActive;
+
+            if (passbookUrl != null)
+            {
+                // (optional) delete old file to avoid orphan files
+                if (!string.IsNullOrWhiteSpace(existing.PassbookUrl) &&
+                    System.IO.File.Exists(existing.PassbookUrl))
+                {
+                    System.IO.File.Delete(existing.PassbookUrl);
+                }
+
+                var url = await _fileUploadRepository.UploadFileAsync(passbookUrl, "Passbook", false, cancellationToken);
+                existing.PassbookUrl = url;
+            }
+
+            _context.BankAccounts.Update(existing);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return existing.Id;
         }
 
         private BankAccountDetailDto MapToDto(Domain.Entity.Registration.BankAccount response)

@@ -127,6 +127,7 @@ namespace MC.Persistence.Repositories.Registration
                 IsReturned = response.IsReturned,
                 ReturnDate = response.ReturnDate,
                 ReturnStatus = response.ReturnStatus, // e.g., "Good", "Fair", "Bad"
+                ReturnRemarks = response.ReturnRemarks,
                 IsActive = response.IsActive,
                 DateCreated = Helper.DateHelper.FormatDate(response.DateCreated),
                 DateModified = Helper.DateHelper.FormatDate(response.DateModified),

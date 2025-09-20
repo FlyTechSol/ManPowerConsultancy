@@ -17,7 +17,8 @@ namespace MC.Persistence.Repositories.Organization
         {
             var response = await _context.ClientMasters
                 .AsNoTracking()
-                .FirstOrDefaultAsync(g => !g.IsDeleted && g.Id == id, cancellationToken);
+                .Include(g => g.Company)
+                .FirstOrDefaultAsync(g => !g.IsDeleted && g.Id == id && !g.Company.IsDeleted, cancellationToken);
 
             if (response == null)
                 return null;
@@ -29,7 +30,7 @@ namespace MC.Persistence.Repositories.Organization
         {
             var query = _context.ClientMasters
                 .AsNoTracking()
-                .Where(q => !q.IsDeleted);
+                .Where(q => !q.IsDeleted && !q.Company.IsDeleted);
 
             if (!string.IsNullOrWhiteSpace(queryParams.Query))
             {
@@ -101,7 +102,7 @@ namespace MC.Persistence.Repositories.Organization
             {
                 Id = d.Id,
                 CompanyId = d.CompanyId,
-                CompanyName = d.CompanyName ?? string.Empty,  
+                CompanyName = d.CompanyName ?? string.Empty,
                 ClientName = d.ClientName,
                 ProjectStartDate = d.ProjectStartDate,
                 ProjectEndDate = d.ProjectEndDate,
@@ -129,7 +130,7 @@ namespace MC.Persistence.Repositories.Organization
         {
             var query = _context.ClientMasters
                .AsNoTracking()
-               .Where(q => !q.IsDeleted && q.CompanyId == companyId);
+               .Where(q => !q.IsDeleted && q.CompanyId == companyId && !q.Company.IsDeleted);
 
             if (!string.IsNullOrWhiteSpace(queryParams.Query))
             {

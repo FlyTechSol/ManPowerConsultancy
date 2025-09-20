@@ -2,6 +2,7 @@
 using MC.Application.Contracts.Identity;
 using MC.Application.Contracts.Persistence.Approval;
 using MC.Application.Contracts.Persistence.FileHandling.Upload;
+using MC.Application.Contracts.Persistence.Organization;
 using MC.Application.Contracts.Persistence.Registration;
 using MC.Application.Exceptions;
 using MC.Application.ModelDto.Common.Pagination;
@@ -14,7 +15,6 @@ using MC.Persistence.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
-using System.Threading;
 
 namespace MC.Persistence.Repositories.Registration
 {
@@ -23,17 +23,20 @@ namespace MC.Persistence.Repositories.Registration
         private readonly IEmailSenderRepository _emailSenderRepository;
         private readonly IRegistrationIdGeneratorRepository _registrationIdGeneratorRepository;
         private readonly IFileUploadRepository _fileUploadRepository;
+        private readonly IApprovalRequestStageRepository _approvalRequestStageRepository;
         private readonly IApprovalRequestRepository _approvalRequestRepository;
         public UserProfileRepository(
            IEmailSenderRepository emailSenderRepository,
            IRegistrationIdGeneratorRepository registrationIdGeneratorRepository,
            IFileUploadRepository fileUploadRepository,
+           IApprovalRequestStageRepository approvalRequestStageRepository,
            IApprovalRequestRepository approvalRequestRepository,
            ApplicationDatabaseContext context) : base(context)
         {
             _emailSenderRepository = emailSenderRepository;
             _registrationIdGeneratorRepository = registrationIdGeneratorRepository;
             _fileUploadRepository = fileUploadRepository;
+            _approvalRequestStageRepository = approvalRequestStageRepository;
             _approvalRequestRepository = approvalRequestRepository;
         }
 
@@ -88,7 +91,7 @@ namespace MC.Persistence.Repositories.Registration
                 .Select(up => new UserProfileShortDto
                 {
                     Id = up.Id,
-                    RegistrationId = up.RegistrationId,
+                    RegistrationId = up.RegistrationId ?? string.Empty,
                     FirstName = up.FirstName,
                     LastName = up.LastName,
                     Email = up.Email,
@@ -184,7 +187,7 @@ namespace MC.Persistence.Repositories.Registration
                 userProfile.DateOfJoining = DateTime.UtcNow.Date;
             }
             userProfile.IsActive = true;
-
+            userProfile.UserProfileStatus = Domain.Entity.Enum.Registration.UserProfileStatus.Draft;
             // Save to database
             _context.UserProfiles.Add(userProfile);
             await _context.SaveChangesAsync();
@@ -206,7 +209,7 @@ namespace MC.Persistence.Repositories.Registration
                 var workflow = await _context.ApprovalWorkflows
                     .Include(w => w.Stages)
                     .ThenInclude(s => s.Approvers)
-                    .FirstOrDefaultAsync(w => w.WorkflowType == WorkflowType.StaffApproval &&
+                    .FirstOrDefaultAsync(w => w.WorkflowType == WorkflowType.ProfileApproval &&
                                               w.CompanyId == userProfile.CompanyId.Value,
                                            cancellationToken);
 
@@ -220,7 +223,7 @@ namespace MC.Persistence.Repositories.Registration
                         cancellationToken);
 
                     var stages = workflow.Stages.OrderBy(s => s.Order).ToList();
-                    await _approvalRequestRepository.AddApprovalRequestStagesAsync(approvalRequest, stages, cancellationToken);
+                    await _approvalRequestStageRepository.AddApprovalRequestStagesAsync(approvalRequest, stages, cancellationToken);
                 }
             }
 

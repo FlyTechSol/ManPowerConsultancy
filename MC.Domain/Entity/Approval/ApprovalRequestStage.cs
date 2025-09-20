@@ -5,10 +5,10 @@ namespace MC.Domain.Entity.Approval
 {
     public class ApprovalRequestStage : BaseEntity
     {
-        public Guid RequestId { get; set; }
+        public Guid ApprovalRequestId { get; set; }
         public virtual ApprovalRequest Request { get; set; } = null!;
 
-        public Guid StageId { get; set; }
+        public Guid ApprovalStageId { get; set; }
         public virtual ApprovalStage Stage { get; set; } = null!;
 
         public StageStatus Status { get; set; } = StageStatus.Pending;

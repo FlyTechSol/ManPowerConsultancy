@@ -12,6 +12,9 @@ namespace MC.Application.Features.Common.Identity.Registration.Command
         {
             _authenticationService = authenticationService;
 
+            RuleFor(x => x.CompanyId)
+                .NotEmpty().WithMessage("Mobile number is required.");
+
             RuleFor(x => x.Email)
              .NotEmpty().WithMessage("Email is required.")
              .EmailAddress().WithMessage("Invalid email format.")

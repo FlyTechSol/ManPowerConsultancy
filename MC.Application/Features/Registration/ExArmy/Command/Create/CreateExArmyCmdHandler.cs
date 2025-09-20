@@ -29,7 +29,7 @@ namespace MC.Application.Features.Registration.ExArmy.Command.Create
             var recordToCreate = _mapper.Map<Domain.Entity.Registration.ExArmy>(request);
 
             // add to database
-            await _exArmyRepository.CreateAsync(recordToCreate, cancellationToken);
+            await _exArmyRepository.CreateExArmyAsync(recordToCreate, request.DischargeCertificateUrl, cancellationToken);
 
             // retun record id
             return recordToCreate.Id;

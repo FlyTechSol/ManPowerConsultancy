@@ -23,5 +23,6 @@ namespace MC.Application.Contracts.Identity
         Task<List<RoleDetails>> GetUserRoleDetailsAsync(Guid userId);
         Task<bool> AssignRoleAsync(Guid userId, string roleName);
         Task<bool> RemoveRoleAsync(Guid userId, string roleName);
+        Task<Guid?> GetUserCompanyIdAsync(Guid userId);
     }
 }
