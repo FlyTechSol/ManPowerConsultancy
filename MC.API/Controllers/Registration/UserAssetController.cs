@@ -2,6 +2,7 @@
 using MC.Application.Features.Registration.UserAsset.Command.Create;
 using MC.Application.Features.Registration.UserAsset.Command.Delete;
 using MC.Application.Features.Registration.UserAsset.Command.Update;
+using MC.Application.Features.Registration.UserAsset.Command.UpdateStatus;
 using MC.Application.Features.Registration.UserAsset.Query.GetAllByRegistrationId;
 using MC.Application.Features.Registration.UserAsset.Query.GetAllByUserProfileId;
 using MC.Application.Features.Registration.UserAsset.Query.GetById;
@@ -66,6 +67,19 @@ namespace MC.API.Controllers.Registration
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult> Put(UpdateUserAssetCmd request, CancellationToken cancellationToken)
+        {
+            await _mediator.Send(request, cancellationToken);
+            //return NoContent();
+            return Ok(ApiResponseMessage<object>.SuccessResponse(null, ResponseMessages.Updated));
+        }
+
+        [HttpPut("update-status/{id}")]
+        [Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> UpdateAssetStatus(UpdateStatusUserAssetCmd request, CancellationToken cancellationToken)
         {
             await _mediator.Send(request, cancellationToken);
             //return NoContent();

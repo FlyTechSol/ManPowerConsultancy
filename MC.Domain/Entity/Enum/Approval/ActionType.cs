@@ -6,8 +6,6 @@ namespace MC.Domain.Entity.Enum.Approval
         Pending,
         Approved, 
         Rejected, 
-        Delegated,
-        Skipped,
-        Commented,
+        Delegated
     }
 }

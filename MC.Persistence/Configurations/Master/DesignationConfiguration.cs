@@ -1,6 +1,8 @@
 ﻿using MC.Domain.Entity.Master;
+using MC.Domain.Entity.Registration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace MC.Persistence.Configurations.Master
 {
@@ -15,6 +17,7 @@ namespace MC.Persistence.Configurations.Master
             builder.Property(z => z.DisplayOrder).IsRequired();
             //builder.HasIndex(z => z.Code).IsUnique();
 
+           
             Guid userId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9");
             DateTime DateCreatedUtc = new DateTime(2025, 8, 1, 0, 0, 0, DateTimeKind.Utc);
             var userName = "System Admin";

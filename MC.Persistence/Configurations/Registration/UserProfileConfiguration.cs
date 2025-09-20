@@ -10,6 +10,11 @@ namespace MC.Persistence.Configurations.Registration
         {
             builder.ConfigureAuditFields();
 
+            builder.HasOne(up => up.Designation)
+               .WithMany(d => d.UserProfiles)
+               .HasForeignKey(up => up.DesignationId)
+               .OnDelete(DeleteBehavior.Restrict);
+
             builder.Property(p => p.RegistrationId)
                 //.IsRequired()
                 .HasMaxLength(20); // Adjust as needed
@@ -71,6 +76,10 @@ namespace MC.Persistence.Configurations.Registration
                  .IsRequired(false)
                  .OnDelete(DeleteBehavior.Restrict); // or ClientSetNull
 
+            builder.Property(b => b.UserProfileStatus)
+                 .HasConversion<string>()
+                 .HasMaxLength(50);
+
             builder.HasData(
             new UserProfile
             {
@@ -88,6 +97,30 @@ namespace MC.Persistence.Configurations.Registration
                 LastName = "Admin",
                 AadhaarNumber = "987654321001",
                 RegistrationId = "MFC -0100",
+                UserProfileStatus = Domain.Entity.Enum.Registration.UserProfileStatus.Approved,
+                DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, DateTimeKind.Utc),
+                DateModified = new DateTime(2025, 8, 1, 0, 0, 0, DateTimeKind.Utc),
+                CreatedByUserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                ModifiedByUserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9")
+            }
+            ,
+            new UserProfile
+            {
+                Id = Guid.Parse("83B6730A-C27C-4898-A7CA-29AD3B59213A"),
+                CompanyId = Guid.Parse("489D4544-5461-4132-AA29-688758627C98"),
+                ClientMasterId = Guid.Parse("8A4A5A20-7236-46E4-9739-8AB7A47F554E"),
+                ClientUnitId = Guid.Parse("2654AB1A-DC1D-4B93-9249-9CD4F9228968"),
+                BranchId = Guid.Parse("C1A1D1E1-F1A1-4711-8899-000000000001"),
+                DesignationId = Guid.Parse("0e9b6202-47f4-404f-b2f8-712e95a7b148"),
+                CategoryId = Guid.Parse("25082EC5-82BF-4D5C-86F6-42F50AFF16A6"),
+                UserId = Guid.Parse("2E9CFC1E-C228-41B5-BADA-2F859EC9DE32"),
+                TitleId = Guid.Parse("AD77F3F7-CF8A-4F72-A38D-F9AAADE1D79F"),
+                FirstName = "System",
+                MiddleName = "",
+                LastName = "HR",
+                AadhaarNumber = "987654321002",
+                RegistrationId = "MSO -1000",
+                UserProfileStatus = Domain.Entity.Enum.Registration.UserProfileStatus.Approved,
                 DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, DateTimeKind.Utc),
                 DateModified = new DateTime(2025, 8, 1, 0, 0, 0, DateTimeKind.Utc),
                 CreatedByUserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9"),
@@ -95,20 +128,21 @@ namespace MC.Persistence.Configurations.Registration
             },
             new UserProfile
             {
-                Id = Guid.Parse("83B6730A-C27C-4898-A7CA-29AD3B59213A"),
-                CompanyId = Guid.Parse("74C8B851-922F-45B9-9C28-0C53C06120AA"),
+                Id = Guid.Parse("F7B2CB32-E7F5-4EBB-845A-4947DABFB92F"),
+                CompanyId = Guid.Parse("489D4544-5461-4132-AA29-688758627C98"),
                 ClientMasterId = Guid.Parse("8A4A5A20-7236-46E4-9739-8AB7A47F554E"),
                 ClientUnitId = Guid.Parse("2654AB1A-DC1D-4B93-9249-9CD4F9228968"),
                 BranchId = Guid.Parse("C1A1D1E1-F1A1-4711-8899-000000000001"),
-                DesignationId = Guid.Parse("F0A87667-1BC3-4688-85FB-BC656DA4BF9F"),
+                DesignationId = Guid.Parse("a2d980ac-3fb9-4eed-a5e1-918b64285f05"),
                 CategoryId = Guid.Parse("25082EC5-82BF-4D5C-86F6-42F50AFF16A6"),
-                UserId = Guid.Parse("9e224968-33e4-4652-b7b7-8574d048cdb9"),
+                UserId = Guid.Parse("38CCEE5B-9EAB-49A0-A30F-D6CB52E7D11D"),
                 TitleId = Guid.Parse("AD77F3F7-CF8A-4F72-A38D-F9AAADE1D79F"),
                 FirstName = "System",
                 MiddleName = "",
-                LastName = "User",
-                AadhaarNumber = "987654321002",
-                RegistrationId = "MSO -1000",
+                LastName = "HR Head",
+                AadhaarNumber = "987654321003",
+                RegistrationId = "MSO -1001",
+                UserProfileStatus = Domain.Entity.Enum.Registration.UserProfileStatus.Approved,
                 DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, DateTimeKind.Utc),
                 DateModified = new DateTime(2025, 8, 1, 0, 0, 0, DateTimeKind.Utc),
                 CreatedByUserId = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9"),

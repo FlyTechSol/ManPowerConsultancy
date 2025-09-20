@@ -1,4 +1,5 @@
 ﻿using MC.Domain.Base;
+using MC.Domain.Entity.Enum.Registration;
 using MC.Domain.Entity.Identity;
 using MC.Domain.Entity.Master;
 using MC.Domain.Entity.Organization;
@@ -45,6 +46,7 @@ namespace MC.Domain.Entity.Registration
         public string? IdentityMarks { get; set; }
         public bool IsActive { get; set; } = true;
         public string? ProfilePictureUrl { get; set; } // persisted URL
+        public UserProfileStatus UserProfileStatus { get; set; }
 
         public BodyMeasurement? BodyMeasurement { get; set; } // optional if not always present
         public Insurance? Insurance { get; set; }
@@ -55,8 +57,10 @@ namespace MC.Domain.Entity.Registration
         public UserGeneralDetail? UserGeneralDetail { get; set; }
         public ICollection<BankAccount> BankAccounts { get; set; } = new List<BankAccount>();
         public ICollection<Address> Addresses { get; set; } = new List<Address>();
+        public ICollection<EmployeeVerification> EmployeeVerifications { get; set; } = new List<EmployeeVerification>();
         public ICollection<ExArmy> ExArmies { get; set; } = new List<ExArmy>();
         public ICollection<UserAsset> UserAssets { get; set; } = new List<UserAsset>();
+        public ICollection<UserDocument> UserDocuments { get; set; } = new List<UserDocument>();
         public ICollection<EmployeeReference> EmployeeReferences { get; set; } = new List<EmployeeReference>();
         public ICollection<Family> Families { get; set; } = new List<Family>();
         public ICollection<PreviousExperience> PreviousExperiences { get; set; } = new List<PreviousExperience>();

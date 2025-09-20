@@ -19,7 +19,7 @@ namespace MC.Application.Features.Registration.BankAccount.Command.Update
                  .NotNull()
                  .MaximumLength(15).WithMessage("{PropertyName} must be fewer than 15 characters")
                  .MustAsync((command, ifscCode, cancellationToken) =>
-                     MustBeUniqueForUpdate(command.Id, ifscCode, command.AccountNo, cancellationToken))
+                     MustBeUniqueForUpdate(command.Id, ifscCode, command.IFSCCode, cancellationToken))
                  .WithMessage("{PropertyName} must be unique.");
 
             RuleFor(p => p.AccountNo)
@@ -27,18 +27,12 @@ namespace MC.Application.Features.Registration.BankAccount.Command.Update
                 .NotNull()
                 .MaximumLength(20).WithMessage("{PropertyName} must be fewer than 20 characters")
                 .MustAsync((command, accountNo, cancellationToken) =>
-                    MustBeUniqueForUpdate(command.Id, command.IFSCCode, accountNo, cancellationToken))
+                    MustBeUniqueForUpdate(command.Id, accountNo, command.IFSCCode, cancellationToken))
                 .WithMessage("{PropertyName} must be unique.");
 
             RuleFor(p => p.BankId)
                 .NotEmpty().WithMessage("{PropertyName} is required");
 
-            //RuleFor(p => p.AccountNo)
-            //   .NotEmpty().WithMessage("{PropertyName} is required")
-            //   .NotNull()
-            //   .MaximumLength(20).WithMessage("{PropertyName} must be fewer than 20 characters")
-            //   .MustAsync((command, value, cancellationToken) => MustBeUniqueForUpdate(command.Id, value, command.IFSCCode, cancellationToken))
-            //   .WithMessage("{PropertyName} must be unique.");
         }
         private async Task<bool> MustBeUniqueForUpdate(Guid id, string accountNo, string ifscCode, CancellationToken cancellationToken)
         {

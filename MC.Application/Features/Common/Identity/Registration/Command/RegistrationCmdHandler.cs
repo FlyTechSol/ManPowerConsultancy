@@ -33,6 +33,7 @@ namespace MC.Application.Features.Common.Identity.Registration.Command
                 UserName = request.UserName,
                 Password = request.Password,
                 RoleId = request.RoleId,
+                CompanyId = request.CompanyId
             };
             return await _authenticationService.RegisterAsync(regRequest, cancellationToken);
         }

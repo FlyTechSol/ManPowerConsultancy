@@ -13,9 +13,9 @@ namespace MC.Application.Features.Registration.UserAsset.Command.Update
         public decimal AssetValue { get; set; }
         public int Quantity { get; set; }
         public string Remarks { get; set; } = string.Empty; // Additional information about the asset
-        public bool IsReturnable { get; set; } = true;
-        public bool IsReturned { get; set; } = false;
-        public DateTime? ReturnDate { get; set; }
-        public ReturnAssetStatus ReturnStatus { get; set; }
+        //public bool IsReturnable { get; set; } = true;
+        //public bool IsReturned { get; set; } = false;
+        //public DateTime? ReturnDate { get; set; }
+        //public ReturnAssetStatus? ReturnStatus { get; set; }
     }
 }

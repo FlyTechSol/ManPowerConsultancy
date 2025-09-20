@@ -1,10 +1,12 @@
-﻿using MC.Application.Contracts.Persistence.Registration;
+﻿using MC.Application.Contracts.Persistence.FileHandling.Upload;
+using MC.Application.Contracts.Persistence.Registration;
+using MC.Application.Exceptions;
 using MC.Application.ModelDto.Common.Pagination;
-using MC.Application.ModelDto.Master.Master;
 using MC.Application.ModelDto.Registration;
 using MC.Domain.Entity.Registration;
 using MC.Persistence.DatabaseContext;
 using MC.Persistence.Helper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 
@@ -13,9 +15,11 @@ namespace MC.Persistence.Repositories.Registration
     public class ExArmyRepository : GenericRepository<ExArmy>, IExArmyRepository
     {
         private readonly IUserProfileRepository _userProfileRepository;
-        public ExArmyRepository(IUserProfileRepository userProfileRepository, ApplicationDatabaseContext context) : base(context)
+        private readonly IFileUploadRepository _fileUploadRepository;
+        public ExArmyRepository(IUserProfileRepository userProfileRepository, IFileUploadRepository fileUploadRepository, ApplicationDatabaseContext context) : base(context)
         {
             _userProfileRepository = userProfileRepository;
+            _fileUploadRepository = fileUploadRepository;
         }
 
         public async Task<List<ExArmyDetailDto>?> GetAllExArmyByRegistrationIdAsync(string registrationId, CancellationToken cancellationToken)
@@ -111,6 +115,80 @@ namespace MC.Persistence.Repositories.Registration
             return MapToDto(response);
         }
 
+        public async Task<Guid> CreateExArmyAsync(ExArmy request, IFormFile? dischargeCertificateUrl, CancellationToken cancellationToken)
+        {
+            // start a transaction on your existing context
+            await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+            try
+            {
+                request.IsActive = true;
+
+                // first save to generate Id
+                _context.ExArmies.Add(request);
+                await _context.SaveChangesAsync(cancellationToken);
+
+                if (dischargeCertificateUrl != null)
+                {
+                    // upload file first (to disk)
+                    var url = await _fileUploadRepository
+                        .UploadFileAsync(dischargeCertificateUrl, "ExArmyCertificate", false, cancellationToken);
+
+                    // update DB with file path
+                    request.DischargeCertificateUrl = url;
+                    _context.ExArmies.Update(request);
+                    await _context.SaveChangesAsync(cancellationToken);
+                }
+                // commit DB transaction
+                await transaction.CommitAsync(cancellationToken);
+
+                return request.Id;
+            }
+            catch
+            {
+                // roll back DB changes
+                await transaction.RollbackAsync(cancellationToken);
+                // optional: delete file if uploaded to avoid orphan files
+                throw;
+            }
+        }
+
+        public async Task<Guid> UpdateExArmyAsync(ExArmy request, IFormFile? dischargeCertificateUrl, CancellationToken cancellationToken)
+        {
+            var existing = await _context.ExArmies
+                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+
+            if (existing == null)
+                throw new NotFoundException($"Ex Army certificate with Id {request.Id} not found", request.Id);
+
+            //existing.UserId = userProfile.UserId;
+            existing.ServiceNumber = request.ServiceNumber;
+            existing.Rank = request.Rank;
+            existing.Unit = request.Unit;
+            existing.BranchOfService = request.BranchOfService;
+            existing.TotalService = request.TotalService;
+            existing.EnlistmentDate = request.EnlistmentDate;
+            existing.DischargeDate = request.DischargeDate;
+            existing.ReasonForDischarge = request.ReasonForDischarge;
+            existing.IsActive = request.IsActive;
+
+            if (dischargeCertificateUrl != null)
+            {
+                // (optional) delete old file to avoid orphan files
+                if (!string.IsNullOrWhiteSpace(existing.DischargeCertificateUrl) &&
+                    System.IO.File.Exists(existing.DischargeCertificateUrl))
+                {
+                    System.IO.File.Delete(existing.DischargeCertificateUrl);
+                }
+
+                var url = await _fileUploadRepository.UploadFileAsync(dischargeCertificateUrl, "ExArmyCertificate", false, cancellationToken);
+                existing.DischargeCertificateUrl = url;
+            }
+
+            _context.ExArmies.Update(existing);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return existing.Id;
+        }
         private ExArmyDetailDto MapToDto(Domain.Entity.Registration.ExArmy response)
         {
             return new ExArmyDetailDto

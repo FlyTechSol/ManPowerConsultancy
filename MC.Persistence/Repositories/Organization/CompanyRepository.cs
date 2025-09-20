@@ -16,6 +16,7 @@ namespace MC.Persistence.Repositories.Organization
         public async Task<CompanyDetailDto?> GetDetailsAsync(Guid id, CancellationToken cancellationToken)
         {
             var response = await _context.Companies
+                .Include(q => q.RegistrationSequence)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(g => !g.IsDeleted && g.Id == id, cancellationToken);
 
@@ -27,6 +28,7 @@ namespace MC.Persistence.Repositories.Organization
         public async Task<PaginatedResponse<CompanyDetailDto>?> GetAllDetailsAsync(QueryParams queryParams, CancellationToken cancellationToken)
         {
             var query = _context.Companies
+               .Include(q => q.RegistrationSequence)
                .AsNoTracking()
                .Where(q => !q.IsDeleted);
 
@@ -97,7 +99,7 @@ namespace MC.Persistence.Repositories.Organization
                 LegalName = response.LegalName,
                 RegistrationNumber = response.RegistrationNumber,
                 CompanyPan = response.CompanyPan,
-                Email =response.Email,
+                Email = response.Email,
                 Phone = response.Phone,
                 Website = response.Website,
                 AddressLine1 = response.AddressLine1,
@@ -107,6 +109,8 @@ namespace MC.Persistence.Repositories.Organization
                 Country = response.Country,
                 ZipCode = response.ZipCode,
                 IsActive = response.IsActive,
+                LastRegistrationId = response.RegistrationSequence.LastRegistrationId,
+                RegistrationPrefix = response.RegistrationSequence.Prefix,
                 DateCreated = Helper.DateHelper.FormatDate(response.DateCreated),
                 DateModified = Helper.DateHelper.FormatDate(response.DateModified),
                 CreatedByName = response.CreatedByUserName ?? Defaults.Users.Unknown,

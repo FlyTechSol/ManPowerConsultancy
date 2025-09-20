@@ -19,30 +19,36 @@ namespace MC.Persistence.Configurations.Identity
                      Id = Guid.Parse("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                      Email = "admin@localhost.com",
                      NormalizedEmail = "ADMIN@LOCALHOST.COM",
-                     //FirstName = "System",
-                     //LastName = "Admin",
                      UserName = "admin@localhost.com",
                      NormalizedUserName = "ADMIN@LOCALHOST.COM",
                      //PasswordHash = hasher.HashPassword(null, "Password@123"),
                      PasswordHash = "AQAAAAIAAYagAAAAEIZEnobWLWVm+KqYua3eConzPpMHEraORI5xGWGyIXsrYHZGO8Z/Fgvj2Frc+Wex8A==",
                      EmailConfirmed = true,
                      ConcurrencyStamp = "905afbf7-cb82-4046-aab6-2e634a9fc0cc", // fixed
-                     //UserProfile = profile,
                  },
                  new ApplicationUser
                  {
-                     Id = Guid.Parse("9e224968-33e4-4652-b7b7-8574d048cdb9"),
-                     Email = "user@localhost.com",
-                     NormalizedEmail = "USER@LOCALHOST.COM",
-                     //FirstName = "System",
-                     //LastName = "Student",
-                     UserName = "user@localhost.com",
-                     NormalizedUserName = "USER@LOCALHOST.COM",
+                     Id = Guid.Parse("2E9CFC1E-C228-41B5-BADA-2F859EC9DE32"),
+                     Email = "hr@localhost.com",
+                     NormalizedEmail = "HR@LOCALHOST.COM",
+                     UserName = "hr@localhost.com",
+                     NormalizedUserName = "HR@LOCALHOST.COM",
                      //PasswordHash = hasher.HashPassword(null, "Password@123"),
-                     PasswordHash = "AQAAAAIAAYagAAAAEOq0WMnbfCDHwU/jNJl2v/3I4IpjEpTT39fO3H64akUI1TXP1XuJfNm6+l9OGk0mjQ==",
+                     PasswordHash = "AQAAAAIAAYagAAAAECGbYsKKzFkirUhdIdsX5TILfgFqOGd4ahSusBphPeyIET5sywM7o7zfaTXbWNpKeQ==",
                      EmailConfirmed = true,
                      ConcurrencyStamp = "A494A604-0DEA-42B2-B262-BDEAFC80F7E1", // fixed
-                     //UserProfile = profile1,
+                },
+                 new ApplicationUser
+                 {
+                     Id = Guid.Parse("38CCEE5B-9EAB-49A0-A30F-D6CB52E7D11D"),
+                     Email = "hrhead@localhost.com",
+                     NormalizedEmail = "HRHEAD@LOCALHOST.COM",
+                     UserName = "hrhead@localhost.com",
+                     NormalizedUserName = "HRHEAD@LOCALHOST.COM",
+                     //PasswordHash = hasher.HashPassword(null, "Password@123"),
+                     PasswordHash = "AQAAAAIAAYagAAAAEHnbMxFSYD2om+wFtkEh2Arc9PZSDcfmJMAbQ3K5tQn8NRBx5rp9pwzi6DxxE4bQgg==",
+                     EmailConfirmed = true,
+                     ConcurrencyStamp = "A494A604-0DEA-42B2-B262-BDEAFC80F7E1", // fixed
                  }
             );
         }

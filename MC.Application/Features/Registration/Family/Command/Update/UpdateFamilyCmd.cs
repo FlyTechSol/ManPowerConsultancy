@@ -15,5 +15,6 @@ namespace MC.Application.Features.Registration.Family.Command.Update
         public bool IsMinor { get; set; } = false;
         public bool IsDependent { get; set; } = false;
         public bool IsResidingWithEmployee { get; set; } = false;
+        public bool IsActive { get; set; }
     }
 }

@@ -19,6 +19,72 @@ namespace MC.Persistence.Repositories.FileHandling
             _context = context;
             _environment = environment;
         }
+
+        public async Task<string> UploadFileAsync(IFormFile file, string folderName, bool isPublic, CancellationToken cancellationToken)
+        {
+            if (file == null || file.Length == 0)
+                throw new ArgumentException("File is empty", nameof(file));
+
+            // Decide root folder
+            var rootFolder = isPublic
+                ? _environment.WebRootPath // wwwroot
+                : Path.Combine(_environment.ContentRootPath, "SecureUploads"); // outside wwwroot
+
+            // Combine with subfolder
+            var uploadsFolder = Path.Combine(rootFolder, folderName);
+
+            if (!Directory.Exists(uploadsFolder))
+                Directory.CreateDirectory(uploadsFolder);
+
+            // Validate size (max 10 MB)
+            if (file.Length > 10 * 1024 * 1024)
+                throw new ArgumentException("File size exceeds 10 MB");
+
+            var extension = Path.GetExtension(file.FileName);
+            var uniqueFileName = $"{Guid.NewGuid()}{extension}";
+            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            // Image handling (only if image)
+            if (file.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
+            {
+                using var memoryStream = new MemoryStream();
+                await file.CopyToAsync(memoryStream, cancellationToken);
+                memoryStream.Position = 0;
+
+                using var image = await Image.LoadAsync(memoryStream, cancellationToken);
+
+                image.Mutate(x => x.Resize(new ResizeOptions
+                {
+                    Size = new Size(400, 0), // width=400px, height auto
+                    Mode = ResizeMode.Max
+                }));
+
+                if (file.ContentType.Equals("image/png", StringComparison.OrdinalIgnoreCase))
+                {
+                    await image.SaveAsync(filePath, new PngEncoder(), cancellationToken);
+                }
+                else
+                {
+                    await image.SaveAsJpegAsync(filePath, new JpegEncoder
+                    {
+                        Quality = 75
+                    }, cancellationToken);
+                }
+            }
+            else
+            {
+                // Other files, just save as-is
+                using var stream = new FileStream(filePath, FileMode.Create);
+                await file.CopyToAsync(stream, cancellationToken);
+            }
+
+            // Return relative or secure path
+            return isPublic
+                ? Path.Combine(folderName, uniqueFileName).Replace("\\", "/")
+                : filePath; // absolute secure path on disk
+        }
+
+
         public async Task<string> UploadProfilePictureAsync(
             IFormFile file,
             Guid userProfileId,
@@ -98,89 +164,6 @@ namespace MC.Persistence.Repositories.FileHandling
             return userProfile.ProfilePictureUrl;
         }
 
-        //public async Task<string> UploadProfilePictureAsync(IFormFile file, Guid userProfileId, CancellationToken cancellationToken)
-        //{
-        //    if (file == null || file.Length == 0)
-        //        throw new ArgumentException("File is empty", nameof(file));
-
-        //    var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
-
-        //    if (!Directory.Exists(uploadsFolder))
-        //        Directory.CreateDirectory(uploadsFolder);
-
-        //    if (file.Length > 10 * 1024 * 1024) // 10 MB limit
-        //        throw new ArgumentException("File size exceeds 10 MB");
-
-        //    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-        //    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-        //    await using (var stream = new FileStream(filePath, FileMode.Create))
-        //    {
-        //        await file.CopyToAsync(stream, cancellationToken);
-        //    }
-
-        //    if (file.ContentType.StartsWith("image/"))
-        //    {
-        //        ResizeImage(filePath, 100); // Resize to approx 100KB
-        //    }
-
-        //    var userProfile = await _context.UserProfiles
-        //        .FindAsync(new object?[] { userProfileId }, cancellationToken);
-
-        //    if (userProfile == null)
-        //        throw new InvalidOperationException("User profile not found");
-
-        //    userProfile.ProfilePictureUrl = Path.Combine("uploads", uniqueFileName)
-        //        .Replace("\\", "/");
-
-        //    _context.UserProfiles.Update(userProfile);
-        //    await _context.SaveChangesAsync(cancellationToken);
-
-        //    return userProfile.ProfilePictureUrl;
-        //}
-
-
-        //public async Task<string> UploadProfilePictureAsync(IFormFile file, Guid userProfileId, CancellationToken cancellationToken)
-        //{
-        //    if (file == null || file.Length == 0)
-        //        throw new ArgumentException("File is empty", nameof(file));
-
-        //    var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
-
-        //    if (!Directory.Exists(uploadsFolder))
-        //        Directory.CreateDirectory(uploadsFolder);
-
-        //    if (file.Length > 10 * 1024 * 1024) // 10 MB limit
-        //        throw new ArgumentException("File size exceeds 10 MB");
-
-        //    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-        //    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-        //    using (var stream = new FileStream(filePath, FileMode.Create))
-        //    {
-        //        await file.CopyToAsync(stream);
-        //    }
-
-        //    // Resize image if it's an image (optional)
-        //    if (file.ContentType.StartsWith("image/"))
-        //    {
-        //        ResizeImage(filePath, 100); // Resize to approx 100KB (implement this yourself)
-        //    }
-
-        //    // Save relative URL/path to UserProfile
-        //    var userProfile = await _context.UserProfiles.FindAsync(userProfileId);
-
-        //    if (userProfile == null)
-        //        throw new InvalidOperationException("User profile not found");
-
-        //    // Store relative path so you can serve it as URL later
-        //    userProfile.ProfilePictureUrl = Path.Combine("uploads", uniqueFileName).Replace("\\", "/");
-
-        //    _context.UserProfiles.Update(userProfile);
-        //    await _context.SaveChangesAsync();
-
-        //    return userProfile.ProfilePictureUrl; // Return the URL/path for client use
-        //}
 
         private void ResizeImage(string filePath, int targetSizeKb)
         {

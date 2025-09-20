@@ -37,8 +37,8 @@ namespace MC.Application.Features.Registration.ExArmy.Command.Update
             RuleFor(p => p.ReasonForDischarge)
                 .MaximumLength(200).WithMessage("{PropertyName} must be fewer than 200 characters");
 
-            RuleFor(p => p.DischargeCertificateUrl)
-                .MaximumLength(256).WithMessage("{PropertyName} must be fewer than 256 characters");
+            //RuleFor(p => p.DischargeCertificateUrl)
+            //    .MaximumLength(256).WithMessage("{PropertyName} must be fewer than 256 characters");
         }
 
         private async Task<bool> RecordMustExist(Guid id, CancellationToken cancellationToken)

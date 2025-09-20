@@ -14,5 +14,6 @@ namespace MC.Application.Settings
         public int SmtpPort { get; set; }  // SMTP Port
         public string SmtpUsername { get; set; } = string.Empty; // SMTP Username
         public string SmtpPassword { get; set; } = string.Empty; // SMTP Password
+        public string ToAddress { get; set; } = string.Empty;
     }
 }

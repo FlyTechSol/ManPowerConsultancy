@@ -36,7 +36,7 @@ namespace MC.Application.Features.Registration.BankAccount.Command.Create
             var recordToCreate = _mapper.Map<Domain.Entity.Registration.BankAccount>(request);
             recordToCreate.IsActive = true;
             // add to database
-            await _bankAccountRepository.CreateAsync(recordToCreate, cancellationToken);
+            await _bankAccountRepository.CreateBankAccountAsync(recordToCreate, request.PassbookUrl, cancellationToken);
 
             if (existingRecords.Any())
             {

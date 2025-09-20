@@ -14,5 +14,6 @@ namespace MC.Application.Features.Common.Identity.Registration.Command
         public string UserName { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string RoleId { get; set; } = string.Empty;
+        public Guid? CompanyId { get; set; }
     }
 }

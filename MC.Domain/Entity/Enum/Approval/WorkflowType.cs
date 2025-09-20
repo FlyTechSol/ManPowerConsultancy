@@ -3,10 +3,9 @@ namespace MC.Domain.Entity.Enum.Approval
 {
     public enum WorkflowType
     {
-        StaffApproval,
+        ProfileApproval,
         LeaveApproval,
         AssetApproval,
         ResignationApproval
     }
-
 }

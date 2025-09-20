@@ -19,7 +19,9 @@ namespace MC.Application.ModelDto.Organization
         public string? State { get; set; }
         public string? Country { get; set; }
         public string? ZipCode { get; set; }
-
         public bool IsActive { get; set; } = true;
+
+        public int LastRegistrationId { get; set; }
+        public string RegistrationPrefix { get; set; } = string.Empty;
     }
 }

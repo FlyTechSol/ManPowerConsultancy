@@ -2,7 +2,9 @@
 {
     public enum StageStatus
     {
+        NotStarted,
         Pending,
+        InProgress,
         Approved,
         Rejected,
         Delegated,

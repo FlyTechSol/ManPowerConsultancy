@@ -2,10 +2,10 @@
 {
     public enum RequestType
     {
-        Leave,
+        LeaveApproval,
         ProfileApproval,
-        ExpenseClaim,
-        TravelRequest,
-        AssetRequest
+        ExpenseClaimApproval,
+        TravelRequestApproval,
+        AssetRequestApproval
     }
 }

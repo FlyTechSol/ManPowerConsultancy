@@ -12,11 +12,7 @@ namespace MC.Application
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddAutoMapper(cfg =>
-            {
-                cfg.AddMaps(Assembly.GetExecutingAssembly());
-                // cfg.LicenseKey = "<your-license-key>"; // Optional, if you need it
-            });
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             return services;

@@ -36,8 +36,7 @@ namespace MC.Application.Features.Registration.PreviousExperience.Command.Update
             RuleFor(p => p.ReasonForLeft)
                 .MaximumLength(200).WithMessage("{PropertyName} must be fewer than 200 characters");
 
-            RuleFor(p => p.ReasonForLeft)
-               .MaximumLength(200).WithMessage("{PropertyName} must be fewer than 200 characters");
+           
         }
 
         private async Task<bool> RecordMustExist(Guid id, CancellationToken cancellationToken)

@@ -1,7 +1,8 @@
 ﻿using MC.API.Resources;
-using MC.Application.Features.Registration.Address.Command.Delete;
 using MC.Application.Features.Registration.BankAccount.Command.Create;
+using MC.Application.Features.Registration.BankAccount.Command.Delete;
 using MC.Application.Features.Registration.BankAccount.Command.Update;
+using MC.Application.Features.Registration.BankAccount.Query.DownloadBankAccount;
 using MC.Application.Features.Registration.BankAccount.Query.GetAll;
 using MC.Application.Features.Registration.BankAccount.Query.GetById;
 using MC.Application.ModelDto.Common.Pagination;
@@ -9,6 +10,7 @@ using MC.Application.ModelDto.Registration;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MC.API.Controllers.Registration
 {
@@ -41,6 +43,14 @@ namespace MC.API.Controllers.Registration
             return Ok(response);
         }
 
+        [HttpGet("{bankAccountId}/passbook")]
+        public async Task<IActionResult> DownloadPassbook(Guid bankAccountId, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new DownloadPassbookQuery(bankAccountId), cancellationToken);
+
+            return File(result.FileBytes, result.ContentType, result.FileName);
+        }
+
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -59,13 +69,14 @@ namespace MC.API.Controllers.Registration
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Administrator")]
+        [Consumes("multipart/form-data")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Put(UpdateBankAccountCmd request, CancellationToken cancellationToken)
+        public async Task<ActionResult> Put(Guid id, [FromForm] UpdateBankAccountCmd request, CancellationToken cancellationToken)
         {
+            request.Id = id;
             await _mediator.Send(request, cancellationToken);
-            //return NoContent();
             return Ok(ApiResponseMessage<object>.SuccessResponse(null, ResponseMessages.Updated));
         }
 
@@ -75,7 +86,7 @@ namespace MC.API.Controllers.Registration
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
-            var command = new DeleteAddressCmd { Id = id };
+            var command = new DeleteBankAccountCmd { Id = id };
             await _mediator.Send(command, cancellationToken);
             return NoContent();
         }

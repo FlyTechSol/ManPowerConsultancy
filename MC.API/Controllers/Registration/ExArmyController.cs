@@ -2,6 +2,7 @@
 using MC.Application.Features.Registration.ExArmy.Command.Create;
 using MC.Application.Features.Registration.ExArmy.Command.Delete;
 using MC.Application.Features.Registration.ExArmy.Command.Update;
+using MC.Application.Features.Registration.ExArmy.Query.DownloadExArmyCertificate;
 using MC.Application.Features.Registration.ExArmy.Query.GetAllByRegistrationId;
 using MC.Application.Features.Registration.ExArmy.Query.GetAllByUserProfileId;
 using MC.Application.Features.Registration.ExArmy.Query.GetById;
@@ -42,6 +43,14 @@ namespace MC.API.Controllers.Registration
             var response = await _mediator.Send(new GetAllByUserProfileIdQuery(userProfileId, queryParams), cancellationToken);
             return Ok(response);
         }
+        [HttpGet("{exArmyId}/certificate")]
+        public async Task<IActionResult> DownloadCertificate(Guid exArmyId, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new DownloadExArmyCertQuery(exArmyId), cancellationToken);
+
+            return File(result.FileBytes, result.ContentType, result.FileName);
+        }
+
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ProducesResponseType(201)]

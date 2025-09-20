@@ -5,7 +5,6 @@ namespace MC.Application.Contracts.Persistence.Approval
 {
     public interface IApprovalRequestRepository : IGenericRepository<ApprovalRequest>
     {
-        Task<ApprovalRequest> CreateApprovalRequestAsync(Guid workflowId, Guid requestedBy, RequestType requestType, Guid requestEntityId, CancellationToken cancellationToken);
-        Task AddApprovalRequestStagesAsync(ApprovalRequest request, IEnumerable<ApprovalStage> stages, CancellationToken cancellationToken);
+        Task<ApprovalRequest> CreateApprovalRequestAsync(Guid approvalWorkflowId, Guid requestedBy, RequestType requestType, Guid requestEntityId, CancellationToken cancellationToken);
     }
 }

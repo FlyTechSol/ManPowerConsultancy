@@ -10,6 +10,8 @@ using MC.Application.Features.Registration.Communication.Command.Create;
 using MC.Application.Features.Registration.Communication.Command.Update;
 using MC.Application.Features.Registration.EmployeeReference.Command.Create;
 using MC.Application.Features.Registration.EmployeeReference.Command.Update;
+using MC.Application.Features.Registration.EmployeeVerification.Command.Create;
+using MC.Application.Features.Registration.EmployeeVerification.Command.Update;
 using MC.Application.Features.Registration.ExArmy.Command.Create;
 using MC.Application.Features.Registration.ExArmy.Command.Update;
 using MC.Application.Features.Registration.Family.Command.Create;
@@ -32,6 +34,9 @@ using MC.Application.Features.Registration.Training.Command.Create;
 using MC.Application.Features.Registration.Training.Command.Update;
 using MC.Application.Features.Registration.UserAsset.Command.Create;
 using MC.Application.Features.Registration.UserAsset.Command.Update;
+using MC.Application.Features.Registration.UserAsset.Command.UpdateStatus;
+using MC.Application.Features.Registration.UserDocument.Command.Create;
+using MC.Application.Features.Registration.UserDocument.Command.Update;
 using MC.Application.Features.Registration.UserGeneralDetail.Command.Create;
 using MC.Application.Features.Registration.UserGeneralDetail.Command.Update;
 using MC.Application.Features.Registration.UserProfile.Command.Create;
@@ -72,6 +77,12 @@ namespace MC.Application.MappingProfiles
             //CreateMap<EmployeeReference, EmployeeReferenceDto>();
             CreateMap<CreateEmpRefCmd, EmployeeReference>();
             CreateMap<UpdateEmpRefCmd, EmployeeReference>();
+
+            CreateMap<EmployeeVerification, EmployeeVerificationDetailDto>().ReverseMap();
+            //CreateMap<EmployeeVerification, EmployeeVerificationDetailDto>();
+            CreateMap<CreateEmployeeVerificationCmd, EmployeeVerification>();
+            CreateMap<UpdateEmployeeVerificationCmd, EmployeeVerification>();
+
 
             CreateMap<ExArmy, ExArmyDetailDto>().ReverseMap();
             //CreateMap<ExArmy, ExArmyDetailDto>().ReverseMap();
@@ -119,8 +130,14 @@ namespace MC.Application.MappingProfiles
             CreateMap<UserAsset, UserAssetDetailDto>().ReverseMap();
             //CreateMap<UserAsset, UserAssetDetailDto>().ReverseMap();
             CreateMap<CreateUserAssetCmd, UserAsset>();
+            CreateMap<UpdateStatusUserAssetCmd, UserAsset>();
             CreateMap<UpdateUserAssetCmd, UserAsset>();
 
+            CreateMap<UserDocument, UserDocumentDetailDto>().ReverseMap();
+            CreateMap<UserDocument, UserDocumentDetailDto>();
+            CreateMap<CreateUserDocCmd, UserDocument>();
+            CreateMap<UpdateUserDocCmd, UserDocument>();
+       
             CreateMap<UserGeneralDetail, UserGeneralDetailDto>().ReverseMap();
             CreateMap<CreateUserGeneralDetailCmd, UserGeneralDetail>();
             CreateMap<UpdateUserGeneralDetailCmd, UserGeneralDetail>();

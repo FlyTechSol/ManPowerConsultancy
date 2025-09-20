@@ -51,6 +51,13 @@ namespace MC.Application.Features.Organization.Company.Command.Create
             RuleFor(p => p.ZipCode)
               .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters");
 
+            RuleFor(p => p.RegistrationPrefix)
+                .NotEmpty().WithMessage("{PropertyName} is required")
+                .MaximumLength(10).WithMessage("{PropertyName} must be fewer than 10 characters");
+
+            RuleFor(p => p.LastRegistrationId)
+                .GreaterThanOrEqualTo(0).WithMessage("{PropertyName} must be zero or positive");
+
             RuleFor(q => q)
                 .MustAsync(RecordMustUnique)
                 .WithMessage("company record already exists");

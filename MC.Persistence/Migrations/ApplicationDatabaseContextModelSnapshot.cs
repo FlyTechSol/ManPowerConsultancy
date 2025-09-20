@@ -88,6 +88,9 @@ namespace MC.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("ApprovalWorkflowId")
+                        .HasColumnType("char(36)");
+
                     b.Property<Guid?>("CreatedByUserId")
                         .HasColumnType("char(36)");
 
@@ -127,18 +130,15 @@ namespace MC.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<Guid>("WorkflowId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("ApprovalWorkflowId");
 
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ModifiedByUserId");
 
                     b.HasIndex("RequestedBy");
-
-                    b.HasIndex("WorkflowId");
 
                     b.ToTable("ApprovalRequests");
                 });
@@ -147,6 +147,12 @@ namespace MC.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ApprovalRequestId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ApprovalStageId")
                         .HasColumnType("char(36)");
 
                     b.Property<Guid?>("CreatedByUserId")
@@ -172,12 +178,6 @@ namespace MC.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<Guid>("RequestId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("StageId")
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -185,13 +185,13 @@ namespace MC.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApprovalRequestId");
+
+                    b.HasIndex("ApprovalStageId");
+
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ModifiedByUserId");
-
-                    b.HasIndex("RequestId");
-
-                    b.HasIndex("StageId");
 
                     b.ToTable("ApprovalRequestStages");
                 });
@@ -206,6 +206,9 @@ namespace MC.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
+
+                    b.Property<Guid>("ApprovalWorkflowId")
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("CreatedByUserId")
                         .HasColumnType("char(36)");
@@ -236,71 +239,27 @@ namespace MC.Persistence.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("WorkflowId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("ApprovalWorkflowId");
 
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.HasIndex("WorkflowId");
-
                     b.ToTable("ApprovalStages");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("dbc65a3b-142a-4a90-a46c-168ab69ca695"),
-                            ApprovalMode = "Sequential",
-                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            CreatedByUserName = "System Admin",
-                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            IsDeleted = false,
-                            IsFinalStage = false,
-                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            ModifiedByUserName = "System Admin",
-                            Order = 1,
-                            WorkflowId = new Guid("b8517dd6-6c6d-4c2c-8db7-95cae11791a6")
-                        },
-                        new
-                        {
-                            Id = new Guid("b1ef1e9f-f327-4a47-8c2d-e94414872f77"),
-                            ApprovalMode = "Sequential",
-                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            CreatedByUserName = "System Admin",
-                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            IsDeleted = false,
-                            IsFinalStage = false,
-                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            ModifiedByUserName = "System Admin",
-                            Order = 2,
-                            WorkflowId = new Guid("b8517dd6-6c6d-4c2c-8db7-95cae11791a6")
-                        },
-                        new
-                        {
-                            Id = new Guid("b003080e-2752-4b5a-abf3-d2da565ee750"),
-                            ApprovalMode = "Sequential",
-                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            CreatedByUserName = "System Admin",
-                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            IsDeleted = false,
-                            IsFinalStage = true,
-                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            ModifiedByUserName = "System Admin",
-                            Order = 3,
-                            WorkflowId = new Guid("b8517dd6-6c6d-4c2c-8db7-95cae11791a6")
-                        });
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalStageApprover", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ApprovalStageId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("CompanyId")
                         .HasColumnType("char(36)");
 
                     b.Property<Guid?>("CreatedByUserId")
@@ -316,9 +275,6 @@ namespace MC.Persistence.Migrations
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid?>("DesignationId")
-                        .HasColumnType("char(36)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
@@ -332,7 +288,7 @@ namespace MC.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<Guid>("StageId")
+                    b.Property<Guid?>("RoleId")
                         .HasColumnType("char(36)");
 
                     b.Property<Guid?>("UserId")
@@ -340,61 +296,19 @@ namespace MC.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedByUserId");
+                    b.HasIndex("ApprovalStageId");
 
-                    b.HasIndex("DesignationId");
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ModifiedByUserId");
 
-                    b.HasIndex("StageId");
+                    b.HasIndex("RoleId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("ApprovalStageApprovers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("db1f43f1-77f1-40b5-93ac-10209f66a4f7"),
-                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            CreatedByUserName = "System Admin",
-                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            IsDeleted = false,
-                            IsMandatory = true,
-                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            ModifiedByUserName = "System Admin",
-                            StageId = new Guid("dbc65a3b-142a-4a90-a46c-168ab69ca695"),
-                            UserId = new Guid("08ddeecf-697f-4ac9-8c62-6bc3e7ed5640")
-                        },
-                        new
-                        {
-                            Id = new Guid("6a122142-5f03-4087-b533-2627bbdf7805"),
-                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            CreatedByUserName = "System Admin",
-                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DesignationId = new Guid("a2d980ac-3fb9-4eed-a5e1-918b64285f05"),
-                            IsDeleted = false,
-                            IsMandatory = true,
-                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            ModifiedByUserName = "System Admin",
-                            StageId = new Guid("b1ef1e9f-f327-4a47-8c2d-e94414872f77")
-                        },
-                        new
-                        {
-                            Id = new Guid("4cec1bdc-a38c-480f-b227-38fcab69d949"),
-                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            CreatedByUserName = "System Admin",
-                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            IsDeleted = false,
-                            IsMandatory = true,
-                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            ModifiedByUserName = "System Admin",
-                            StageId = new Guid("b003080e-2752-4b5a-abf3-d2da565ee750"),
-                            UserId = new Guid("08dded4a-1f34-4190-86c3-bf1dc04eff50")
-                        });
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalWorkflow", b =>
@@ -443,21 +357,6 @@ namespace MC.Persistence.Migrations
                     b.HasIndex("ModifiedByUserId");
 
                     b.ToTable("ApprovalWorkflows");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("b8517dd6-6c6d-4c2c-8db7-95cae11791a6"),
-                            CompanyId = new Guid("489d4544-5461-4132-aa29-688758627c98"),
-                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            CreatedByUserName = "System Admin",
-                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            IsDeleted = false,
-                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            ModifiedByUserName = "System Admin",
-                            WorkflowType = "StaffApproval"
-                        });
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Common.EmailTemplate", b =>
@@ -751,19 +650,35 @@ namespace MC.Persistence.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9e224968-33e4-4652-b7b7-8574d048cdb9"),
+                            Id = new Guid("2e9cfc1e-c228-41b5-bada-2f859ec9de32"),
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "A494A604-0DEA-42B2-B262-BDEAFC80F7E1",
-                            Email = "user@localhost.com",
+                            Email = "hr@localhost.com",
                             EmailConfirmed = true,
                             IsActive = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "USER@LOCALHOST.COM",
-                            NormalizedUserName = "USER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOq0WMnbfCDHwU/jNJl2v/3I4IpjEpTT39fO3H64akUI1TXP1XuJfNm6+l9OGk0mjQ==",
+                            NormalizedEmail = "HR@LOCALHOST.COM",
+                            NormalizedUserName = "HR@LOCALHOST.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAECGbYsKKzFkirUhdIdsX5TILfgFqOGd4ahSusBphPeyIET5sywM7o7zfaTXbWNpKeQ==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
-                            UserName = "user@localhost.com"
+                            UserName = "hr@localhost.com"
+                        },
+                        new
+                        {
+                            Id = new Guid("38ccee5b-9eab-49a0-a30f-d6cb52e7d11d"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "A494A604-0DEA-42B2-B262-BDEAFC80F7E1",
+                            Email = "hrhead@localhost.com",
+                            EmailConfirmed = true,
+                            IsActive = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "HRHEAD@LOCALHOST.COM",
+                            NormalizedUserName = "HRHEAD@LOCALHOST.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHnbMxFSYD2om+wFtkEh2Arc9PZSDcfmJMAbQ3K5tQn8NRBx5rp9pwzi6DxxE4bQgg==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "hrhead@localhost.com"
                         });
                 });
 
@@ -15577,13 +15492,13 @@ namespace MC.Persistence.Migrations
                             DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayOrder = 1,
-                            IconUrl = "dashboard-icon",
+                            IconUrl = "",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             ModifiedByUserName = "System Admin",
                             Title = "Dashboard",
-                            Url = "dashboard"
+                            Url = "/admin/dashboard"
                         },
                         new
                         {
@@ -15593,7 +15508,7 @@ namespace MC.Persistence.Migrations
                             DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayOrder = 2,
-                            IconUrl = "Dashboard",
+                            IconUrl = "",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
@@ -15603,149 +15518,13 @@ namespace MC.Persistence.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
-                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            CreatedByUserName = "System Admin",
-                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DisplayOrder = 2,
-                            IconUrl = "Dashboard",
-                            IsActive = true,
-                            IsDeleted = false,
-                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            ModifiedByUserName = "System Admin",
-                            ParentId = new Guid("e591f87a-535e-430e-a38f-20c2228bab3f"),
-                            Title = "Company",
-                            Url = "#"
-                        },
-                        new
-                        {
-                            Id = new Guid("d7c6b998-c97e-4235-8e9e-e3661aa6753d"),
-                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            CreatedByUserName = "System Admin",
-                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DisplayOrder = 1,
-                            IconUrl = "Dashboard",
-                            IsActive = true,
-                            IsDeleted = false,
-                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            ModifiedByUserName = "System Admin",
-                            ParentId = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
-                            Title = "Asset",
-                            Url = "admin/assets"
-                        },
-                        new
-                        {
-                            Id = new Guid("12a135f3-d536-4250-acbf-a38aad2d802a"),
-                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            CreatedByUserName = "System Admin",
-                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DisplayOrder = 2,
-                            IconUrl = "Dashboard",
-                            IsActive = true,
-                            IsDeleted = false,
-                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            ModifiedByUserName = "System Admin",
-                            ParentId = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
-                            Title = "Bank",
-                            Url = "admin/banks"
-                        },
-                        new
-                        {
-                            Id = new Guid("5a770876-0d03-4841-bfe0-7c56d4b561d2"),
-                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            CreatedByUserName = "System Admin",
-                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DisplayOrder = 3,
-                            IconUrl = "Dashboard",
-                            IsActive = true,
-                            IsDeleted = false,
-                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            ModifiedByUserName = "System Admin",
-                            ParentId = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
-                            Title = "Branch",
-                            Url = "admin/branch"
-                        },
-                        new
-                        {
-                            Id = new Guid("c5571635-29dc-4196-9091-a866c1da3bc4"),
-                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            CreatedByUserName = "System Admin",
-                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DisplayOrder = 4,
-                            IconUrl = "Dashboard",
-                            IsActive = true,
-                            IsDeleted = false,
-                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            ModifiedByUserName = "System Admin",
-                            ParentId = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
-                            Title = "Category",
-                            Url = "admin/categories"
-                        },
-                        new
-                        {
-                            Id = new Guid("fc58cb5d-d393-4d89-b0fe-7bcb1b013061"),
-                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            CreatedByUserName = "System Admin",
-                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DisplayOrder = 5,
-                            IconUrl = "Dashboard",
-                            IsActive = true,
-                            IsDeleted = false,
-                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            ModifiedByUserName = "System Admin",
-                            ParentId = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
-                            Title = "Designation",
-                            Url = "admin/designations"
-                        },
-                        new
-                        {
-                            Id = new Guid("028f48a9-a50d-495a-a27e-39c84da74b9a"),
-                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            CreatedByUserName = "System Admin",
-                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DisplayOrder = 6,
-                            IconUrl = "Dashboard",
-                            IsActive = true,
-                            IsDeleted = false,
-                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            ModifiedByUserName = "System Admin",
-                            ParentId = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
-                            Title = "Document Type",
-                            Url = "admin/documenttypes"
-                        },
-                        new
-                        {
-                            Id = new Guid("734db850-8030-4f9e-8a14-20ae10ae8cb3"),
-                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            CreatedByUserName = "System Admin",
-                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DisplayOrder = 7,
-                            IconUrl = "Dashboard",
-                            IsActive = true,
-                            IsDeleted = false,
-                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            ModifiedByUserName = "System Admin",
-                            ParentId = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
-                            Title = "Recruitment Type",
-                            Url = "admin/recruitmenttypes"
-                        },
-                        new
-                        {
                             Id = new Guid("a394a640-1c19-4949-9795-5321e7e55c90"),
                             CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             CreatedByUserName = "System Admin",
                             DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayOrder = 1,
-                            IconUrl = "Dashboard",
+                            IconUrl = "",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
@@ -15762,14 +15541,14 @@ namespace MC.Persistence.Migrations
                             DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayOrder = 1,
-                            IconUrl = "Dashboard",
+                            IconUrl = "",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             ModifiedByUserName = "System Admin",
                             ParentId = new Guid("a394a640-1c19-4949-9795-5321e7e55c90"),
-                            Title = "Caste Category",
-                            Url = "admin/caste-categories"
+                            Title = "Caste Categories",
+                            Url = "/admin/caste-categories"
                         },
                         new
                         {
@@ -15779,14 +15558,14 @@ namespace MC.Persistence.Migrations
                             DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayOrder = 2,
-                            IconUrl = "Dashboard",
+                            IconUrl = "",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             ModifiedByUserName = "System Admin",
                             ParentId = new Guid("a394a640-1c19-4949-9795-5321e7e55c90"),
-                            Title = "Country",
-                            Url = "admin/countries"
+                            Title = "Countries",
+                            Url = "/admin/countries"
                         },
                         new
                         {
@@ -15796,14 +15575,14 @@ namespace MC.Persistence.Migrations
                             DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayOrder = 3,
-                            IconUrl = "Dashboard",
+                            IconUrl = "",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             ModifiedByUserName = "System Admin",
                             ParentId = new Guid("a394a640-1c19-4949-9795-5321e7e55c90"),
-                            Title = "Gender",
-                            Url = "admin/genders"
+                            Title = "Genders",
+                            Url = "/admin/genders"
                         },
                         new
                         {
@@ -15813,14 +15592,14 @@ namespace MC.Persistence.Migrations
                             DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayOrder = 4,
-                            IconUrl = "Dashboard",
+                            IconUrl = "",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             ModifiedByUserName = "System Admin",
                             ParentId = new Guid("a394a640-1c19-4949-9795-5321e7e55c90"),
-                            Title = "Highest Education",
-                            Url = "admin/highesteducations"
+                            Title = "Highest Educations",
+                            Url = "/admin/highest-educations"
                         },
                         new
                         {
@@ -15830,14 +15609,14 @@ namespace MC.Persistence.Migrations
                             DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayOrder = 5,
-                            IconUrl = "Dashboard",
+                            IconUrl = "",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             ModifiedByUserName = "System Admin",
                             ParentId = new Guid("a394a640-1c19-4949-9795-5321e7e55c90"),
-                            Title = "Religion",
-                            Url = "admin/religions"
+                            Title = "Religions",
+                            Url = "/admin/religions"
                         },
                         new
                         {
@@ -15847,14 +15626,14 @@ namespace MC.Persistence.Migrations
                             DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayOrder = 6,
-                            IconUrl = "Dashboard",
+                            IconUrl = "",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             ModifiedByUserName = "System Admin",
                             ParentId = new Guid("a394a640-1c19-4949-9795-5321e7e55c90"),
-                            Title = "Title",
-                            Url = "admin/titles"
+                            Title = "Titles",
+                            Url = "/admin/titles"
                         },
                         new
                         {
@@ -15864,14 +15643,366 @@ namespace MC.Persistence.Migrations
                             DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayOrder = 7,
-                            IconUrl = "Dashboard",
+                            IconUrl = "",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             ModifiedByUserName = "System Admin",
                             ParentId = new Guid("a394a640-1c19-4949-9795-5321e7e55c90"),
-                            Title = "Zip Code",
-                            Url = "admin/zipcodes"
+                            Title = "Zipcodes",
+                            Url = "/admin/zipcodes"
+                        },
+                        new
+                        {
+                            Id = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 2,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            ParentId = new Guid("e591f87a-535e-430e-a38f-20c2228bab3f"),
+                            Title = "Company",
+                            Url = "#"
+                        },
+                        new
+                        {
+                            Id = new Guid("d7c6b998-c97e-4235-8e9e-e3661aa6753d"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 1,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            ParentId = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
+                            Title = "Assets",
+                            Url = "/admin/assets"
+                        },
+                        new
+                        {
+                            Id = new Guid("12a135f3-d536-4250-acbf-a38aad2d802a"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 2,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            ParentId = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
+                            Title = "Banks",
+                            Url = "/admin/banks"
+                        },
+                        new
+                        {
+                            Id = new Guid("5a770876-0d03-4841-bfe0-7c56d4b561d2"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 3,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            ParentId = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
+                            Title = "Branchs",
+                            Url = "/admin/branch"
+                        },
+                        new
+                        {
+                            Id = new Guid("c5571635-29dc-4196-9091-a866c1da3bc4"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 4,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            ParentId = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
+                            Title = "Categories",
+                            Url = "/admin/categories"
+                        },
+                        new
+                        {
+                            Id = new Guid("fc58cb5d-d393-4d89-b0fe-7bcb1b013061"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 5,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            ParentId = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
+                            Title = "Designations",
+                            Url = "/admin/designations"
+                        },
+                        new
+                        {
+                            Id = new Guid("028f48a9-a50d-495a-a27e-39c84da74b9a"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 6,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            ParentId = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
+                            Title = "Document Types",
+                            Url = "/admin/document-types"
+                        },
+                        new
+                        {
+                            Id = new Guid("734db850-8030-4f9e-8a14-20ae10ae8cb3"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 7,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            ParentId = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
+                            Title = "Recruitment Types",
+                            Url = "/admin/recruitment-types"
+                        },
+                        new
+                        {
+                            Id = new Guid("4d156919-c672-43df-aa19-d93e975d5bda"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 8,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            ParentId = new Guid("4956b6a2-dd9d-4d7d-85bb-6961076c4f13"),
+                            Title = "Menu",
+                            Url = "/admin/navigation-nodes"
+                        },
+                        new
+                        {
+                            Id = new Guid("f80ab6d3-dadf-45e9-81ad-462679804c33"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 3,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Title = "Staff Profiles",
+                            Url = "/admin/staff-profiles"
+                        },
+                        new
+                        {
+                            Id = new Guid("c414e1d3-c63c-4eaf-af0d-eab721ccc5a5"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 4,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Title = "Registeration",
+                            Url = "/admin/register"
+                        },
+                        new
+                        {
+                            Id = new Guid("3f484034-afc6-4853-a76c-c064b34c2c84"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 5,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Title = "Organizations",
+                            Url = "#"
+                        },
+                        new
+                        {
+                            Id = new Guid("358aa86a-fc2e-4bb5-80b5-2a29892e8432"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 1,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            ParentId = new Guid("3f484034-afc6-4853-a76c-c064b34c2c84"),
+                            Title = "Companies",
+                            Url = "/admin/companies"
+                        },
+                        new
+                        {
+                            Id = new Guid("e32c3111-85b2-46c7-b2c8-3f65c1f0adeb"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 2,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            ParentId = new Guid("3f484034-afc6-4853-a76c-c064b34c2c84"),
+                            Title = "Client Masters",
+                            Url = "/admin/client-masters"
+                        },
+                        new
+                        {
+                            Id = new Guid("f0002561-462e-4767-8f5e-08bfd53f42f0"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 3,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            ParentId = new Guid("3f484034-afc6-4853-a76c-c064b34c2c84"),
+                            Title = "Client Units",
+                            Url = "/admin/client-units"
+                        },
+                        new
+                        {
+                            Id = new Guid("5c8f1888-76e1-4de2-b848-e2dd181cc2f4"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 6,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Title = "Approval",
+                            Url = "#"
+                        },
+                        new
+                        {
+                            Id = new Guid("e19c5a99-dc2c-4e23-8f73-71c79c2966f7"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 1,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            ParentId = new Guid("5c8f1888-76e1-4de2-b848-e2dd181cc2f4"),
+                            Title = "Approval Workflows",
+                            Url = "/admin/approval-workflows"
+                        },
+                        new
+                        {
+                            Id = new Guid("8d9a9ddf-b3c3-4e95-b76e-a6ba646d0c01"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 2,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            ParentId = new Guid("5c8f1888-76e1-4de2-b848-e2dd181cc2f4"),
+                            Title = "Approval Stages",
+                            Url = "/admin/approval-stages"
+                        },
+                        new
+                        {
+                            Id = new Guid("ca0bb9e6-ee53-4143-9edb-7ce118804b5b"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 3,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            ParentId = new Guid("5c8f1888-76e1-4de2-b848-e2dd181cc2f4"),
+                            Title = "Approval Stage Approvers",
+                            Url = "/admin/approval-stage-approvers"
+                        },
+                        new
+                        {
+                            Id = new Guid("bf88a20b-f140-4b74-8e87-c4a1b39f3a7f"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 7,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            Title = "Reports",
+                            Url = "#"
+                        },
+                        new
+                        {
+                            Id = new Guid("50396e86-cb2e-4884-bea0-e9083e205e4b"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DisplayOrder = 1,
+                            IconUrl = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin",
+                            ParentId = new Guid("bf88a20b-f140-4b74-8e87-c4a1b39f3a7f"),
+                            Title = "Staff Reports",
+                            Url = "/admin/staff-reports"
                         });
                 });
 
@@ -15934,6 +16065,110 @@ namespace MC.Persistence.Migrations
                         new
                         {
                             NavigationNodeId = new Guid("e591f87a-535e-430e-a38f-20c2228bab3f"),
+                            RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin"
+                        },
+                        new
+                        {
+                            NavigationNodeId = new Guid("a394a640-1c19-4949-9795-5321e7e55c90"),
+                            RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin"
+                        },
+                        new
+                        {
+                            NavigationNodeId = new Guid("83277279-1ae9-49e5-96f6-579e53918cca"),
+                            RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin"
+                        },
+                        new
+                        {
+                            NavigationNodeId = new Guid("984fb724-f924-40c8-b667-753abd515a49"),
+                            RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin"
+                        },
+                        new
+                        {
+                            NavigationNodeId = new Guid("a51aa7b3-cc4a-4191-a061-8cece9c11a75"),
+                            RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin"
+                        },
+                        new
+                        {
+                            NavigationNodeId = new Guid("e49f315d-4ed0-4002-80ad-d81001fe0d1a"),
+                            RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin"
+                        },
+                        new
+                        {
+                            NavigationNodeId = new Guid("75d38d82-7f26-488e-8bd9-0eaea1b08633"),
+                            RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin"
+                        },
+                        new
+                        {
+                            NavigationNodeId = new Guid("b73a59f0-cdd5-4895-a0e7-feea45ff5511"),
+                            RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin"
+                        },
+                        new
+                        {
+                            NavigationNodeId = new Guid("57ec63e1-52d5-44cc-a9d1-cded389f2014"),
                             RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
                             CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             CreatedByUserName = "System Admin",
@@ -16050,7 +16285,7 @@ namespace MC.Persistence.Migrations
                         },
                         new
                         {
-                            NavigationNodeId = new Guid("a394a640-1c19-4949-9795-5321e7e55c90"),
+                            NavigationNodeId = new Guid("4d156919-c672-43df-aa19-d93e975d5bda"),
                             RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
                             CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             CreatedByUserName = "System Admin",
@@ -16063,7 +16298,7 @@ namespace MC.Persistence.Migrations
                         },
                         new
                         {
-                            NavigationNodeId = new Guid("83277279-1ae9-49e5-96f6-579e53918cca"),
+                            NavigationNodeId = new Guid("f80ab6d3-dadf-45e9-81ad-462679804c33"),
                             RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
                             CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             CreatedByUserName = "System Admin",
@@ -16076,7 +16311,7 @@ namespace MC.Persistence.Migrations
                         },
                         new
                         {
-                            NavigationNodeId = new Guid("984fb724-f924-40c8-b667-753abd515a49"),
+                            NavigationNodeId = new Guid("c414e1d3-c63c-4eaf-af0d-eab721ccc5a5"),
                             RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
                             CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             CreatedByUserName = "System Admin",
@@ -16089,7 +16324,7 @@ namespace MC.Persistence.Migrations
                         },
                         new
                         {
-                            NavigationNodeId = new Guid("a51aa7b3-cc4a-4191-a061-8cece9c11a75"),
+                            NavigationNodeId = new Guid("3f484034-afc6-4853-a76c-c064b34c2c84"),
                             RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
                             CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             CreatedByUserName = "System Admin",
@@ -16102,7 +16337,7 @@ namespace MC.Persistence.Migrations
                         },
                         new
                         {
-                            NavigationNodeId = new Guid("e49f315d-4ed0-4002-80ad-d81001fe0d1a"),
+                            NavigationNodeId = new Guid("358aa86a-fc2e-4bb5-80b5-2a29892e8432"),
                             RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
                             CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             CreatedByUserName = "System Admin",
@@ -16115,7 +16350,7 @@ namespace MC.Persistence.Migrations
                         },
                         new
                         {
-                            NavigationNodeId = new Guid("75d38d82-7f26-488e-8bd9-0eaea1b08633"),
+                            NavigationNodeId = new Guid("e32c3111-85b2-46c7-b2c8-3f65c1f0adeb"),
                             RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
                             CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             CreatedByUserName = "System Admin",
@@ -16128,7 +16363,7 @@ namespace MC.Persistence.Migrations
                         },
                         new
                         {
-                            NavigationNodeId = new Guid("b73a59f0-cdd5-4895-a0e7-feea45ff5511"),
+                            NavigationNodeId = new Guid("f0002561-462e-4767-8f5e-08bfd53f42f0"),
                             RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
                             CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             CreatedByUserName = "System Admin",
@@ -16141,7 +16376,72 @@ namespace MC.Persistence.Migrations
                         },
                         new
                         {
-                            NavigationNodeId = new Guid("57ec63e1-52d5-44cc-a9d1-cded389f2014"),
+                            NavigationNodeId = new Guid("5c8f1888-76e1-4de2-b848-e2dd181cc2f4"),
+                            RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin"
+                        },
+                        new
+                        {
+                            NavigationNodeId = new Guid("e19c5a99-dc2c-4e23-8f73-71c79c2966f7"),
+                            RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin"
+                        },
+                        new
+                        {
+                            NavigationNodeId = new Guid("8d9a9ddf-b3c3-4e95-b76e-a6ba646d0c01"),
+                            RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin"
+                        },
+                        new
+                        {
+                            NavigationNodeId = new Guid("ca0bb9e6-ee53-4143-9edb-7ce118804b5b"),
+                            RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin"
+                        },
+                        new
+                        {
+                            NavigationNodeId = new Guid("bf88a20b-f140-4b74-8e87-c4a1b39f3a7f"),
+                            RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            CreatedByUserName = "System Admin",
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            IsDeleted = false,
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            ModifiedByUserName = "System Admin"
+                        },
+                        new
+                        {
+                            NavigationNodeId = new Guid("50396e86-cb2e-4884-bea0-e9083e205e4b"),
                             RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde"),
                             CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             CreatedByUserName = "System Admin",
@@ -16525,6 +16825,70 @@ namespace MC.Persistence.Migrations
                             State = "Uttar Pradesh",
                             Website = "https://www.test.com",
                             ZipCode = "123456"
+                        });
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Organization.RegistrationSequence", b =>
+                {
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CreatedByUserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("LastRegistrationId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ModifiedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ModifiedByUserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Prefix")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.HasKey("CompanyId");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("ModifiedByUserId");
+
+                    b.ToTable("RegistrationSequences");
+
+                    b.HasData(
+                        new
+                        {
+                            CompanyId = new Guid("489d4544-5461-4132-aa29-688758627c98"),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            IsDeleted = false,
+                            LastRegistrationId = 100,
+                            Prefix = "MFC"
+                        },
+                        new
+                        {
+                            CompanyId = new Guid("74c8b851-922f-45b9-9c28-0c53c06120aa"),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            IsDeleted = false,
+                            LastRegistrationId = 1000,
+                            Prefix = "MSO"
                         });
                 });
 
@@ -16919,6 +17283,83 @@ namespace MC.Persistence.Migrations
                     b.HasIndex("UserProfileId");
 
                     b.ToTable("EmployeeReferences");
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Registration.EmployeeVerification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("AgencyName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("AgencyReportUrl")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<DateTime?>("CompletedDate")
+                        .HasColumnType("date");
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CreatedByUserName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("InitiatedDate")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid?>("ModifiedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ModifiedByUserName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Result")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<Guid>("UserProfileId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("VerificationType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("ModifiedByUserId");
+
+                    b.HasIndex("UserProfileId");
+
+                    b.ToTable("EmployeeVerifications");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.ExArmy", b =>
@@ -17480,38 +17921,6 @@ namespace MC.Persistence.Migrations
                     b.ToTable("PreviousExperiences");
                 });
 
-            modelBuilder.Entity("MC.Domain.Entity.Registration.RegistrationSequence", b =>
-                {
-                    b.Property<Guid>("CompanyId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("LastRegistrationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Prefix")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
-
-                    b.HasKey("CompanyId");
-
-                    b.ToTable("RegistrationSequences");
-
-                    b.HasData(
-                        new
-                        {
-                            CompanyId = new Guid("489d4544-5461-4132-aa29-688758627c98"),
-                            LastRegistrationId = 100,
-                            Prefix = "MFC"
-                        },
-                        new
-                        {
-                            CompanyId = new Guid("74c8b851-922f-45b9-9c28-0c53c06120aa"),
-                            LastRegistrationId = 1000,
-                            Prefix = "MSO"
-                        });
-                });
-
             modelBuilder.Entity("MC.Domain.Entity.Registration.Resignation", b =>
                 {
                     b.Property<Guid>("Id")
@@ -17764,8 +18173,11 @@ namespace MC.Persistence.Migrations
                     b.Property<DateTime?>("ReturnDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("ReturnStatus")
+                    b.Property<string>("ReturnRemarks")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ReturnStatus")
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
@@ -17788,6 +18200,69 @@ namespace MC.Persistence.Migrations
                     b.HasIndex("UserProfileId");
 
                     b.ToTable("UserAssets");
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Registration.UserDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CreatedByUserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("DocumentNumber")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("DocumentTypeId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("IssueDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid?>("ModifiedByUserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ModifiedByUserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("UserProfileId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("DocumentTypeId");
+
+                    b.HasIndex("ModifiedByUserId");
+
+                    b.HasIndex("UserProfileId");
+
+                    b.ToTable("UserDocuments");
                 });
 
             modelBuilder.Entity("MC.Domain.Entity.Registration.UserGeneralDetail", b =>
@@ -18009,6 +18484,11 @@ namespace MC.Persistence.Migrations
                     b.Property<Guid?>("UserId")
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("UserProfileStatus")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
@@ -18063,7 +18543,8 @@ namespace MC.Persistence.Migrations
                             ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             RegistrationId = "MFC -0100",
                             TitleId = new Guid("ad77f3f7-cf8a-4f72-a38d-f9aaade1d79f"),
-                            UserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9")
+                            UserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            UserProfileStatus = "Approved"
                         },
                         new
                         {
@@ -18073,20 +18554,45 @@ namespace MC.Persistence.Migrations
                             CategoryId = new Guid("25082ec5-82bf-4d5c-86f6-42f50aff16a6"),
                             ClientMasterId = new Guid("8a4a5a20-7236-46e4-9739-8ab7a47f554e"),
                             ClientUnitId = new Guid("2654ab1a-dc1d-4b93-9249-9cd4f9228968"),
-                            CompanyId = new Guid("74c8b851-922f-45b9-9c28-0c53c06120aa"),
+                            CompanyId = new Guid("489d4544-5461-4132-aa29-688758627c98"),
                             CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DesignationId = new Guid("f0a87667-1bc3-4688-85fb-bc656da4bf9f"),
+                            DesignationId = new Guid("0e9b6202-47f4-404f-b2f8-712e95a7b148"),
                             FirstName = "System",
                             IsActive = true,
                             IsDeleted = false,
-                            LastName = "User",
+                            LastName = "HR",
                             MiddleName = "",
                             ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
                             RegistrationId = "MSO -1000",
                             TitleId = new Guid("ad77f3f7-cf8a-4f72-a38d-f9aaade1d79f"),
-                            UserId = new Guid("9e224968-33e4-4652-b7b7-8574d048cdb9")
+                            UserId = new Guid("2e9cfc1e-c228-41b5-bada-2f859ec9de32"),
+                            UserProfileStatus = "Approved"
+                        },
+                        new
+                        {
+                            Id = new Guid("f7b2cb32-e7f5-4ebb-845a-4947dabfb92f"),
+                            AadhaarNumber = "987654321003",
+                            BranchId = new Guid("c1a1d1e1-f1a1-4711-8899-000000000001"),
+                            CategoryId = new Guid("25082ec5-82bf-4d5c-86f6-42f50aff16a6"),
+                            ClientMasterId = new Guid("8a4a5a20-7236-46e4-9739-8ab7a47f554e"),
+                            ClientUnitId = new Guid("2654ab1a-dc1d-4b93-9249-9cd4f9228968"),
+                            CompanyId = new Guid("489d4544-5461-4132-aa29-688758627c98"),
+                            CreatedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            DateCreated = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DateModified = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DesignationId = new Guid("a2d980ac-3fb9-4eed-a5e1-918b64285f05"),
+                            FirstName = "System",
+                            IsActive = true,
+                            IsDeleted = false,
+                            LastName = "HR Head",
+                            MiddleName = "",
+                            ModifiedByUserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            RegistrationId = "MSO -1001",
+                            TitleId = new Guid("ad77f3f7-cf8a-4f72-a38d-f9aaade1d79f"),
+                            UserId = new Guid("38ccee5b-9eab-49a0-a30f-d6cb52e7d11d"),
+                            UserProfileStatus = "Approved"
                         });
                 });
 
@@ -18176,13 +18682,18 @@ namespace MC.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("9e224968-33e4-4652-b7b7-8574d048cdb9"),
-                            RoleId = new Guid("13ba1d43-1f90-466b-8b67-6aeb5e32581f")
+                            UserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
+                            RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde")
                         },
                         new
                         {
-                            UserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                            RoleId = new Guid("ba2e09d3-8a52-48a5-a4a9-178e53d60fde")
+                            UserId = new Guid("2e9cfc1e-c228-41b5-bada-2f859ec9de32"),
+                            RoleId = new Guid("a03df03e-0ca2-4c5a-808a-626bfc2b9ae8")
+                        },
+                        new
+                        {
+                            UserId = new Guid("38ccee5b-9eab-49a0-a30f-d6cb52e7d11d"),
+                            RoleId = new Guid("88bd4b2e-bc97-4666-b032-ac61f5c00477")
                         });
                 });
 
@@ -18240,6 +18751,12 @@ namespace MC.Persistence.Migrations
 
             modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalRequest", b =>
                 {
+                    b.HasOne("MC.Domain.Entity.Approval.ApprovalWorkflow", "Workflow")
+                        .WithMany("Requests")
+                        .HasForeignKey("ApprovalWorkflowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
                         .WithMany()
                         .HasForeignKey("CreatedByUserId")
@@ -18256,12 +18773,6 @@ namespace MC.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MC.Domain.Entity.Approval.ApprovalWorkflow", "Workflow")
-                        .WithMany("Requests")
-                        .HasForeignKey("WorkflowId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("CreatedByUser");
 
                     b.Navigation("ModifiedByUser");
@@ -18273,6 +18784,18 @@ namespace MC.Persistence.Migrations
 
             modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalRequestStage", b =>
                 {
+                    b.HasOne("MC.Domain.Entity.Approval.ApprovalRequest", "Request")
+                        .WithMany("Stages")
+                        .HasForeignKey("ApprovalRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MC.Domain.Entity.Approval.ApprovalStage", "Stage")
+                        .WithMany()
+                        .HasForeignKey("ApprovalStageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
                         .WithMany()
                         .HasForeignKey("CreatedByUserId")
@@ -18282,18 +18805,6 @@ namespace MC.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("ModifiedByUserId")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("MC.Domain.Entity.Approval.ApprovalRequest", "Request")
-                        .WithMany("Stages")
-                        .HasForeignKey("RequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MC.Domain.Entity.Approval.ApprovalStage", "Stage")
-                        .WithMany()
-                        .HasForeignKey("StageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
 
                     b.Navigation("CreatedByUser");
 
@@ -18306,6 +18817,12 @@ namespace MC.Persistence.Migrations
 
             modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalStage", b =>
                 {
+                    b.HasOne("MC.Domain.Entity.Approval.ApprovalWorkflow", "Workflow")
+                        .WithMany("Stages")
+                        .HasForeignKey("ApprovalWorkflowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
                         .WithMany()
                         .HasForeignKey("CreatedByUserId")
@@ -18315,12 +18832,6 @@ namespace MC.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("ModifiedByUserId")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("MC.Domain.Entity.Approval.ApprovalWorkflow", "Workflow")
-                        .WithMany("Stages")
-                        .HasForeignKey("WorkflowId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("CreatedByUser");
 
@@ -18331,14 +18842,20 @@ namespace MC.Persistence.Migrations
 
             modelBuilder.Entity("MC.Domain.Entity.Approval.ApprovalStageApprover", b =>
                 {
+                    b.HasOne("MC.Domain.Entity.Approval.ApprovalStage", "Stage")
+                        .WithMany("Approvers")
+                        .HasForeignKey("ApprovalStageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MC.Domain.Entity.Organization.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
                         .WithMany()
                         .HasForeignKey("CreatedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("MC.Domain.Entity.Master.Designation", "Designation")
-                        .WithMany()
-                        .HasForeignKey("DesignationId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "ModifiedByUser")
@@ -18346,22 +18863,23 @@ namespace MC.Persistence.Migrations
                         .HasForeignKey("ModifiedByUserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("MC.Domain.Entity.Approval.ApprovalStage", "Stage")
-                        .WithMany("Approvers")
-                        .HasForeignKey("StageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationRole", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.Navigation("Company");
+
                     b.Navigation("CreatedByUser");
 
-                    b.Navigation("Designation");
-
                     b.Navigation("ModifiedByUser");
+
+                    b.Navigation("Role");
 
                     b.Navigation("Stage");
 
@@ -18820,6 +19338,29 @@ namespace MC.Persistence.Migrations
                     b.Navigation("ModifiedByUser");
                 });
 
+            modelBuilder.Entity("MC.Domain.Entity.Organization.RegistrationSequence", b =>
+                {
+                    b.HasOne("MC.Domain.Entity.Organization.Company", "Company")
+                        .WithOne("RegistrationSequence")
+                        .HasForeignKey("MC.Domain.Entity.Organization.RegistrationSequence", "CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
+
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "ModifiedByUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedByUserId");
+
+                    b.Navigation("Company");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("ModifiedByUser");
+                });
+
             modelBuilder.Entity("MC.Domain.Entity.Registration.Address", b =>
                 {
                     b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
@@ -18942,6 +19483,31 @@ namespace MC.Persistence.Migrations
 
                     b.HasOne("MC.Domain.Entity.Registration.UserProfile", "UserProfile")
                         .WithMany("EmployeeReferences")
+                        .HasForeignKey("UserProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("ModifiedByUser");
+
+                    b.Navigation("UserProfile");
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Registration.EmployeeVerification", b =>
+                {
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "ModifiedByUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MC.Domain.Entity.Registration.UserProfile", "UserProfile")
+                        .WithMany("EmployeeVerifications")
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -19128,17 +19694,6 @@ namespace MC.Persistence.Migrations
                     b.Navigation("UserProfile");
                 });
 
-            modelBuilder.Entity("MC.Domain.Entity.Registration.RegistrationSequence", b =>
-                {
-                    b.HasOne("MC.Domain.Entity.Organization.Company", "Company")
-                        .WithOne("RegistrationSequence")
-                        .HasForeignKey("MC.Domain.Entity.Registration.RegistrationSequence", "CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-                });
-
             modelBuilder.Entity("MC.Domain.Entity.Registration.Resignation", b =>
                 {
                     b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
@@ -19247,6 +19802,37 @@ namespace MC.Persistence.Migrations
                     b.Navigation("UserProfile");
                 });
 
+            modelBuilder.Entity("MC.Domain.Entity.Registration.UserDocument", b =>
+                {
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
+
+                    b.HasOne("MC.Domain.Entity.Master.DocumentType", "DocumentType")
+                        .WithMany("UserDocuments")
+                        .HasForeignKey("DocumentTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MC.Domain.Entity.Identity.ApplicationUser", "ModifiedByUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedByUserId");
+
+                    b.HasOne("MC.Domain.Entity.Registration.UserProfile", "UserProfile")
+                        .WithMany("UserDocuments")
+                        .HasForeignKey("UserProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("DocumentType");
+
+                    b.Navigation("ModifiedByUser");
+
+                    b.Navigation("UserProfile");
+                });
+
             modelBuilder.Entity("MC.Domain.Entity.Registration.UserGeneralDetail", b =>
                 {
                     b.HasOne("MC.Domain.Entity.Master.CasteCategory", "CasteCategory")
@@ -19331,8 +19917,9 @@ namespace MC.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("MC.Domain.Entity.Master.Designation", "Designation")
-                        .WithMany()
-                        .HasForeignKey("DesignationId");
+                        .WithMany("UserProfiles")
+                        .HasForeignKey("DesignationId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("MC.Domain.Entity.Master.Gender", "Gender")
                         .WithMany()
@@ -19467,6 +20054,16 @@ namespace MC.Persistence.Migrations
                     b.Navigation("BankAccounts");
                 });
 
+            modelBuilder.Entity("MC.Domain.Entity.Master.Designation", b =>
+                {
+                    b.Navigation("UserProfiles");
+                });
+
+            modelBuilder.Entity("MC.Domain.Entity.Master.DocumentType", b =>
+                {
+                    b.Navigation("UserDocuments");
+                });
+
             modelBuilder.Entity("MC.Domain.Entity.Menu.Menu", b =>
                 {
                     b.Navigation("MenuItems");
@@ -19513,6 +20110,8 @@ namespace MC.Persistence.Migrations
 
                     b.Navigation("EmployeeReferences");
 
+                    b.Navigation("EmployeeVerifications");
+
                     b.Navigation("ExArmies");
 
                     b.Navigation("Families");
@@ -19534,6 +20133,8 @@ namespace MC.Persistence.Migrations
                     b.Navigation("Trainings");
 
                     b.Navigation("UserAssets");
+
+                    b.Navigation("UserDocuments");
 
                     b.Navigation("UserGeneralDetail");
                 });

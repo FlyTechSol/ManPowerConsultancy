@@ -18,5 +18,8 @@ namespace MC.Application.Features.Organization.Company.Command.Create
         public string? Country { get; set; }
         public string? ZipCode { get; set; }
         public bool IsActive { get; set; } = true;
+        //for staff registration Id
+        public int LastRegistrationId { get; set; }
+        public string RegistrationPrefix { get; set; } =string.Empty;
     }
 }
